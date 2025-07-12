@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Section Six – PardonMe Application</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles_section_six.css') }}">
+</head>
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">PardonMe, Inc.</h1>
+      <h2 class="section-title">Section 6 – Character References</h2>
+      <p class="section-description">Provide references who can speak to your character.</p>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Layout -->
+  <div class="page-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h3 class="sidebar-title">📝 To Do List</h3>
+      {% set section_names = [
+        'Personal Information',
+        'Offense Details',
+        'Sentence & Incarceration',
+        'Employment & Education',
+        'Community Involvement',
+        'Character References',
+        'Statement & Signature'
+      ] %}
+      {% for i in range(1, 8) %}
+        <div class="sidebar-item{% if i == current_section %} active{% elif i < current_section %} completed{% endif %}">
+          <strong>Section {{ i }}</strong>
+          <p>{{ section_names[i-1] }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="form-card">
+        <form method="POST" action="{{ url_for('section_six') }}" enctype="multipart/form-data">
+          <h3 style="text-align:center;">Character References</h3>
+          <p style="text-align:center; font-size: 0.9rem; color: #888;">
+            Provide at least 3 character references who can speak to your rehabilitation and character.
+          </p>
+
+          <!-- Dynamic Reference Cards -->
+          <div id="reference-forms-container"></div>
+
+          <!-- Add Another Reference -->
+          <div id="add-reference-wrapper" style="text-align: center; display: none;">
+            <button type="button" onclick="addReference()">+ Add Another Reference</button>
+          </div>
+
+          <!-- Reference Letters Upload -->
+          <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #ddd;">
+            <h4>Reference Letters</h4>
+            <label for="reference_letters">Upload Reference Letters (if available):</label>
+            <input type="file" id="reference_letters" name="reference_letters[]" multiple accept=".pdf,.doc,.docx">
+            <p style="font-size: 0.85rem; color: #666;">
+              You can upload letters of recommendation here, or your references can send them directly to the Pardon Advisory Board.
+            </p>
+
+            <label for="additional_references">Additional Reference Information:</label>
+            <textarea id="additional_references" name="additional_references" rows="3" placeholder="Any additional information about your references or character witnesses..."></textarea>
+          </div>
+
+          <!-- Continue -->
+          <div style="text-align:center; margin-top: 30px;">
+            <button type="submit" class="start-btn">Continue to Section Seven</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reference Template -->
+  <template id="reference-template">
+    <div class="reference-card">
+      <h4>Reference #<span class="reference-number"></span></h4>
+
+      <div class="form-grid">
+        <div class="form-column">
+          <label>Full Name:</label>
+          <input type="text" name="reference_name[]" required>
+
+          <label>Relationship to You:</label>
+          <select name="reference_relationship[]" required>
+            <option value="">Select relationship...</option>
+            <option value="employer">Employer/Supervisor</option>
+            <option value="coworker">Coworker</option>
+            <option value="pastor">Pastor/Religious Leader</option>
+            <option value="counselor">Counselor/Therapist</option>
+            <option value="teacher">Teacher/Instructor</option>
+            <option value="friend">Friend</option>
+            <option value="neighbor">Neighbor</option>
+            <option value="volunteer_coordinator">Volunteer Coordinator</option>
+            <option value="community_leader">Community Leader</option>
+            <option value="other">Other</option>
+          </select>
+
+          <label>Phone Number:</label>
+          <input type="tel" name="reference_phone[]" required>
+        </div>
+
+        <div class="form-column">
+          <label>Email Address:</label>
+          <input type="email" name="reference_email[]">
+
+          <label>Mailing Address:</label>
+          <textarea name="reference_address[]" rows="2" placeholder="Full mailing address..."></textarea>
+
+          <label>How long have they known you?</label>
+          <select name="reference_years_known[]" required>
+            <option value="">Select duration...</option>
+            <option value="less_than_1">Less than 1 year</option>
+            <option value="1_2_years">1-2 years</option>
+            <option value="3_5_years">3-5 years</option>
+            <option value="6_10_years">6-10 years</option>
+            <option value="more_than_10">More than 10 years</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="button" class="done-btn" onclick="markReferenceComplete(this)">Done with this reference</button>
+      <hr>
+    </div>
+  </template>
+
+  <script>
+    let referenceCount = 0;
+    const maxReferences = 5;
+
+    function addReference() {
+      if (referenceCount >= maxReferences) return;
+
+      referenceCount++;
+      const template = document.getElementById("reference-template");
+      const clone = template.content.cloneNode(true);
+      clone.querySelector(".reference-number").innerText = referenceCount;
+
+      document.getElementById("reference-forms-container").appendChild(clone);
+
+      if (referenceCount >= maxReferences) {
+        document.getElementById("add-reference-wrapper").style.display = "none";
+      }
+    }
+
+    function markReferenceComplete(button) {
+      const referenceCard = button.closest(".reference-card");
+      referenceCard.classList.add("completed");
+
+      if (referenceCount < maxReferences) {
+        document.getElementById("add-reference-wrapper").style.display = "block";
+      }
+    }
+
+    // Load first reference on page load
+    window.onload = addReference;
+  </script>
+
+</body>
+</html>

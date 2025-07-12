@@ -64,6 +64,61 @@
             <button type="button" onclick="addOffense()">+ Add Another Offense</button>
           </div>
 
+          <!-- Additional Wisconsin Application Fields -->
+          <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #ddd;">
+            <h3 style="text-align:center;">Additional Criminal History Information</h3>
+            
+            <label>Have you ever been convicted of any crimes other than those listed above?</label>
+            <select name="other_crimes" required>
+              <option value="">Select...</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+            
+            <label>If yes, provide details (include juvenile cases, expunged cases, other states, federal):</label>
+            <textarea name="other_crimes_details" rows="4" placeholder="Crime, court case number, county, sentence, completion date..."></textarea>
+            
+            <label>Were you ordered to pay restitution for any of your crimes?</label>
+            <select name="restitution_ordered">
+              <option value="">Select...</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+            
+            <label>If yes, have you paid the full amount ordered?</label>
+            <select name="restitution_paid">
+              <option value="">Select...</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+            
+            <label>If you have proof of restitution payment, describe it:</label>
+            <textarea name="restitution_proof" rows="2" placeholder="Describe proof of payment..."></textarea>
+            
+            <label>Have you ever applied for pardon before?</label>
+            <select name="previous_pardon">
+              <option value="">Select...</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+            
+            <label>If yes, provide the date (MM/YYYY):</label>
+            <input type="text" name="previous_pardon_date" placeholder="MM/YYYY">
+            
+            <label>If yes, describe the outcome (hearing, formal denial, etc.):</label>
+            <textarea name="previous_pardon_details" rows="3" placeholder="Describe hearing or denial details..."></textarea>
+            
+            <label>Have you had any other interactions with law enforcement (arrests without charges, dismissed charges, investigations)?</label>
+            <select name="other_law_enforcement">
+              <option value="">Select...</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+            
+            <label>If yes, explain the interactions (date, state, county, circumstances):</label>
+            <textarea name="other_law_enforcement_details" rows="4" placeholder="Describe law enforcement interactions..."></textarea>
+          </div>
+
           <!-- Continue -->
           <div style="text-align:center; margin-top: 30px;">
             <button type="submit">Save & Continue</button>

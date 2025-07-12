@@ -1,0 +1,32 @@
+/* Import base styles from section_one.css */
+@import url('styles_section_one.css');
+
+/* Section 3 specific overrides and additions */
+.section-title {
+  color: #2c3e50;
+}
+
+.form-grid textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-column select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.form-column select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}
+
+/* Progress bar styling for section 3 */
+.progress-fill {
+  background: linear-gradient(90deg, #28a745, #20c997);
+}

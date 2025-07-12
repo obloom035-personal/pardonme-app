@@ -1,0 +1,27 @@
+/* Import base styles from section_one.css */
+@import url('styles_section_one.css');
+
+/* Section 5 specific overrides and additions */
+.section-title {
+  color: #2c3e50;
+}
+
+.form-grid textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-column textarea[required] {
+  border-left: 3px solid #28a745;
+}
+
+/* Community involvement specific styling */
+textarea[name="personal_growth"] {
+  border-left: 3px solid #007bff !important;
+  background-color: #f8f9fa;
+}
+
+/* Progress bar styling for section 5 */
+.progress-fill {
+  background: linear-gradient(90deg, #17a2b8, #6f42c1);
+}

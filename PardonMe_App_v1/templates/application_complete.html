@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Application Complete – PardonMe</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <style>
+    .completion-container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 40px;
+      text-align: center;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .success-icon {
+      font-size: 4rem;
+      color: #28a745;
+      margin-bottom: 20px;
+    }
+    .next-steps {
+      text-align: left;
+      margin: 30px 0;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 5px;
+    }
+    .next-steps h3 {
+      color: #495057;
+      margin-bottom: 15px;
+    }
+    .next-steps ol {
+      padding-left: 20px;
+    }
+    .next-steps li {
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    .contact-info {
+      background: #e9ecef;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Logo -->
+  <div class="logo-container">
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="PardonMe Logo" width="300">
+  </div>
+
+  <div class="completion-container">
+    <div class="success-icon">✅</div>
+    <h1>Congratulations!</h1>
+    <h2>Your Pardon Application is Complete</h2>
+    
+    <p style="font-size: 1.1rem; margin: 20px 0; color: #495057;">
+      You have successfully completed all seven sections of your Wisconsin pardon application. 
+      Your information has been collected and is ready for final preparation.
+    </p>
+
+    <div class="next-steps">
+      <h3>Next Steps:</h3>
+      <ol>
+        <li><strong>Download Your Application:</strong> Click the button below to generate and download your completed pardon application as a PDF.</li>
+        <li><strong>Gather Required Documents:</strong> Collect certified copies of your criminal complaint, information, and judgment of conviction from the clerk of courts.</li>
+        <li><strong>Review Everything:</strong> Carefully review your completed application and all supporting documents.</li>
+        <li><strong>Mail Your Application:</strong> Send your complete application packet to the address below.</li>
+        <li><strong>Wait for Response:</strong> Due to high demand, it may take over a year for action on your application.</li>
+      </ol>
+    </div>
+
+    <div class="contact-info">
+      <h4>Mail your completed application to:</h4>
+      <p style="margin: 10px 0;">
+        <strong>Office of the Governor</strong><br>
+        Attn: Pardon Advisory Board<br>
+        P.O. Box 7863<br>
+        Madison, WI 53707
+      </p>
+    </div>
+
+    <div style="margin: 30px 0;">
+      <button class="start-btn" onclick="generatePDF()" style="margin: 10px;">
+        📄 Download PDF Application
+      </button>
+      <button class="start-btn" onclick="window.print()" style="margin: 10px; background: #6c757d;">
+        🖨️ Print This Page
+      </button>
+    </div>
+
+    <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #dee2e6;">
+      <p style="font-size: 0.9rem; color: #6c757d;">
+        <strong>Important:</strong> Keep a copy of your application for your records. 
+        You must notify the Pardon Advisory Board if your contact information changes.
+      </p>
+      <p style="font-size: 0.9rem; color: #6c757d;">
+        For questions about the pardon process, visit: 
+        <a href="https://evers.wi.gov/Pages/pardon-information.aspx" target="_blank">
+          evers.wi.gov/Pages/pardon-information.aspx
+        </a>
+      </p>
+    </div>
+
+    <div style="margin-top: 30px;">
+      <a href="/" class="start-btn" style="background: #17a2b8; text-decoration: none;">
+        🏠 Return to Home
+      </a>
+    </div>
+  </div>
+
+  <script>
+    function generatePDF() {
+      alert('PDF generation feature will be implemented in the next phase. For now, please print this page and your application data from each section.');
+      // TODO: Implement PDF generation using the session data
+    }
+  </script>
+</body>
+</html>
