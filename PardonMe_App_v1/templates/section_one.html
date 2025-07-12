@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Section One – PardonMe Application</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles_section_one.css') }}">
+</head>
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">PardonMe, Inc.</h1>
+      <h2 class="section-title">Section 1 – Personal Information</h2>
+      <p class="section-description">Tell us who you are to begin your journey.</p>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+	
+	<!-- add back in later maybe
+    <div class="nav-arrows">
+      <a href="/section_one" class="nav-btn">← Back</a>
+      <button class="nav-btn">Next →</button>
+    </div>	-->
+  </div>
+	
+  <!-- Page Layout -->
+  <div class="page-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h3 class="sidebar-title">📝 To Do List</h3>
+      {% set section_names = [
+        'Personal Information',
+        'Offense Details',
+        'Sentence & Incarceration',
+        'Employment & Education',
+        'Community Involvement',
+        'Character References',
+        'Statement & Signature'
+      ] %}
+      {% for i in range(1, 8) %}
+        <div class="sidebar-item {% if i == 1 %}active{% endif %}">
+          <strong>Section {{ i }}</strong>
+          <p>{{ section_names[i-1] }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Main Content -->
+	<div class="main-content">
+	  <div class="form-card">
+		<form method="post" id="form-section-one" novalidate>
+		  <div class="form-grid">
+			<!-- Column 1 -->
+			<div class="form-column">
+			  <label for="first_name">First Name</label>
+			  <input type="text" id="first_name" name="first_name" required><br><br>
+
+			  <label for="middle_name">Middle Name</label>
+			  <input type="text" id="middle_name" name="middle_name"><br><br>
+
+			  <label for="last_name">Last Name</label>
+			  <input type="text" id="last_name" name="last_name" required><br><br>
+
+			  <label for="email">Email Address</label>
+			  <input type="email" id="email" name="email"><br><br>
+
+			  <label for="work_phone">Work Phone</label>
+			  <input type="tel" id="work_phone" name="work_phone"><br><br>
+
+			  <label for="birth_place">Place of Birth (City, State)</label>
+			  <input type="text" id="birth_place" name="birth_place"><br><br>
+
+			  <label for="ssn">Social Security Number</label>
+				<div class="ssn-container">
+				  <input 
+					type="text" 
+					id="ssn" 
+					name="ssn" 
+					class="ssn-input" 
+					maxlength="11" 
+					inputmode="numeric" 
+					required 
+					oninput="formatSSN()"
+				  >
+				  <button type="button" id="toggleSSN" class="ssn-btn">
+					<img src="https://cdn-icons-png.flaticon.com/512/159/159604.png" alt="Show SSN" style="height: 24px;">
+				  </button>
+				</div><br><br>
+
+			  <label for="home_address">Home Address</label>
+			  <input type="text" id="home_address" name="home_address" required><br><br>
+
+			  <label for="home_apartment">Apt / Unit # (optional)</label>
+			  <input type="text" id="home_apartment" name="home_apartment"><br><br>
+
+			  <label for="alias_names">Maiden / Alias / Former Name(s)</label>
+			  <input type="text" id="alias_names" name="alias_names"><br><br>
+			</div>
+
+			<!-- Column 2 -->
+			<div class="form-column">
+			  <label for="dob">Date of Birth</label>
+			  <input type="date" id="dob" name="dob" required><br><br>
+
+			  <label for="home_phone">Home Phone</label>
+			  <input type="tel" id="home_phone" name="home_phone" required><br><br>
+
+			  <label for="cell_phone">Cell Phone</label><br>
+			  <input type="tel" id="cell_phone" name="cell_phone"><br>
+			  <label>
+				<input type="checkbox" id="copyPhoneCheckbox" onclick="copyPhone()"> Same as home phone
+			  </label><br><br>
+
+			  <label for="gender">Gender (optional)</label>
+			  <select id="gender" name="gender">
+				<option value="" selected disabled>Select Gender</option>
+				<option value="Female">Female</option>
+				<option value="Male">Male</option>
+				<option value="Non-Binary">Non-Binary</option>
+				<option value="Prefer not to say">Prefer not to say</option>
+				<option value="Other">Other</option>
+			  </select><br><br>
+
+			  <label for="ethnicity">Race or Ethnicity (optional)</label>
+			  <select id="ethnicity" name="ethnicity">
+				<option value="" selected disabled>Select Ethnicity</option>
+				<option value="White">White</option>
+				<option value="Black or African American">Black or African American</option>
+				<option value="Hispanic or Latino">Hispanic or Latino</option>
+				<option value="Asian">Asian</option>
+				<option value="Native American or Alaska Native">Native American or Alaska Native</option>
+				<option value="Native Hawaiian or Pacific Islander">Native Hawaiian or Pacific Islander</option>
+				<option value="Two or more races">Two or more races</option>
+				<option value="Prefer not to say">Prefer not to say</option>
+			  </select><br><br>
+
+			  <label>
+				<input type="checkbox" id="copyAddressCheckbox" onclick="copyAddress()"> Mailing address is the same as home address
+			  </label><br><br>
+
+			  <label for="mailing_address">Mailing Address</label>
+			  <input type="text" id="mailing_address" name="mailing_address" required><br><br>
+
+			  <label for="mailing_apartment">Apt / Unit # (optional)</label>
+			  <input type="text" id="mailing_apartment" name="mailing_apartment"><br><br>
+
+			  <label for="alias_dates">Dates Used (MM/YY – MM/YY)</label>
+			  <input type="text" id="alias_dates" name="alias_dates"><br><br>
+			</div>
+		  </div>
+
+		  <div style="text-align:center; margin-top: 20px;">
+			<button type="submit" class="start-btn">Continue to Section Two</button>
+		  </div>
+		</form>
+	  </div>
+	</div>
+  </div>
+
+  <!-- Google Places -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7n5UZkma43GNrl4rgElaQVcDIorrXShg&libraries=places&callback=initAutocomplete" async defer></script>
+
+	<script>
+	  document.addEventListener('DOMContentLoaded', () => {
+		initAutocomplete();
+
+		// Prevent Enter key from unintentionally submitting the form
+		document.getElementById("form-section-one").addEventListener("keydown", function (e) {
+		  if (e.key === "Enter" && e.target.tagName !== "TEXTAREA") {
+			e.preventDefault();
+		  }
+		});
+
+		// SSN toggle
+		const ssnInput = document.getElementById('ssn');
+		const toggleBtn = document.getElementById('toggleSSN');
+
+		ssnInput.type = 'password';
+
+		toggleBtn.addEventListener('mousedown', () => {
+		  ssnInput.type = 'text';
+		});
+
+		toggleBtn.addEventListener('mouseup', () => {
+		  ssnInput.type = 'password';
+		});
+
+		toggleBtn.addEventListener('mouseleave', () => {
+		  ssnInput.type = 'password';
+		});
+
+		// Auto-format SSN
+		ssnInput.addEventListener('input', () => {
+		  let raw = ssnInput.value.replace(/\D/g, "").slice(0, 9);
+		  let formatted = raw;
+		  if (raw.length > 5) {
+			formatted = `${raw.slice(0, 3)}-${raw.slice(3, 5)}-${raw.slice(5)}`;
+		  } else if (raw.length > 3) {
+			formatted = `${raw.slice(0, 3)}-${raw.slice(3)}`;
+		  }
+		  ssnInput.value = formatted;
+		});
+
+		// Validation
+		document.getElementById("form-section-one").addEventListener("submit", function (e) {
+		  let isValid = true;
+		  document.querySelectorAll(".error-msg").forEach(el => el.remove());
+
+		  function markInvalid(id, message) {
+			isValid = false;
+			const input = document.getElementById(id);
+			const error = document.createElement("div");
+			error.className = "error-msg";
+			error.style.color = "red";
+			error.style.fontSize = "0.85rem";
+			error.textContent = message;
+			input.parentNode.insertBefore(error, input.nextSibling);
+			input.scrollIntoView({ behavior: "smooth", block: "center" });
+		  }
+
+		  if (!document.getElementById("first_name").value.trim()) markInvalid("first_name", "First name is required.");
+		  if (!document.getElementById("last_name").value.trim()) markInvalid("last_name", "Last name is required.");
+		  if (!document.getElementById("dob").value.trim()) markInvalid("dob", "Date of birth is required.");
+
+		  const ssnVal = document.getElementById("ssn").value.trim();
+		  if (!/^\d{3}-\d{2}-\d{4}$/.test(ssnVal)) {
+			markInvalid("ssn", "Social Security Number must be in the format XXX-XX-XXXX.");
+		  }
+
+		  if (!document.getElementById("home_address").value.trim()) markInvalid("home_address", "Home address is required.");
+
+		  if (!isValid) e.preventDefault();
+		});
+
+		// Copy phone
+		document.getElementById("copyPhoneCheckbox").addEventListener("change", function () {
+		  const homePhone = document.getElementById("home_phone").value;
+		  document.getElementById("cell_phone").value = this.checked ? homePhone : "";
+		});
+
+		// Copy address
+		document.getElementById("copyAddressCheckbox").addEventListener("change", function () {
+		  const homeAddr = document.getElementById("home_address").value;
+		  const apt = document.getElementById("home_apartment").value;
+		  document.getElementById("mailing_address").value = this.checked ? homeAddr : "";
+		  document.getElementById("mailing_apartment").value = this.checked ? apt : "";
+		});
+	  });
+
+	  function initAutocomplete() {
+		const homeInput = document.getElementById('home_address');
+		const mailingInput = document.getElementById('mailing_address');
+
+		if (homeInput) {
+		  const homeAutocomplete = new google.maps.places.Autocomplete(homeInput, {
+			types: ['address'],
+			componentRestrictions: { country: "us" },
+			fields: ['formatted_address']
+		  });
+		  homeAutocomplete.addListener("place_changed", () => {
+			const place = homeAutocomplete.getPlace();
+			if (place && place.formatted_address) {
+			  homeInput.value = place.formatted_address;
+			}
+		  });
+		}
+
+		if (mailingInput) {
+		  const mailingAutocomplete = new google.maps.places.Autocomplete(mailingInput, {
+			types: ['address'],
+			componentRestrictions: { country: "us" },
+			fields: ['formatted_address']
+		  });
+		  mailingAutocomplete.addListener("place_changed", () => {
+			const place = mailingAutocomplete.getPlace();
+			if (place && place.formatted_address) {
+			  mailingInput.value = place.formatted_address;
+			}
+		  });
+		}
+	  }
+	</script>
+
+</body>
+</html>

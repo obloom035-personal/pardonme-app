@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Section Two – PardonMe Application</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles_section_two.css') }}">
+</head>
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">PardonMe, Inc.</h1>
+      <h2 class="section-title">Section 2 – Offense Details</h2>
+      <p class="section-description">Tell us about the offense(s) you’re seeking a pardon for.</p>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Layout -->
+  <div class="page-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h3 class="sidebar-title">📝 To Do List</h3>
+      {% set section_names = [
+        'Personal Information',
+        'Offense Details',
+        'Sentence & Incarceration',
+        'Employment & Education',
+        'Community Involvement',
+        'Character References',
+        'Statement & Signature'
+      ] %}
+      {% for i in range(1, 8) %}
+        <div class="sidebar-item{% if i == current_section %} active{% elif i < current_section %} completed{% endif %}">
+          <strong>Section {{ i }}</strong>
+          <p>{{ section_names[i-1] }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="form-card">
+        <form method="POST" action="{{ url_for('section_two') }}" enctype="multipart/form-data">
+          <h3 style="text-align:center;">Offense Details</h3>
+          <p style="text-align:center; font-size: 0.9rem; color: #888;">
+            You may submit up to three offenses. Complete one offense at a time, including document attachments or confirmation.
+          </p>
+
+          <!-- Dynamic Offense Cards -->
+          <div id="offense-forms-container"></div>
+
+          <!-- Add Another Offense -->
+          <div id="add-offense-wrapper" style="text-align: center; display: none;">
+            <button type="button" onclick="addOffense()">+ Add Another Offense</button>
+          </div>
+
+          <!-- Continue -->
+          <div style="text-align:center; margin-top: 30px;">
+            <button type="submit">Save & Continue</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Offense Template -->
+  <template id="offense-template">
+    <div class="offense-card">
+      <h4>Offense #<span class="offense-number"></span></h4>
+
+      <label>Crime:</label>
+      <input type="text" name="crime[]" required>
+
+      <label>Court Case Number:</label>
+      <input type="text" name="case_number[]">
+
+      <label>County of Conviction:</label>
+      <input type="text" name="county[]">
+
+      <label>Date of Offense:</label>
+      <input type="date" name="offense_date[]">
+
+      <label>Sentencing Date:</label>
+      <input type="date" name="sentencing_date[]">
+
+      <label>Sentence Received (confinement and supervision):</label>
+      <textarea name="sentence_received[]" rows="2"></textarea>
+
+      <label>Date Sentence Completed:</label>
+      <input type="date" name="sentence_completed[]">
+
+      <label>District Attorney(s) Who Oversaw Conviction:</label>
+      <input type="text" name="district_attorney[]">
+
+      <label>Judge(s) Who Presided:</label>
+      <input type="text" name="judge[]">
+
+      <!-- Document Upload Step -->
+      <div class="doc-upload-section">
+        <label>
+          Upload Certified Documents
+          <button type="button" class="help-btn" onclick="showHelp()">?</button>
+        </label>
+        <input type="file" name="documents[]" multiple accept=".pdf,.jpg,.png">
+
+        <label style="margin-top:10px;">
+          <input type="checkbox" name="sending_physical_docs[]">
+          I have paper copies and will mail them separately.
+        </label>
+      </div>
+
+      <button type="button" class="done-btn" onclick="markOffenseComplete(this)">Done with this offense</button>
+      <hr>
+    </div>
+  </template>
+
+  <script>
+    let offenseCount = 0;
+    const maxOffenses = 3;
+
+    function addOffense() {
+      if (offenseCount >= maxOffenses) return;
+
+      offenseCount++;
+      const template = document.getElementById("offense-template");
+      const clone = template.content.cloneNode(true);
+      clone.querySelector(".offense-number").innerText = offenseCount;
+
+      document.getElementById("offense-forms-container").appendChild(clone);
+
+      if (offenseCount >= maxOffenses) {
+        document.getElementById("add-offense-wrapper").style.display = "none";
+      }
+    }
+
+    function markOffenseComplete(button) {
+      const offenseCard = button.closest(".offense-card");
+      offenseCard.classList.add("completed");
+
+      if (offenseCount < maxOffenses) {
+        document.getElementById("add-offense-wrapper").style.display = "block";
+      }
+    }
+
+    function showHelp() {
+      alert("You must attach certified copies of: (1) the criminal complaint, (2) the information, and (3) the judgment of conviction. These can be obtained from the clerk of courts in the county of conviction. Photocopy and certification fees may apply.");
+    }
+
+    // Load first offense on page load
+    window.onload = addOffense;
+  </script>
+</body>
+</html>

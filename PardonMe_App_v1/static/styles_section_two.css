@@ -1,0 +1,307 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f2f6f9;
+  color: #333;
+}
+
+/* --- Top Bar --- */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #0a1f2e;
+  color: white;
+  padding: 20px 30px;
+  border-bottom: 3px solid #00cc66;
+}
+
+.logo-title {
+  flex-shrink: 0;
+}
+
+.logo-img {
+  height: 150px;
+}
+
+.title-center {
+  text-align: center;
+  flex-grow: 1;
+}
+
+.title-center h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.title-center .section-title {
+  margin: 5px 0;
+  font-size: 1.2rem;
+}
+
+.title-center .section-description {
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  color: #cfd8dc;
+}
+
+.progress-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.progress-bar {
+  width: 200px;
+  height: 10px;
+  background-color: #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #00cc66;
+}
+
+/* --- Navigation Buttons --- */
+.nav-arrows {
+  flex-shrink: 0;
+}
+
+.nav-arrows .nav-btn {
+  background-color: #00cc66;
+  border: none;
+  padding: 10px 15px;
+  font-weight: bold;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.nav-btn:hover {
+  background-color: #00e673;
+}
+
+/* --- Layout --- */
+.page-layout {
+  display: flex;
+  height: calc(100vh - 120px);
+}
+
+.sidebar {
+  background-color: #112d3e;
+  color: white;
+  padding: 20px;
+  width: 220px;
+}
+
+.sidebar-item {
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  background-color: #1b3f53;
+  cursor: pointer;
+}
+
+.sidebar-item.active {
+  background-color: #00cc66;
+  color: #000;
+  font-weight: bold;
+  animation: pulse-glow 1.8s ease-in-out infinite;
+}
+
+.sidebar-item.completed {
+  background-color: #00cc66;
+  color: #000;
+  font-weight: bold;
+}
+
+.sidebar-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 255, 102, 0.9), 0 0 40px rgba(0, 255, 102, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.4);
+  }
+}
+
+/* --- Main Content --- */
+.main-content {
+  flex-grow: 1;
+  padding: 30px;
+}
+
+/* --- Buttons --- */
+.start-btn {
+  background-color: #00cc66;
+  color: white;
+  padding: 14px 26px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 204, 102, 0.4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.start-btn:hover {
+  background-color: #00e673;
+  box-shadow: 0 8px 24px rgba(0, 255, 140, 0.6);
+  transform: translateY(-2px);
+}
+
+.form-card {
+  max-width: 800px;
+  margin: auto;
+  padding: 40px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.08);
+}
+
+form label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+form input[type="text"],
+form input[type="date"],
+form select,
+form textarea {
+  width: 100%;
+  padding: 8px 10px;
+  margin-top: 5px;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+form fieldset {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 25px;
+}
+
+form fieldset legend {
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 0 10px;
+}
+
+form hr {
+  margin: 30px 0;
+}
+
+form button[type="submit"] {
+  background-color: #1e90ff;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 30px;
+}
+
+form button:hover {
+  background-color: #0075d4;
+}
+
+/* Ensure sidebar extends to full height of viewport */
+html, body {
+  height: 100%;
+}
+
+.page-layout {
+  min-height: 100vh;
+  align-items: flex-start;
+}
+
+/* Fix sidebar height */
+.sidebar {
+  height: 100%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Offense card UI */
+.offense-card {
+  padding: 25px;
+  margin-bottom: 30px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.offense-card.completed {
+  border-color: green;
+  background-color: #e6ffee;
+}
+
+.offense-card h4 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  color: #0a1f2e;
+}
+
+/* Help button next to upload */
+.help-btn {
+  margin-left: 8px;
+  background: #1e90ff;
+  color: white;
+  border: none;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.help-btn:hover {
+  background: #0073cc;
+}
+
+/* Upload section */
+.doc-upload-section {
+  background-color: #f1f5f9;
+  padding: 15px;
+  border: 1px dashed #aaa;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+/* Add Another Offense Button */
+#add-offense-wrapper button {
+  margin-top: 15px;
+  background-color: #00cc66;
+  color: white;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#add-offense-wrapper button:hover {
+  background-color: #00b359;
+}
