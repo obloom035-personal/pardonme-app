@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Section Three – PardonMe Application</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles_section_three.css') }}">
+</head>
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">PardonMe, Inc.</h1>
+      <h2 class="section-title">Section 3 – Sentence &amp; Incarceration</h2>
+      <p class="section-description">Provide details about your sentence and time served.</p>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+  </div>
+	
+  <!-- Page Layout -->
+  <div class="page-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h3 class="sidebar-title">📝 To Do List</h3>
+      {% set section_names = [
+        'Personal Information',
+        'Offense Details',
+        'Sentence & Incarceration',
+        'Employment & Education',
+        'Community Involvement',
+        'Character References',
+        'Statement & Signature'
+      ] %}
+      {% for i in range(1, 8) %}
+        <div class="sidebar-item {% if i == current_section %}active{% elif i < current_section %}completed{% endif %}">
+          <strong>Section {{ i }}</strong>
+          <p>{{ section_names[i-1] }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="form-card">
+        <form method="post" id="form-section-three" novalidate>
+          <div class="form-grid">
+            
+            <!-- Detailed Sentence Information -->
+            <div class="form-section">
+              <h3>Sentence Details</h3>
+              <div class="form-group">
+                <label for="sentence_details">Detailed Sentence Information *</label>
+                <textarea id="sentence_details" name="sentence_details" rows="4" placeholder="Describe the complete sentence(s) imposed for each offense..." required></textarea>
+              </div>
+            </div>
+
+            <!-- Incarceration Details -->
+            <div class="form-section">
+              <h3>Incarceration Information</h3>
+              <div class="form-group">
+                <label for="incarceration_location">Institution(s) Where Sentence Was Served</label>
+                <input type="text" id="incarceration_location" name="incarceration_location" placeholder="Name of correctional facility/facilities">
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="incarceration_start_date">Start Date of Incarceration</label>
+                  <input type="date" id="incarceration_start_date" name="incarceration_start_date">
+                </div>
+                <div class="form-group">
+                  <label for="incarceration_end_date">End Date of Incarceration</label>
+                  <input type="date" id="incarceration_end_date" name="incarceration_end_date">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="total_time_served">Total Time Served</label>
+                <input type="text" id="total_time_served" name="total_time_served" placeholder="e.g., 2 years, 6 months">
+              </div>
+            </div>
+
+            <!-- Probation Details -->
+            <div class="form-section">
+              <h3>Probation</h3>
+              <div class="form-group">
+                <label for="probation_details">Probation Details</label>
+                <textarea id="probation_details" name="probation_details" rows="3" placeholder="Describe probation terms, conditions, and officer details..."></textarea>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="probation_start_date">Probation Start Date</label>
+                  <input type="date" id="probation_start_date" name="probation_start_date">
+                </div>
+                <div class="form-group">
+                  <label for="probation_end_date">Probation End Date</label>
+                  <input type="date" id="probation_end_date" name="probation_end_date">
+                </div>
+              </div>
+            </div>
+
+            <!-- Parole Details -->
+            <div class="form-section">
+              <h3>Parole</h3>
+              <div class="form-group">
+                <label for="parole_details">Parole Details</label>
+                <textarea id="parole_details" name="parole_details" rows="3" placeholder="Describe parole terms, conditions, and officer details..."></textarea>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="parole_start_date">Parole Start Date</label>
+                  <input type="date" id="parole_start_date" name="parole_start_date">
+                </div>
+                <div class="form-group">
+                  <label for="parole_end_date">Parole End Date</label>
+                  <input type="date" id="parole_end_date" name="parole_end_date">
+                </div>
+              </div>
+            </div>
+
+            <!-- Extended Supervision -->
+            <div class="form-section">
+              <h3>Extended Supervision</h3>
+              <div class="form-group">
+                <label for="extended_supervision">Extended Supervision Details</label>
+                <textarea id="extended_supervision" name="extended_supervision" rows="3" placeholder="Describe extended supervision terms and conditions..."></textarea>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="supervision_start_date">Supervision Start Date</label>
+                  <input type="date" id="supervision_start_date" name="supervision_start_date">
+                </div>
+                <div class="form-group">
+                  <label for="supervision_end_date">Supervision End Date</label>
+                  <input type="date" id="supervision_end_date" name="supervision_end_date">
+                </div>
+              </div>
+            </div>
+
+            <!-- Compliance and Completion -->
+            <div class="form-section">
+              <h3>Compliance & Completion</h3>
+              <div class="form-group">
+                <label for="compliance_status">Compliance Status *</label>
+                <select id="compliance_status" name="compliance_status" required>
+                  <option value="">Select compliance status</option>
+                  <option value="fully_compliant">Fully Compliant - All requirements met</option>
+                  <option value="mostly_compliant">Mostly Compliant - Minor issues resolved</option>
+                  <option value="some_violations">Some Violations - Details provided below</option>
+                  <option value="significant_violations">Significant Violations - Details provided below</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="violations_occurred">Did any violations occur during supervision?</label>
+                <select id="violations_occurred" name="violations_occurred">
+                  <option value="">Select...</option>
+                  <option value="no">No violations occurred</option>
+                  <option value="yes">Yes, violations occurred</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="violation_details">Violation Details (if applicable)</label>
+                <textarea id="violation_details" name="violation_details" rows="4" placeholder="Describe any violations, consequences, and resolution..."></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="completion_certificate">Do you have completion certificates or discharge papers?</label>
+                <select id="completion_certificate" name="completion_certificate">
+                  <option value="">Select...</option>
+                  <option value="yes_have_all">Yes, I have all completion certificates</option>
+                  <option value="yes_have_some">Yes, I have some certificates</option>
+                  <option value="no_certificates">No, I don't have certificates</option>
+                  <option value="not_applicable">Not applicable</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Additional Notes -->
+            <div class="form-section">
+              <h3>Additional Information</h3>
+              <div class="form-group">
+                <label for="additional_notes">Additional Notes or Explanations</label>
+                <textarea id="additional_notes" name="additional_notes" rows="4" placeholder="Any additional information about your sentence, incarceration, or supervision that would be helpful..."></textarea>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Navigation Buttons -->
+          <div class="form-navigation">
+            <a href="/section_two" class="nav-btn secondary">← Previous Section</a>
+            <button type="submit" class="nav-btn primary">Next Section →</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Prevent Enter key from unintentionally submitting the form
+      document.getElementById('form-section-three').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+        }
+      });
+
+      // Form validation
+      document.getElementById('form-section-three').addEventListener('submit', (e) => {
+        let isValid = true;
+        
+        // Clear previous error states
+        document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+        document.querySelectorAll('.error-message').forEach(el => el.remove());
+
+        // Validate required fields
+        const requiredFields = ['sentence_details', 'compliance_status'];
+        requiredFields.forEach(fieldId => {
+          const field = document.getElementById(fieldId);
+          if (!field.value.trim()) {
+            markInvalid(fieldId, `${field.previousElementSibling.textContent.replace('*', '').trim()} is required.`);
+            isValid = false;
+          }
+        });
+
+        if (!isValid) {
+          e.preventDefault();
+          document.querySelector('.error').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+
+      // Show/hide violation details based on selection
+      document.getElementById('violations_occurred').addEventListener('change', (e) => {
+        const violationDetails = document.getElementById('violation_details');
+        if (e.target.value === 'yes') {
+          violationDetails.setAttribute('required', 'required');
+          violationDetails.closest('.form-group').style.display = 'block';
+        } else {
+          violationDetails.removeAttribute('required');
+          if (e.target.value === 'no') {
+            violationDetails.value = '';
+          }
+        }
+      });
+    });
+
+    function markInvalid(id, message) {
+      const element = document.getElementById(id);
+      element.classList.add('error');
+      
+      // Remove any existing error message
+      const existingError = element.parentNode.querySelector('.error-message');
+      if (existingError) existingError.remove();
+      
+      // Add new error message
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error-message';
+      errorDiv.textContent = message;
+      element.parentNode.appendChild(errorDiv);
+    }
+  </script>
+
+</body>
+</html>

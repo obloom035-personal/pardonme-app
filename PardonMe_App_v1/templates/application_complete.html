@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Application Complete – PardonMe Application</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles_section_seven.css') }}">
+  <style>
+    .completion-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px;
+      text-align: center;
+    }
+    
+    .success-icon {
+      font-size: 4rem;
+      color: #28a745;
+      margin-bottom: 20px;
+    }
+    
+    .completion-title {
+      color: #28a745;
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+    }
+    
+    .completion-message {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #2c3e50;
+      margin-bottom: 30px;
+    }
+    
+    .next-steps {
+      background-color: #e8f5e8;
+      padding: 25px;
+      border-radius: 8px;
+      border-left: 4px solid #28a745;
+      text-align: left;
+      margin-bottom: 30px;
+    }
+    
+    .next-steps h3 {
+      color: #28a745;
+      margin-top: 0;
+    }
+    
+    .next-steps ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+    
+    .next-steps li {
+      margin-bottom: 8px;
+    }
+    
+    .application-summary {
+      background-color: #f8f9fa;
+      padding: 25px;
+      border-radius: 8px;
+      border: 1px solid #e1e8ed;
+      text-align: left;
+      margin-bottom: 30px;
+    }
+    
+    .summary-section {
+      margin-bottom: 15px;
+    }
+    
+    .summary-section:last-child {
+      margin-bottom: 0;
+    }
+    
+    .section-status {
+      display: inline-block;
+      background-color: #28a745;
+      color: white;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    
+    .contact-info {
+      background-color: #d1ecf1;
+      padding: 20px;
+      border-radius: 8px;
+      border-left: 4px solid #0c5460;
+      margin-bottom: 30px;
+    }
+    
+    .contact-info h4 {
+      color: #0c5460;
+      margin-top: 0;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .action-btn {
+      padding: 12px 24px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+    
+    .action-btn.primary {
+      background-color: #007bff;
+      color: white;
+    }
+    
+    .action-btn.primary:hover {
+      background-color: #0056b3;
+      transform: translateY(-1px);
+    }
+    
+    .action-btn.secondary {
+      background-color: #6c757d;
+      color: white;
+    }
+    
+    .action-btn.secondary:hover {
+      background-color: #5a6268;
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">PardonMe, Inc.</h1>
+      <h2 class="section-title">Application Complete</h2>
+      <p class="section-description">Your Wisconsin Pardon Application has been successfully submitted.</p>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 100%;"></div>
+        </div>
+        <span>100%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="completion-container">
+    <div class="success-icon">✅</div>
+    <h1 class="completion-title">Application Successfully Submitted!</h1>
+    
+    <p class="completion-message">
+      Congratulations! Your Wisconsin Pardon Application has been completed and is ready for submission to the Governor's office. 
+      All {{ completed_sections|length }} sections have been filled out completely.
+    </p>
+
+    <!-- Application Summary -->
+    <div class="application-summary">
+      <h3>Application Summary</h3>
+      {% set section_names = [
+        'Personal Information',
+        'Offense Details', 
+        'Sentence & Incarceration',
+        'Employment & Education',
+        'Community Involvement',
+        'Character References',
+        'Statement & Signature'
+      ] %}
+      
+      {% for i in range(completed_sections|length) %}
+        <div class="summary-section">
+          <strong>Section {{ i + 1 }}: {{ section_names[i] }}</strong>
+          <span class="section-status">Complete</span>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Next Steps -->
+    <div class="next-steps">
+      <h3>Next Steps</h3>
+      <ul>
+        <li><strong>Print and Review:</strong> Print a copy of your completed application for your records</li>
+        <li><strong>Gather Physical Documents:</strong> Collect all required physical documents mentioned in your application</li>
+        <li><strong>Mail to Governor's Office:</strong> Send your complete application package to the Wisconsin Governor's office</li>
+        <li><strong>Follow Up:</strong> The review process can take several months. You will be contacted if additional information is needed</li>
+        <li><strong>Stay Informed:</strong> Monitor your case status through official channels</li>
+      </ul>
+    </div>
+
+    <!-- Contact Information -->
+    <div class="contact-info">
+      <h4>Wisconsin Governor's Office - Pardon Advisory Board</h4>
+      <p><strong>Address:</strong><br>
+      Office of the Governor<br>
+      State Capitol, Room 115 East<br>
+      Madison, WI 53702</p>
+      
+      <p><strong>Phone:</strong> (608) 266-1212<br>
+      <strong>Website:</strong> <a href="https://gov.wisconsin.gov" target="_blank">gov.wisconsin.gov</a></p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <a href="/download_pdf" class="action-btn primary">📄 Download PDF</a>
+      <a href="javascript:window.print()" class="action-btn secondary">🖨️ Print Application</a>
+      <a href="/" class="action-btn secondary">🏠 Return Home</a>
+    </div>
+
+    <!-- Additional Information -->
+    <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #e1e8ed;">
+      <p style="font-size: 0.9rem; color: #6c757d; font-style: italic;">
+        <strong>Important:</strong> This application was completed using PardonMe, Inc. - a third-party service to assist with pardon applications. 
+        Please ensure you follow all official Wisconsin state requirements for pardon submissions.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Prevent back button from returning to the form
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+        history.go(1);
+    };
+    
+    // Auto-print functionality (optional)
+    document.addEventListener('DOMContentLoaded', () => {
+      // You could add auto-print here if desired
+      // window.print();
+    });
+  </script>
+</body>
+</html>

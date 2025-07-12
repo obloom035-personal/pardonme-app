@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Section Four – PardonMe Application</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles_section_four.css') }}">
+</head>
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">PardonMe, Inc.</h1>
+      <h2 class="section-title">Section 4 – Employment &amp; Education</h2>
+      <p class="section-description">Demonstrate your stability and growth since conviction.</p>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+  </div>
+	
+  <!-- Page Layout -->
+  <div class="page-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h3 class="sidebar-title">📝 To Do List</h3>
+      {% set section_names = [
+        'Personal Information',
+        'Offense Details',
+        'Sentence & Incarceration',
+        'Employment & Education',
+        'Community Involvement',
+        'Character References',
+        'Statement & Signature'
+      ] %}
+      {% for i in range(1, 8) %}
+        <div class="sidebar-item {% if i == current_section %}active{% elif i < current_section %}completed{% endif %}">
+          <strong>Section {{ i }}</strong>
+          <p>{{ section_names[i-1] }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="form-card">
+        <form method="post" id="form-section-four" novalidate>
+          <div class="form-grid">
+            
+            <!-- Current Employment Status -->
+            <div class="form-section">
+              <h3>Current Employment</h3>
+              <div class="form-group">
+                <label for="current_employment_status">Current Employment Status *</label>
+                <select id="current_employment_status" name="current_employment_status" required>
+                  <option value="">Select employment status</option>
+                  <option value="employed_full_time">Employed Full-Time</option>
+                  <option value="employed_part_time">Employed Part-Time</option>
+                  <option value="self_employed">Self-Employed</option>
+                  <option value="unemployed_seeking">Unemployed - Actively Seeking</option>
+                  <option value="unemployed_not_seeking">Unemployed - Not Seeking</option>
+                  <option value="retired">Retired</option>
+                  <option value="disabled">Disabled</option>
+                  <option value="student">Student</option>
+                </select>
+              </div>
+              
+              <div class="employment-details" id="employment-details" style="display: none;">
+                <div class="form-group">
+                  <label for="current_employer">Current Employer/Company Name</label>
+                  <input type="text" id="current_employer" name="current_employer" placeholder="Company name">
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="current_job_title">Job Title/Position</label>
+                    <input type="text" id="current_job_title" name="current_job_title" placeholder="Your job title">
+                  </div>
+                  <div class="form-group">
+                    <label for="current_start_date">Employment Start Date</label>
+                    <input type="date" id="current_start_date" name="current_start_date">
+                  </div>
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="current_salary">Approximate Annual Salary</label>
+                    <input type="text" id="current_salary" name="current_salary" placeholder="e.g., $35,000">
+                  </div>
+                  <div class="form-group">
+                    <label for="current_supervisor_phone">Supervisor Phone (Optional)</label>
+                    <input type="tel" id="current_supervisor_phone" name="current_supervisor_phone" placeholder="(555) 123-4567">
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="current_supervisor">Supervisor Name &amp; Contact Info</label>
+                  <textarea id="current_supervisor" name="current_supervisor" rows="2" placeholder="Supervisor name, email, and phone number..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Employment History -->
+            <div class="form-section">
+              <h3>Employment History Since Conviction</h3>
+              <div class="form-group">
+                <label for="employment_history">Employment History Details *</label>
+                <textarea id="employment_history" name="employment_history" rows="5" placeholder="List all jobs held since your conviction, including employer names, positions, dates, and reasons for leaving..." required></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="unemployment_periods">Any Periods of Unemployment?</label>
+                <select id="unemployment_periods" name="unemployment_periods">
+                  <option value="">Select...</option>
+                  <option value="no">No significant unemployment periods</option>
+                  <option value="yes">Yes, I had periods of unemployment</option>
+                </select>
+              </div>
+              
+              <div class="form-group" id="unemployment-details" style="display: none;">
+                <label for="unemployment_reasons">Unemployment Details</label>
+                <textarea id="unemployment_reasons" name="unemployment_reasons" rows="3" placeholder="Explain any periods of unemployment, reasons, and efforts made to find work..."></textarea>
+              </div>
+            </div>
+
+            <!-- Education -->
+            <div class="form-section">
+              <h3>Educational Background</h3>
+              <div class="form-group">
+                <label for="highest_education">Highest Level of Education Completed *</label>
+                <select id="highest_education" name="highest_education" required>
+                  <option value="">Select education level</option>
+                  <option value="less_than_high_school">Less than High School</option>
+                  <option value="high_school_ged">High School Diploma/GED</option>
+                  <option value="some_college">Some College</option>
+                  <option value="associates_degree">Associate's Degree</option>
+                  <option value="bachelors_degree">Bachelor's Degree</option>
+                  <option value="masters_degree">Master's Degree</option>
+                  <option value="doctoral_degree">Doctoral Degree</option>
+                  <option value="trade_school">Trade School Certificate</option>
+                </select>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="education_institution">Institution Name</label>
+                  <input type="text" id="education_institution" name="education_institution" placeholder="School/University name">
+                </div>
+                <div class="form-group">
+                  <label for="graduation_date">Graduation Date</label>
+                  <input type="date" id="graduation_date" name="graduation_date">
+                </div>
+              </div>
+            </div>
+
+            <!-- Education Since Conviction -->
+            <div class="form-section">
+              <h3>Education &amp; Training Since Conviction</h3>
+              <div class="form-group">
+                <label for="education_since_conviction">Educational Achievements Since Conviction</label>
+                <textarea id="education_since_conviction" name="education_since_conviction" rows="4" placeholder="Describe any education, training, or courses completed since your conviction..."></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="vocational_training">Vocational Training or Trade Skills</label>
+                <textarea id="vocational_training" name="vocational_training" rows="3" placeholder="List any vocational training, trade skills, or apprenticeships..."></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="certifications">Professional Certifications or Licenses</label>
+                <textarea id="certifications" name="certifications" rows="3" placeholder="List any professional certifications, licenses, or credentials earned..."></textarea>
+              </div>
+            </div>
+
+            <!-- Career Goals & Stability -->
+            <div class="form-section">
+              <h3>Career Goals &amp; Financial Stability</h3>
+              <div class="form-group">
+                <label for="career_goals">Career Goals and Plans *</label>
+                <textarea id="career_goals" name="career_goals" rows="4" placeholder="Describe your career goals, plans for advancement, and how a pardon would help..." required></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="employment_challenges">Employment Challenges Due to Conviction</label>
+                <textarea id="employment_challenges" name="employment_challenges" rows="3" placeholder="Describe any challenges finding or maintaining employment due to your conviction..."></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="skills_developed">Skills and Personal Growth</label>
+                <textarea id="skills_developed" name="skills_developed" rows="3" placeholder="Describe skills you've developed and personal growth since your conviction..."></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="financial_stability">Financial Stability</label>
+                <textarea id="financial_stability" name="financial_stability" rows="3" placeholder="Describe your current financial situation and stability..."></textarea>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Navigation Buttons -->
+          <div class="form-navigation">
+            <a href="/section_three" class="nav-btn secondary">← Previous Section</a>
+            <button type="submit" class="nav-btn primary">Next Section →</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Prevent Enter key from unintentionally submitting the form
+      document.getElementById('form-section-four').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+        }
+      });
+
+      // Show/hide employment details based on status
+      document.getElementById('current_employment_status').addEventListener('change', (e) => {
+        const employmentDetails = document.getElementById('employment-details');
+        const employedStatuses = ['employed_full_time', 'employed_part_time', 'self_employed'];
+        
+        if (employedStatuses.includes(e.target.value)) {
+          employmentDetails.style.display = 'block';
+          // Make employer field required for employed people
+          document.getElementById('current_employer').setAttribute('required', 'required');
+          document.getElementById('current_job_title').setAttribute('required', 'required');
+        } else {
+          employmentDetails.style.display = 'none';
+          // Remove required attributes
+          document.getElementById('current_employer').removeAttribute('required');
+          document.getElementById('current_job_title').removeAttribute('required');
+        }
+      });
+
+      // Show/hide unemployment details
+      document.getElementById('unemployment_periods').addEventListener('change', (e) => {
+        const unemploymentDetails = document.getElementById('unemployment-details');
+        if (e.target.value === 'yes') {
+          unemploymentDetails.style.display = 'block';
+          document.getElementById('unemployment_reasons').setAttribute('required', 'required');
+        } else {
+          unemploymentDetails.style.display = 'none';
+          document.getElementById('unemployment_reasons').removeAttribute('required');
+        }
+      });
+
+      // Form validation
+      document.getElementById('form-section-four').addEventListener('submit', (e) => {
+        let isValid = true;
+        
+        // Clear previous error states
+        document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+        document.querySelectorAll('.error-message').forEach(el => el.remove());
+
+        // Validate required fields
+        const requiredFields = ['current_employment_status', 'employment_history', 'highest_education', 'career_goals'];
+        requiredFields.forEach(fieldId => {
+          const field = document.getElementById(fieldId);
+          if (!field.value.trim()) {
+            markInvalid(fieldId, `${field.previousElementSibling.textContent.replace('*', '').trim()} is required.`);
+            isValid = false;
+          }
+        });
+
+        // Check conditionally required fields
+        const employmentStatus = document.getElementById('current_employment_status').value;
+        const employedStatuses = ['employed_full_time', 'employed_part_time', 'self_employed'];
+        
+        if (employedStatuses.includes(employmentStatus)) {
+          if (!document.getElementById('current_employer').value.trim()) {
+            markInvalid('current_employer', 'Employer name is required for employed individuals.');
+            isValid = false;
+          }
+          if (!document.getElementById('current_job_title').value.trim()) {
+            markInvalid('current_job_title', 'Job title is required for employed individuals.');
+            isValid = false;
+          }
+        }
+
+        if (document.getElementById('unemployment_periods').value === 'yes') {
+          if (!document.getElementById('unemployment_reasons').value.trim()) {
+            markInvalid('unemployment_reasons', 'Please explain periods of unemployment.');
+            isValid = false;
+          }
+        }
+
+        if (!isValid) {
+          e.preventDefault();
+          document.querySelector('.error').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    });
+
+    function markInvalid(id, message) {
+      const element = document.getElementById(id);
+      element.classList.add('error');
+      
+      // Remove any existing error message
+      const existingError = element.parentNode.querySelector('.error-message');
+      if (existingError) existingError.remove();
+      
+      // Add new error message
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error-message';
+      errorDiv.textContent = message;
+      element.parentNode.appendChild(errorDiv);
+    }
+  </script>
+
+</body>
+</html>

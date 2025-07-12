@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Section Five – PardonMe Application</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles_section_five.css') }}">
+</head>
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">PardonMe, Inc.</h1>
+      <h2 class="section-title">Section 5 – Community Involvement</h2>
+      <p class="section-description">Show your positive contributions to society and personal growth.</p>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+  </div>
+	
+  <!-- Page Layout -->
+  <div class="page-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h3 class="sidebar-title">📝 To Do List</h3>
+      {% set section_names = [
+        'Personal Information',
+        'Offense Details',
+        'Sentence & Incarceration',
+        'Employment & Education',
+        'Community Involvement',
+        'Character References',
+        'Statement & Signature'
+      ] %}
+      {% for i in range(1, 8) %}
+        <div class="sidebar-item {% if i == current_section %}active{% elif i < current_section %}completed{% endif %}">
+          <strong>Section {{ i }}</strong>
+          <p>{{ section_names[i-1] }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="form-card">
+        <form method="post" id="form-section-five" novalidate>
+          <div class="form-grid">
+            
+            <!-- Volunteer Work & Community Service -->
+            <div class="form-section">
+              <h3>Volunteer Work &amp; Community Service</h3>
+              <div class="form-group">
+                <label for="volunteer_work">Do you participate in volunteer work? *</label>
+                <select id="volunteer_work" name="volunteer_work" required>
+                  <option value="">Select...</option>
+                  <option value="yes_regularly">Yes, regularly (weekly/monthly)</option>
+                  <option value="yes_occasionally">Yes, occasionally</option>
+                  <option value="yes_past">Yes, in the past but not currently</option>
+                  <option value="no_but_interested">No, but interested in starting</option>
+                  <option value="no">No</option>
+                </select>
+              </div>
+              
+              <div class="volunteer-details" id="volunteer-details" style="display: none;">
+                <div class="form-group">
+                  <label for="volunteer_organizations">Organizations &amp; Activities</label>
+                  <textarea id="volunteer_organizations" name="volunteer_organizations" rows="4" placeholder="List volunteer organizations, activities, and your role in each..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                  <label for="volunteer_hours">Approximate Hours Per Month</label>
+                  <input type="text" id="volunteer_hours" name="volunteer_hours" placeholder="e.g., 10-15 hours per month">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="community_service">Court-Ordered Community Service</label>
+                <select id="community_service" name="community_service">
+                  <option value="">Select...</option>
+                  <option value="completed">Completed all required hours</option>
+                  <option value="in_progress">Currently completing</option>
+                  <option value="not_required">Not required</option>
+                  <option value="not_completed">Required but not completed</option>
+                </select>
+              </div>
+              
+              <div class="form-group" id="community-service-details" style="display: none;">
+                <label for="community_service_details">Community Service Details</label>
+                <textarea id="community_service_details" name="community_service_details" rows="3" placeholder="Describe your community service activities and impact..."></textarea>
+              </div>
+            </div>
+
+            <!-- Religious & Spiritual Involvement -->
+            <div class="form-section">
+              <h3>Religious &amp; Spiritual Involvement</h3>
+              <div class="form-group">
+                <label for="religious_involvement">Religious or Spiritual Participation</label>
+                <select id="religious_involvement" name="religious_involvement">
+                  <option value="">Select...</option>
+                  <option value="active_member">Active member of religious community</option>
+                  <option value="regular_attendee">Regular attendee</option>
+                  <option value="occasional">Occasional participation</option>
+                  <option value="personal_practice">Private/personal practice</option>
+                  <option value="not_involved">Not involved</option>
+                </select>
+              </div>
+              
+              <div class="religious-details" id="religious-details" style="display: none;">
+                <div class="form-group">
+                  <label for="religious_details">Religious Activities &amp; Community</label>
+                  <textarea id="religious_details" name="religious_details" rows="3" placeholder="Describe your religious community involvement, activities, and leadership roles..."></textarea>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="spiritual_growth">Personal Growth &amp; Spiritual Development</label>
+                <textarea id="spiritual_growth" name="spiritual_growth" rows="4" placeholder="Describe how your faith or spiritual practices have contributed to your personal growth and rehabilitation..."></textarea>
+              </div>
+            </div>
+
+            <!-- Support Groups & Counseling -->
+            <div class="form-section">
+              <h3>Support Groups &amp; Personal Development</h3>
+              <div class="form-group">
+                <label for="support_groups">Participation in Support Groups</label>
+                <select id="support_groups" name="support_groups">
+                  <option value="">Select...</option>
+                  <option value="aa_na">AA/NA or similar addiction recovery</option>
+                  <option value="anger_management">Anger management</option>
+                  <option value="mental_health">Mental health support groups</option>
+                  <option value="reentry_programs">Re-entry programs</option>
+                  <option value="other">Other support groups</option>
+                  <option value="multiple">Multiple support groups</option>
+                  <option value="none">None</option>
+                </select>
+              </div>
+              
+              <div class="support-details" id="support-details" style="display: none;">
+                <div class="form-group">
+                  <label for="support_group_details">Support Group Details</label>
+                  <textarea id="support_group_details" name="support_group_details" rows="3" placeholder="Describe the support groups you attend, frequency, and benefits gained..."></textarea>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="counseling_therapy">Individual Counseling or Therapy</label>
+                <select id="counseling_therapy" name="counseling_therapy">
+                  <option value="">Select...</option>
+                  <option value="current">Currently receiving</option>
+                  <option value="past">Received in the past</option>
+                  <option value="completed_program">Completed counseling program</option>
+                  <option value="none">None</option>
+                </select>
+              </div>
+              
+              <div class="counseling-details" id="counseling-details" style="display: none;">
+                <div class="form-group">
+                  <label for="counseling_details">Counseling Details</label>
+                  <textarea id="counseling_details" name="counseling_details" rows="3" placeholder="Describe the type of counseling, duration, and benefits or insights gained..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Community Leadership & Mentoring -->
+            <div class="form-section">
+              <h3>Leadership &amp; Mentoring</h3>
+              <div class="form-group">
+                <label for="mentoring_others">Mentoring or Helping Others</label>
+                <select id="mentoring_others" name="mentoring_others">
+                  <option value="">Select...</option>
+                  <option value="formal_mentor">Formal mentoring program</option>
+                  <option value="peer_support">Peer support or coaching</option>
+                  <option value="youth_mentoring">Youth mentoring</option>
+                  <option value="addiction_recovery">Addiction recovery support</option>
+                  <option value="informal_help">Informal help to others</option>
+                  <option value="none">None currently</option>
+                </select>
+              </div>
+              
+              <div class="mentoring-details" id="mentoring-details" style="display: none;">
+                <div class="form-group">
+                  <label for="mentoring_details">Mentoring Activities</label>
+                  <textarea id="mentoring_details" name="mentoring_details" rows="3" placeholder="Describe your mentoring activities, who you help, and the impact you've made..."></textarea>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="community_leadership">Community Leadership Roles</label>
+                <select id="community_leadership" name="community_leadership">
+                  <option value="">Select...</option>
+                  <option value="board_member">Board member or committee chair</option>
+                  <option value="team_leader">Team or group leader</option>
+                  <option value="event_organizer">Event organizer</option>
+                  <option value="advocate">Community advocate</option>
+                  <option value="other_leadership">Other leadership roles</option>
+                  <option value="none">None</option>
+                </select>
+              </div>
+              
+              <div class="leadership-details" id="leadership-details" style="display: none;">
+                <div class="form-group">
+                  <label for="leadership_details">Leadership Details</label>
+                  <textarea id="leadership_details" name="leadership_details" rows="3" placeholder="Describe your leadership roles, responsibilities, and accomplishments..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Civic & Neighborhood Involvement -->
+            <div class="form-section">
+              <h3>Civic &amp; Neighborhood Engagement</h3>
+              <div class="form-group">
+                <label for="civic_participation">Civic Participation</label>
+                <textarea id="civic_participation" name="civic_participation" rows="3" placeholder="Describe any civic activities like voting, attending town halls, community meetings, etc..."></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="neighborhood_involvement">Neighborhood Involvement</label>
+                <textarea id="neighborhood_involvement" name="neighborhood_involvement" rows="3" placeholder="Describe your involvement in neighborhood activities, local events, or community improvement efforts..."></textarea>
+              </div>
+            </div>
+
+            <!-- Positive Impact & Future Plans -->
+            <div class="form-section">
+              <h3>Community Impact &amp; Future Goals</h3>
+              <div class="form-group">
+                <label for="positive_influence">Positive Influence on Others *</label>
+                <textarea id="positive_influence" name="positive_influence" rows="4" placeholder="Describe how you've been a positive influence in your community and examples of people you've helped..." required></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="community_impact">Future Community Involvement Goals</label>
+                <textarea id="community_impact" name="community_impact" rows="4" placeholder="Describe your plans for future community involvement and how a pardon would help you contribute more effectively..."></textarea>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Navigation Buttons -->
+          <div class="form-navigation">
+            <a href="/section_four" class="nav-btn secondary">← Previous Section</a>
+            <button type="submit" class="nav-btn primary">Next Section →</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Prevent Enter key from unintentionally submitting the form
+      document.getElementById('form-section-five').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+        }
+      });
+
+      // Show/hide volunteer details
+      document.getElementById('volunteer_work').addEventListener('change', (e) => {
+        const volunteerDetails = document.getElementById('volunteer-details');
+        const showVolunteerDetails = ['yes_regularly', 'yes_occasionally', 'yes_past'];
+        
+        if (showVolunteerDetails.includes(e.target.value)) {
+          volunteerDetails.style.display = 'block';
+        } else {
+          volunteerDetails.style.display = 'none';
+        }
+      });
+
+      // Show/hide community service details
+      document.getElementById('community_service').addEventListener('change', (e) => {
+        const serviceDetails = document.getElementById('community-service-details');
+        const showServiceDetails = ['completed', 'in_progress', 'not_completed'];
+        
+        if (showServiceDetails.includes(e.target.value)) {
+          serviceDetails.style.display = 'block';
+        } else {
+          serviceDetails.style.display = 'none';
+        }
+      });
+
+      // Show/hide religious details
+      document.getElementById('religious_involvement').addEventListener('change', (e) => {
+        const religiousDetails = document.getElementById('religious-details');
+        const showReligiousDetails = ['active_member', 'regular_attendee', 'occasional'];
+        
+        if (showReligiousDetails.includes(e.target.value)) {
+          religiousDetails.style.display = 'block';
+        } else {
+          religiousDetails.style.display = 'none';
+        }
+      });
+
+      // Show/hide support group details
+      document.getElementById('support_groups').addEventListener('change', (e) => {
+        const supportDetails = document.getElementById('support-details');
+        
+        if (e.target.value && e.target.value !== 'none') {
+          supportDetails.style.display = 'block';
+        } else {
+          supportDetails.style.display = 'none';
+        }
+      });
+
+      // Show/hide counseling details
+      document.getElementById('counseling_therapy').addEventListener('change', (e) => {
+        const counselingDetails = document.getElementById('counseling-details');
+        const showCounselingDetails = ['current', 'past', 'completed_program'];
+        
+        if (showCounselingDetails.includes(e.target.value)) {
+          counselingDetails.style.display = 'block';
+        } else {
+          counselingDetails.style.display = 'none';
+        }
+      });
+
+      // Show/hide mentoring details
+      document.getElementById('mentoring_others').addEventListener('change', (e) => {
+        const mentoringDetails = document.getElementById('mentoring-details');
+        
+        if (e.target.value && e.target.value !== 'none') {
+          mentoringDetails.style.display = 'block';
+        } else {
+          mentoringDetails.style.display = 'none';
+        }
+      });
+
+      // Show/hide leadership details
+      document.getElementById('community_leadership').addEventListener('change', (e) => {
+        const leadershipDetails = document.getElementById('leadership-details');
+        
+        if (e.target.value && e.target.value !== 'none') {
+          leadershipDetails.style.display = 'block';
+        } else {
+          leadershipDetails.style.display = 'none';
+        }
+      });
+
+      // Form validation
+      document.getElementById('form-section-five').addEventListener('submit', (e) => {
+        let isValid = true;
+        
+        // Clear previous error states
+        document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+        document.querySelectorAll('.error-message').forEach(el => el.remove());
+
+        // Validate required fields
+        const requiredFields = ['volunteer_work', 'positive_influence'];
+        requiredFields.forEach(fieldId => {
+          const field = document.getElementById(fieldId);
+          if (!field.value.trim()) {
+            markInvalid(fieldId, `${field.previousElementSibling.textContent.replace('*', '').trim()} is required.`);
+            isValid = false;
+          }
+        });
+
+        if (!isValid) {
+          e.preventDefault();
+          document.querySelector('.error').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    });
+
+    function markInvalid(id, message) {
+      const element = document.getElementById(id);
+      element.classList.add('error');
+      
+      // Remove any existing error message
+      const existingError = element.parentNode.querySelector('.error-message');
+      if (existingError) existingError.remove();
+      
+      // Add new error message
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error-message';
+      errorDiv.textContent = message;
+      element.parentNode.appendChild(errorDiv);
+    }
+  </script>
+
+</body>
+</html>

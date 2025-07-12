@@ -1,0 +1,379 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f2f6f9;
+  color: #333;
+}
+
+/* --- Top Bar --- */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #0a1f2e;
+  color: white;
+  padding: 20px 30px;
+  border-bottom: 3px solid #00cc66;
+}
+
+.logo-title {
+  flex-shrink: 0;
+}
+
+.logo-img {
+  height: 150px; /* Slightly smaller for balance */
+}
+
+.title-center {
+  text-align: center;
+  flex-grow: 1;
+}
+
+.title-center h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.title-center .section-title {
+  margin: 5px 0;
+  font-size: 1.2rem;
+}
+
+.title-center .section-description {
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  color: #cfd8dc;
+}
+
+.progress-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.progress-bar {
+  width: 200px;
+  height: 8px;
+  background-color: #34495e;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #00cc66;
+  transition: width 0.3s ease;
+}
+
+/* --- Page Layout --- */
+.page-layout {
+  display: flex;
+  min-height: calc(100vh - 200px);
+}
+
+/* --- Sidebar --- */
+.sidebar {
+  width: 280px;
+  background-color: #34495e;
+  color: white;
+  padding: 30px 20px;
+  position: sticky;
+  top: 0;
+  height: fit-content;
+}
+
+.sidebar-title {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  color: #ecf0f1;
+}
+
+.sidebar-item {
+  background-color: #455a64;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border-left: 4px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.sidebar-item.active {
+  background-color: #00cc66;
+  border-left-color: #fff;
+  color: white;
+}
+
+.sidebar-item.completed {
+  background-color: #2ecc71;
+  border-left-color: #fff;
+  color: white;
+}
+
+.sidebar-item strong {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
+.sidebar-item p {
+  margin: 0;
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+/* --- Main Content --- */
+.main-content {
+  flex: 1;
+  padding: 30px;
+  background-color: #f2f6f9;
+}
+
+.form-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* --- Form Styling --- */
+.form-grid {
+  display: grid;
+  gap: 30px;
+}
+
+.form-section {
+  background-color: #f8f9fa;
+  padding: 25px;
+  border-radius: 8px;
+  border-left: 4px solid #00cc66;
+}
+
+.form-section h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #2c3e50;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #2c3e50;
+  font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e1e8ed;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #00cc66;
+  box-shadow: 0 0 0 3px rgba(0, 204, 102, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-group select {
+  cursor: pointer;
+}
+
+/* Conditional Detail Sections */
+.volunteer-details,
+.religious-details,
+.support-details,
+.counseling-details,
+.mentoring-details,
+.leadership-details {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 6px;
+  border: 1px solid #e1e8ed;
+  margin-top: 15px;
+}
+
+.volunteer-details .form-group:last-child,
+.religious-details .form-group:last-child,
+.support-details .form-group:last-child,
+.counseling-details .form-group:last-child,
+.mentoring-details .form-group:last-child,
+.leadership-details .form-group:last-child {
+  margin-bottom: 0;
+}
+
+/* Error States */
+.form-group input.error,
+.form-group textarea.error,
+.form-group select.error {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 0.8rem;
+  margin-top: 5px;
+  display: block;
+}
+
+/* --- Navigation Buttons --- */
+.form-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid #e1e8ed;
+}
+
+.nav-btn {
+  padding: 12px 24px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-btn.primary {
+  background-color: #00cc66;
+  color: white;
+}
+
+.nav-btn.primary:hover {
+  background-color: #00b359;
+  transform: translateY(-1px);
+}
+
+.nav-btn.secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.nav-btn.secondary:hover {
+  background-color: #5a6268;
+  transform: translateY(-1px);
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 1024px) {
+  .page-layout {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    position: static;
+    padding: 20px;
+  }
+  
+  .main-content {
+    padding: 20px;
+  }
+  
+  .form-card {
+    padding: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .top-bar {
+    flex-direction: column;
+    text-align: center;
+    padding: 15px;
+  }
+  
+  .title-center {
+    margin: 10px 0;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .form-navigation {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .nav-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .sidebar-item {
+    padding: 12px;
+  }
+  
+  .form-section {
+    padding: 20px;
+  }
+  
+  .volunteer-details,
+  .religious-details,
+  .support-details,
+  .counseling-details,
+  .mentoring-details,
+  .leadership-details {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-img {
+    height: 80px;
+  }
+  
+  .title-center h1 {
+    font-size: 1.4rem;
+  }
+  
+  .title-center .section-title {
+    font-size: 1rem;
+  }
+  
+  .progress-bar {
+    width: 150px;
+  }
+  
+  .form-card {
+    padding: 20px;
+  }
+}

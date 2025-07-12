@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Section Seven – PardonMe Application</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles_section_seven.css') }}">
+</head>
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">PardonMe, Inc.</h1>
+      <h2 class="section-title">Section 7 – Statement &amp; Signature</h2>
+      <p class="section-description">Complete your personal statement and finalize your application.</p>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+  </div>
+	
+  <!-- Page Layout -->
+  <div class="page-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h3 class="sidebar-title">📝 To Do List</h3>
+      {% set section_names = [
+        'Personal Information',
+        'Offense Details',
+        'Sentence & Incarceration',
+        'Employment & Education',
+        'Community Involvement',
+        'Character References',
+        'Statement & Signature'
+      ] %}
+      {% for i in range(1, 8) %}
+        <div class="sidebar-item {% if i == current_section %}active{% elif i < current_section %}completed{% endif %}">
+          <strong>Section {{ i }}</strong>
+          <p>{{ section_names[i-1] }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="form-card">
+        <form method="post" id="form-section-seven" enctype="multipart/form-data" novalidate>
+          <div class="form-grid">
+            
+            <!-- Personal Statement -->
+            <div class="form-section">
+              <h3>Personal Statement</h3>
+              <div class="form-group">
+                <label for="personal_statement">Personal Statement to the Governor *</label>
+                <textarea id="personal_statement" name="personal_statement" rows="8" placeholder="Write a comprehensive personal statement explaining your journey, growth, and why you deserve a pardon..." required></textarea>
+                <small class="help-text">This is your opportunity to tell your story in your own words. Be honest, specific, and show your personal growth.</small>
+              </div>
+              
+              <div class="form-group">
+                <label for="rehabilitation_efforts">Rehabilitation Efforts &amp; Programs *</label>
+                <textarea id="rehabilitation_efforts" name="rehabilitation_efforts" rows="5" placeholder="Detail the specific programs, therapy, education, or other rehabilitative efforts you have completed..." required></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="future_goals">Future Goals &amp; Plans *</label>
+                <textarea id="future_goals" name="future_goals" rows="4" placeholder="Describe your future goals and how a pardon would help you achieve them..." required></textarea>
+              </div>
+            </div>
+
+            <!-- Impact & Responsibility -->
+            <div class="form-section">
+              <h3>Impact &amp; Personal Responsibility</h3>
+              <div class="form-group">
+                <label for="impact_on_victims">Impact on Victims &amp; Acknowledgment</label>
+                <textarea id="impact_on_victims" name="impact_on_victims" rows="4" placeholder="Acknowledge the impact of your actions on victims and express your remorse and understanding..."></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="personal_responsibility">Taking Personal Responsibility *</label>
+                <textarea id="personal_responsibility" name="personal_responsibility" rows="4" placeholder="Explain how you have taken responsibility for your actions and what you have learned..." required></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="lessons_learned">Lessons Learned *</label>
+                <textarea id="lessons_learned" name="lessons_learned" rows="4" placeholder="Describe the most important lessons you have learned from your experience..." required></textarea>
+              </div>
+            </div>
+
+            <!-- Community Benefit -->
+            <div class="form-section">
+              <h3>Community Benefit &amp; Contribution</h3>
+              <div class="form-group">
+                <label for="community_benefit">How Your Pardon Benefits the Community *</label>
+                <textarea id="community_benefit" name="community_benefit" rows="5" placeholder="Explain how granting your pardon would benefit the community and society..." required></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="why_pardon_deserved">Why You Deserve a Pardon *</label>
+                <textarea id="why_pardon_deserved" name="why_pardon_deserved" rows="5" placeholder="Make your case for why you deserve a pardon, focusing on your transformation and contributions..." required></textarea>
+              </div>
+            </div>
+
+            <!-- Additional Information -->
+            <div class="form-section">
+              <h3>Additional Information &amp; Supporting Documents</h3>
+              <div class="form-group">
+                <label for="additional_information">Additional Information</label>
+                <textarea id="additional_information" name="additional_information" rows="4" placeholder="Any additional information you believe is important for your application..."></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="supporting_documents">Upload Additional Supporting Documents</label>
+                <input type="file" id="supporting_documents" name="supporting_documents" multiple accept=".pdf,.doc,.docx,.txt,.jpg,.png">
+                <small class="help-text">Optional: Upload any additional documents that support your application (certificates, awards, letters, etc.)</small>
+              </div>
+            </div>
+
+            <!-- Legal Acknowledgments -->
+            <div class="form-section">
+              <h3>Legal Acknowledgments &amp; Oath</h3>
+              <div class="checkbox-group">
+                <div class="checkbox-item">
+                  <input type="checkbox" id="oath_acknowledgment" name="oath_acknowledgment" value="yes" required>
+                  <label for="oath_acknowledgment">I solemnly swear (or affirm) that the information provided in this application is true and complete to the best of my knowledge. *</label>
+                </div>
+                
+                <div class="checkbox-item">
+                  <input type="checkbox" id="information_accuracy" name="information_accuracy" value="yes" required>
+                  <label for="information_accuracy">I understand that providing false information in this application may result in denial of my petition and potential legal consequences. *</label>
+                </div>
+                
+                <div class="checkbox-item">
+                  <input type="checkbox" id="legal_consequences_understanding" name="legal_consequences_understanding" value="yes" required>
+                  <label for="legal_consequences_understanding">I understand that a pardon, if granted, does not expunge my criminal record but provides official forgiveness for the crime(s) committed. *</label>
+                </div>
+                
+                <div class="checkbox-item">
+                  <input type="checkbox" id="application_review_completed" name="application_review_completed" value="yes" required>
+                  <label for="application_review_completed">I have thoroughly reviewed my entire application and confirm all information is accurate and complete. *</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Digital Signature -->
+            <div class="form-section">
+              <h3>Digital Signature</h3>
+              <div class="signature-area">
+                <div class="form-group">
+                  <label for="digital_signature">Digital Signature (Type Your Full Legal Name) *</label>
+                  <input type="text" id="digital_signature" name="digital_signature" placeholder="Your Full Legal Name" required>
+                  <small class="help-text">By typing your name here, you are providing your digital signature for this application.</small>
+                </div>
+                
+                <div class="form-group">
+                  <label for="signature_date">Date of Signature *</label>
+                  <input type="date" id="signature_date" name="signature_date" required>
+                </div>
+              </div>
+              
+              <div class="signature-declaration">
+                <p><strong>Declaration:</strong> I, <span id="signature-name-display">[Your Name]</span>, hereby submit this Wisconsin Pardon Application on <span id="signature-date-display">[Date]</span>. I certify under penalty of perjury that the foregoing is true and correct.</p>
+              </div>
+            </div>
+
+            <!-- Final Submission -->
+            <div class="form-section submission-section">
+              <h3>Submit Your Application</h3>
+              <div class="submission-checklist">
+                <h4>Pre-Submission Checklist:</h4>
+                <ul>
+                  <li>✓ All 7 sections completed</li>
+                  <li>✓ Required documents uploaded</li>
+                  <li>✓ Character references provided</li>
+                  <li>✓ Personal statement written</li>
+                  <li>✓ All information reviewed for accuracy</li>
+                  <li>✓ Digital signature provided</li>
+                </ul>
+              </div>
+              
+              <div class="final-confirmation">
+                <div class="checkbox-item">
+                  <input type="checkbox" id="submit_application" name="submit_application" value="yes" required>
+                  <label for="submit_application">I am ready to submit my Wisconsin Pardon Application and understand this action will finalize my submission. *</label>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Navigation Buttons -->
+          <div class="form-navigation">
+            <a href="/section_six" class="nav-btn secondary">← Previous Section</a>
+            <button type="submit" class="nav-btn primary submit-btn">Complete &amp; Submit Application</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Set today's date as default
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('signature_date').value = today;
+      
+      // Update signature display in real-time
+      document.getElementById('digital_signature').addEventListener('input', (e) => {
+        const nameDisplay = document.getElementById('signature-name-display');
+        nameDisplay.textContent = e.target.value || '[Your Name]';
+      });
+      
+      document.getElementById('signature_date').addEventListener('change', (e) => {
+        const dateDisplay = document.getElementById('signature-date-display');
+        if (e.target.value) {
+          const date = new Date(e.target.value);
+          dateDisplay.textContent = date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+        } else {
+          dateDisplay.textContent = '[Date]';
+        }
+      });
+      
+      // Initialize date display
+      const signatureDateField = document.getElementById('signature_date');
+      if (signatureDateField.value) {
+        const event = new Event('change');
+        signatureDateField.dispatchEvent(event);
+      }
+
+      // Prevent Enter key from unintentionally submitting the form
+      document.getElementById('form-section-seven').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+        }
+      });
+
+      // Form validation
+      document.getElementById('form-section-seven').addEventListener('submit', (e) => {
+        let isValid = true;
+        
+        // Clear previous error states
+        document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+        document.querySelectorAll('.error-message').forEach(el => el.remove());
+
+        // Validate required text fields
+        const requiredFields = [
+          'personal_statement', 'rehabilitation_efforts', 'future_goals',
+          'personal_responsibility', 'lessons_learned', 'community_benefit',
+          'why_pardon_deserved', 'digital_signature', 'signature_date'
+        ];
+        
+        requiredFields.forEach(fieldId => {
+          const field = document.getElementById(fieldId);
+          if (!field.value.trim()) {
+            markInvalid(fieldId, `${field.previousElementSibling.textContent.replace('*', '').trim()} is required.`);
+            isValid = false;
+          }
+        });
+
+        // Validate required checkboxes
+        const requiredCheckboxes = [
+          'oath_acknowledgment', 'information_accuracy', 
+          'legal_consequences_understanding', 'application_review_completed',
+          'submit_application'
+        ];
+        
+        requiredCheckboxes.forEach(checkboxId => {
+          const checkbox = document.getElementById(checkboxId);
+          if (!checkbox.checked) {
+            markInvalid(checkboxId, 'This acknowledgment is required.');
+            isValid = false;
+          }
+        });
+
+        // Validate minimum text lengths for key statements
+        const statementFields = [
+          { id: 'personal_statement', minLength: 100, name: 'Personal Statement' },
+          { id: 'rehabilitation_efforts', minLength: 50, name: 'Rehabilitation Efforts' },
+          { id: 'community_benefit', minLength: 50, name: 'Community Benefit' },
+          { id: 'why_pardon_deserved', minLength: 50, name: 'Why You Deserve a Pardon' }
+        ];
+        
+        statementFields.forEach(field => {
+          const element = document.getElementById(field.id);
+          if (element.value.trim().length < field.minLength) {
+            markInvalid(field.id, `${field.name} must be at least ${field.minLength} characters.`);
+            isValid = false;
+          }
+        });
+
+        if (!isValid) {
+          e.preventDefault();
+          document.querySelector('.error').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          // Show confirmation dialog before final submission
+          const confirmed = confirm(
+            'Are you ready to submit your Wisconsin Pardon Application?\\n\\n' +
+            'This action will finalize your submission. Please ensure all information is accurate and complete.\\n\\n' +
+            'Click OK to proceed with submission, or Cancel to review your application.'
+          );
+          
+          if (!confirmed) {
+            e.preventDefault();
+          }
+        }
+      });
+    });
+
+    function markInvalid(id, message) {
+      const element = document.getElementById(id);
+      element.classList.add('error');
+      
+      // Remove any existing error message
+      const existingError = element.parentNode.querySelector('.error-message');
+      if (existingError) existingError.remove();
+      
+      // Add new error message
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error-message';
+      errorDiv.textContent = message;
+      element.parentNode.appendChild(errorDiv);
+    }
+  </script>
+
+</body>
+</html>

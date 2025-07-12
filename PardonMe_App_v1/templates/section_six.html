@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Section Six – PardonMe Application</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles_section_six.css') }}">
+</head>
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">PardonMe, Inc.</h1>
+      <h2 class="section-title">Section 6 – Character References</h2>
+      <p class="section-description">Provide references who can speak to your character and rehabilitation.</p>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+  </div>
+	
+  <!-- Page Layout -->
+  <div class="page-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h3 class="sidebar-title">📝 To Do List</h3>
+      {% set section_names = [
+        'Personal Information',
+        'Offense Details',
+        'Sentence & Incarceration',
+        'Employment & Education',
+        'Community Involvement',
+        'Character References',
+        'Statement & Signature'
+      ] %}
+      {% for i in range(1, 8) %}
+        <div class="sidebar-item {% if i == current_section %}active{% elif i < current_section %}completed{% endif %}">
+          <strong>Section {{ i }}</strong>
+          <p>{{ section_names[i-1] }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="form-card">
+        <form method="post" id="form-section-six" enctype="multipart/form-data" novalidate>
+          <div class="form-grid">
+            
+            <!-- Reference Overview -->
+            <div class="form-section">
+              <h3>Character References Overview</h3>
+              <div class="form-group">
+                <label for="reference_count">Number of References Provided *</label>
+                <select id="reference_count" name="reference_count" required>
+                  <option value="">Select...</option>
+                  <option value="2">2 References</option>
+                  <option value="3">3 References (Recommended)</option>
+                  <option value="4_or_more">4 or More References</option>
+                </select>
+              </div>
+              
+              <div class="info-box">
+                <p><strong>Guidelines for Character References:</strong></p>
+                <ul>
+                  <li>Choose people who have known you for at least 2 years</li>
+                  <li>Include a mix of relationships (employers, community leaders, family friends)</li>
+                  <li>Avoid immediate family members as primary references</li>
+                  <li>Ensure references can speak to your rehabilitation and current character</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Reference 1 -->
+            <div class="form-section">
+              <h3>Reference #1 *</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="reference_1_name">Full Name *</label>
+                  <input type="text" id="reference_1_name" name="reference_1_name" required>
+                </div>
+                <div class="form-group">
+                  <label for="reference_1_relationship">Relationship to You *</label>
+                  <select id="reference_1_relationship" name="reference_1_relationship" required>
+                    <option value="">Select...</option>
+                    <option value="employer">Current/Former Employer</option>
+                    <option value="supervisor">Supervisor/Manager</option>
+                    <option value="coworker">Coworker</option>
+                    <option value="community_leader">Community Leader</option>
+                    <option value="religious_leader">Religious Leader</option>
+                    <option value="counselor">Counselor/Therapist</option>
+                    <option value="mentor">Mentor</option>
+                    <option value="friend">Long-time Friend</option>
+                    <option value="neighbor">Neighbor</option>
+                    <option value="volunteer_coordinator">Volunteer Coordinator</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="reference_1_phone">Phone Number *</label>
+                  <input type="tel" id="reference_1_phone" name="reference_1_phone" required>
+                </div>
+                <div class="form-group">
+                  <label for="reference_1_email">Email Address</label>
+                  <input type="email" id="reference_1_email" name="reference_1_email">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="reference_1_address">Mailing Address *</label>
+                <textarea id="reference_1_address" name="reference_1_address" rows="3" required></textarea>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="reference_1_years_known">Years Known *</label>
+                  <input type="text" id="reference_1_years_known" name="reference_1_years_known" placeholder="e.g., 5 years" required>
+                </div>
+                <div class="form-group">
+                  <label for="reference_1_context">Context of Relationship *</label>
+                  <textarea id="reference_1_context" name="reference_1_context" rows="2" placeholder="How do you know this person?" required></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reference 2 -->
+            <div class="form-section">
+              <h3>Reference #2 *</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="reference_2_name">Full Name *</label>
+                  <input type="text" id="reference_2_name" name="reference_2_name" required>
+                </div>
+                <div class="form-group">
+                  <label for="reference_2_relationship">Relationship to You *</label>
+                  <select id="reference_2_relationship" name="reference_2_relationship" required>
+                    <option value="">Select...</option>
+                    <option value="employer">Current/Former Employer</option>
+                    <option value="supervisor">Supervisor/Manager</option>
+                    <option value="coworker">Coworker</option>
+                    <option value="community_leader">Community Leader</option>
+                    <option value="religious_leader">Religious Leader</option>
+                    <option value="counselor">Counselor/Therapist</option>
+                    <option value="mentor">Mentor</option>
+                    <option value="friend">Long-time Friend</option>
+                    <option value="neighbor">Neighbor</option>
+                    <option value="volunteer_coordinator">Volunteer Coordinator</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="reference_2_phone">Phone Number *</label>
+                  <input type="tel" id="reference_2_phone" name="reference_2_phone" required>
+                </div>
+                <div class="form-group">
+                  <label for="reference_2_email">Email Address</label>
+                  <input type="email" id="reference_2_email" name="reference_2_email">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="reference_2_address">Mailing Address *</label>
+                <textarea id="reference_2_address" name="reference_2_address" rows="3" required></textarea>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="reference_2_years_known">Years Known *</label>
+                  <input type="text" id="reference_2_years_known" name="reference_2_years_known" placeholder="e.g., 3 years" required>
+                </div>
+                <div class="form-group">
+                  <label for="reference_2_context">Context of Relationship *</label>
+                  <textarea id="reference_2_context" name="reference_2_context" rows="2" placeholder="How do you know this person?" required></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reference 3 (Optional) -->
+            <div class="form-section" id="reference-3-section" style="display: none;">
+              <h3>Reference #3 (Optional but Recommended)</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="reference_3_name">Full Name</label>
+                  <input type="text" id="reference_3_name" name="reference_3_name">
+                </div>
+                <div class="form-group">
+                  <label for="reference_3_relationship">Relationship to You</label>
+                  <select id="reference_3_relationship" name="reference_3_relationship">
+                    <option value="">Select...</option>
+                    <option value="employer">Current/Former Employer</option>
+                    <option value="supervisor">Supervisor/Manager</option>
+                    <option value="coworker">Coworker</option>
+                    <option value="community_leader">Community Leader</option>
+                    <option value="religious_leader">Religious Leader</option>
+                    <option value="counselor">Counselor/Therapist</option>
+                    <option value="mentor">Mentor</option>
+                    <option value="friend">Long-time Friend</option>
+                    <option value="neighbor">Neighbor</option>
+                    <option value="volunteer_coordinator">Volunteer Coordinator</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="reference_3_phone">Phone Number</label>
+                  <input type="tel" id="reference_3_phone" name="reference_3_phone">
+                </div>
+                <div class="form-group">
+                  <label for="reference_3_email">Email Address</label>
+                  <input type="email" id="reference_3_email" name="reference_3_email">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="reference_3_address">Mailing Address</label>
+                <textarea id="reference_3_address" name="reference_3_address" rows="3"></textarea>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="reference_3_years_known">Years Known</label>
+                  <input type="text" id="reference_3_years_known" name="reference_3_years_known" placeholder="e.g., 4 years">
+                </div>
+                <div class="form-group">
+                  <label for="reference_3_context">Context of Relationship</label>
+                  <textarea id="reference_3_context" name="reference_3_context" rows="2" placeholder="How do you know this person?"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Additional References -->
+            <div class="form-section">
+              <h3>Additional References</h3>
+              <div class="form-group">
+                <label for="additional_references">Additional References (if providing 4 or more)</label>
+                <textarea id="additional_references" name="additional_references" rows="5" placeholder="If you have additional references beyond the first 3, list their details here..."></textarea>
+              </div>
+            </div>
+
+            <!-- Reference Letters Upload -->
+            <div class="form-section">
+              <h3>Reference Letters &amp; Documentation</h3>
+              <div class="form-group">
+                <label for="reference_letters_included">Reference Letters Status</label>
+                <select id="reference_letters_included" name="reference_letters_included">
+                  <option value="">Select...</option>
+                  <option value="all_letters_included">All reference letters included</option>
+                  <option value="some_letters_included">Some reference letters included</option>
+                  <option value="letters_to_follow">Letters will be sent separately</option>
+                  <option value="letters_being_obtained">Currently obtaining letters</option>
+                  <option value="no_letters">No letters available</option>
+                </select>
+              </div>
+              
+              <div class="form-group" id="file-upload-section">
+                <label for="reference_letters">Upload Reference Letters (PDF format preferred)</label>
+                <input type="file" id="reference_letters" name="reference_letters" multiple accept=".pdf,.doc,.docx,.txt">
+                <small class="help-text">Multiple files allowed. Accepted formats: PDF, DOC, DOCX, TXT</small>
+              </div>
+            </div>
+
+            <!-- Contact Permission -->
+            <div class="form-section">
+              <h3>Reference Contact Permission</h3>
+              <div class="form-group">
+                <label for="reference_contact_permission">Permission to Contact References</label>
+                <select id="reference_contact_permission" name="reference_contact_permission">
+                  <option value="">Select...</option>
+                  <option value="all_references">All references may be contacted</option>
+                  <option value="some_references">Only specific references may be contacted</option>
+                  <option value="written_permission">Written permission required first</option>
+                  <option value="no_contact">Please do not contact references</option>
+                </select>
+              </div>
+              
+              <div class="checkbox-group" id="specific-contact-permissions" style="display: none;">
+                <label>Which references may be contacted:</label>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="contact_ref_1" name="reference_contact_permission[]" value="reference_1">
+                  <label for="contact_ref_1">Reference #1</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="contact_ref_2" name="reference_contact_permission[]" value="reference_2">
+                  <label for="contact_ref_2">Reference #2</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="contact_ref_3" name="reference_contact_permission[]" value="reference_3">
+                  <label for="contact_ref_3">Reference #3</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Character Statement -->
+            <div class="form-section">
+              <h3>Character &amp; Support System</h3>
+              <div class="form-group">
+                <label for="character_statement">Personal Character Statement *</label>
+                <textarea id="character_statement" name="character_statement" rows="5" placeholder="Describe your character growth, rehabilitation efforts, and how these references know the person you are today..." required></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="personal_growth">Personal Growth Since Conviction</label>
+                <textarea id="personal_growth" name="personal_growth" rows="4" placeholder="Describe specific ways you have grown and changed since your conviction..."></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="support_system">Your Support System</label>
+                <textarea id="support_system" name="support_system" rows="4" placeholder="Describe your current support system and how these references are part of your ongoing success..."></textarea>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Navigation Buttons -->
+          <div class="form-navigation">
+            <a href="/section_five" class="nav-btn secondary">← Previous Section</a>
+            <button type="submit" class="nav-btn primary">Next Section →</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Prevent Enter key from unintentionally submitting the form
+      document.getElementById('form-section-six').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+        }
+      });
+
+      // Show/hide Reference 3 section based on reference count
+      document.getElementById('reference_count').addEventListener('change', (e) => {
+        const reference3Section = document.getElementById('reference-3-section');
+        
+        if (e.target.value === '3' || e.target.value === '4_or_more') {
+          reference3Section.style.display = 'block';
+        } else {
+          reference3Section.style.display = 'none';
+        }
+      });
+
+      // Show/hide specific contact permissions
+      document.getElementById('reference_contact_permission').addEventListener('change', (e) => {
+        const specificPermissions = document.getElementById('specific-contact-permissions');
+        
+        if (e.target.value === 'some_references') {
+          specificPermissions.style.display = 'block';
+        } else {
+          specificPermissions.style.display = 'none';
+        }
+      });
+
+      // Form validation
+      document.getElementById('form-section-six').addEventListener('submit', (e) => {
+        let isValid = true;
+        
+        // Clear previous error states
+        document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+        document.querySelectorAll('.error-message').forEach(el => el.remove());
+
+        // Validate required fields
+        const requiredFields = [
+          'reference_count', 'reference_1_name', 'reference_1_relationship', 
+          'reference_1_phone', 'reference_1_address', 'reference_1_years_known', 
+          'reference_1_context', 'reference_2_name', 'reference_2_relationship',
+          'reference_2_phone', 'reference_2_address', 'reference_2_years_known',
+          'reference_2_context', 'character_statement'
+        ];
+        
+        requiredFields.forEach(fieldId => {
+          const field = document.getElementById(fieldId);
+          if (!field.value.trim()) {
+            markInvalid(fieldId, `${field.previousElementSibling.textContent.replace('*', '').trim()} is required.`);
+            isValid = false;
+          }
+        });
+
+        // Validate phone numbers
+        const phoneFields = ['reference_1_phone', 'reference_2_phone'];
+        phoneFields.forEach(fieldId => {
+          const field = document.getElementById(fieldId);
+          if (field.value && !isValidPhone(field.value)) {
+            markInvalid(fieldId, 'Please enter a valid phone number.');
+            isValid = false;
+          }
+        });
+
+        // Validate email addresses
+        const emailFields = ['reference_1_email', 'reference_2_email'];
+        emailFields.forEach(fieldId => {
+          const field = document.getElementById(fieldId);
+          if (field.value && !isValidEmail(field.value)) {
+            markInvalid(fieldId, 'Please enter a valid email address.');
+            isValid = false;
+          }
+        });
+
+        if (!isValid) {
+          e.preventDefault();
+          document.querySelector('.error').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    });
+
+    function markInvalid(id, message) {
+      const element = document.getElementById(id);
+      element.classList.add('error');
+      
+      // Remove any existing error message
+      const existingError = element.parentNode.querySelector('.error-message');
+      if (existingError) existingError.remove();
+      
+      // Add new error message
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error-message';
+      errorDiv.textContent = message;
+      element.parentNode.appendChild(errorDiv);
+    }
+
+    function isValidPhone(phone) {
+      // Basic phone validation - allows various formats
+      const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+      const cleanPhone = phone.replace(/[\s\-\(\)\.]/g, '');
+      return phoneRegex.test(cleanPhone) && cleanPhone.length >= 10;
+    }
+
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+  </script>
+
+</body>
+</html>
