@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, session, url_for, make_response
 from werkzeug.utils import secure_filename
 from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.lib import colors
@@ -367,169 +367,718 @@ def section_seven():
     progress = int(((current_section - 1) / total_sections) * 100)
     return render_template("section_seven.html", progress=progress, current_section=7)
 
+def safe_str(value):
+    """Helper function to safely convert any value to a string, handling None values."""
+    if value is None:
+        return ""
+    return str(value)
+
+@app.route("/test_pdf")
+def test_pdf():
+    """Test route to generate PDF with sample data"""
+    # Populate session with sample data for testing
+    session['section_one'] = {
+        'first_name': 'John',
+        'middle_name': 'Michael',
+        'last_name': 'Smith',
+        'dob': '01/15/1985',
+        'ssn': '123-45-6789',
+        'mailing_address': '123 Main Street, Madison, WI 53703',
+        'home_phone': '(608) 555-0123',
+        'email': 'john.smith@email.com',
+        'alias_used': 'yes',
+        'alias_first_name': 'Johnny',
+        'alias_last_name': 'Smith'
+    }
+    
+    session['section_two'] = {
+        'crime': 'Burglary',
+        'case_number': '2018CF001234',
+        'sentence': '3 years probation, $5000 fine',
+        'sentencing_date': '03/15/2018',
+        'county': 'Dane County',
+        'other_convictions': 'no',
+        'pending_charges': 'no',
+        'other_interactions': 'Arrested for DUI in 2010, charges dropped'
+    }
+    
+    session['section_three'] = {
+        'notice_sent': 'yes'
+    }
+    
+    session['section_four'] = {
+        'employer_1': 'ABC Construction',
+        'position_1': 'Site Supervisor',
+        'start_date_1': '06/2019',
+        'end_date_1': 'Present',
+        'employer_2': 'Local Hardware Store',
+        'position_2': 'Sales Associate',
+        'start_date_2': '01/2019',
+        'end_date_2': '05/2019',
+        'education_level': 'High School Diploma',
+        'education_since_conviction': 'Completed construction management certificate program at Madison College in 2020'
+    }
+    
+    session['section_five'] = {
+        'volunteer_work': 'Volunteer at local food bank every Saturday for the past 2 years. Help serve meals and organize donations.',
+        'counseling_participation': 'Completed anger management counseling program in 2019. Attended weekly sessions for 6 months.',
+        'personal_growth': 'Started attending church regularly, joined a support group for people with criminal backgrounds, and mentor young people in my neighborhood.'
+    }
+    
+    session['section_seven'] = {
+        'personal_statement': 'I made a serious mistake when I was younger and broke into a house when I was struggling with addiction. I take full responsibility for my actions and the harm I caused to the victim and community. Since then, I have worked hard to turn my life around.',
+        'why_pardon': 'I am seeking a pardon to remove barriers to employment and housing. My criminal record has prevented me from advancing in my career and finding stable housing for my family.',
+        'life_changes': 'I have been sober for 5 years, completed my probation successfully, paid all restitution, and have been steadily employed. I am now a contributing member of my community.',
+        'signature': 'John M. Smith',
+        'signature_date': '07/12/2025'
+    }
+    
+    # Now generate the PDF with this sample data
+    return generate_pdf()
+
 @app.route("/generate_pdf")
 def generate_pdf():
     buffer = io.BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=letter, rightMargin=72, leftMargin=72, topMargin=72, bottomMargin=18)
+    doc = SimpleDocTemplate(buffer, pagesize=letter, rightMargin=36, leftMargin=36, topMargin=36, bottomMargin=36)
     
     styles = getSampleStyleSheet()
-    title_style = ParagraphStyle('CustomTitle', parent=styles['Heading1'], fontSize=16, spaceAfter=30, alignment=1)
-    heading_style = ParagraphStyle('CustomHeading', parent=styles['Heading2'], fontSize=14, spaceAfter=12)
-    normal_style = styles['Normal']
+    title_style = ParagraphStyle('CustomTitle', parent=styles['Heading1'], fontSize=16, spaceAfter=12, alignment=1, fontName='Helvetica-Bold')
+    subtitle_style = ParagraphStyle('CustomSubtitle', parent=styles['Normal'], fontSize=12, spaceAfter=6, alignment=1)
+    heading_style = ParagraphStyle('CustomHeading', parent=styles['Heading2'], fontSize=12, spaceAfter=6, fontName='Helvetica-Bold')
+    normal_style = ParagraphStyle('CustomNormal', parent=styles['Normal'], fontSize=10, fontName='Helvetica')
+    small_style = ParagraphStyle('SmallText', parent=styles['Normal'], fontSize=8, fontName='Helvetica')
+    question_style = ParagraphStyle('QuestionStyle', parent=styles['Normal'], fontSize=10, fontName='Helvetica-Bold', spaceAfter=6)
+    answer_style = ParagraphStyle('AnswerStyle', parent=styles['Normal'], fontSize=10, fontName='Helvetica', leftIndent=20, spaceAfter=12)
     
     story = []
     
+    # PAGE 1 - Header and Instructions
     story.append(Paragraph("Tony Evers", title_style))
-    story.append(Paragraph("Office of the Governor • State of Wisconsin", normal_style))
+    story.append(Paragraph("Office of the Governor • State of Wisconsin", subtitle_style))
     story.append(Spacer(1, 12))
     story.append(Paragraph("State of Wisconsin Pardon Application", title_style))
-    story.append(Spacer(1, 20))
+    story.append(Spacer(1, 18))
     
-    story.append(Paragraph("Section 1: Personal Information", heading_style))
+    # Notice section (more detailed)
+    notice_text = (
+        "<b>Notice:</b> This application and any materials submitted in support of it may be used for purposes "
+        "other than consideration for a pardon. Further, the application and materials are subject to public "
+        "disclosure under Wisconsin's Public Records Law, which means they may be released to members "
+        "of the public if requested. Wis. Stat. §§ 19.31-19.39."
+    )
+    story.append(Paragraph(notice_text, normal_style))
+    story.append(Spacer(1, 18))
+    
+    # Eligibility section (expanded)
+    story.append(Paragraph("<b>Eligibility:</b> You are eligible for a pardon only if <b>all</b> of the following conditions apply to you:", normal_style))
+    story.append(Spacer(1, 6))
+    story.append(Paragraph("1. You are seeking a pardon for a Wisconsin felony conviction.", normal_style))
+    story.append(Paragraph("2. It has been <i>at least</i> five (5) years since you finished any criminal sentence. This means you:", normal_style))
+    story.append(Paragraph("&nbsp;&nbsp;&nbsp;&nbsp;a. Completed all confinement; and", normal_style))
+    story.append(Paragraph("&nbsp;&nbsp;&nbsp;&nbsp;b. Completed all supervised release (e.g., probation, parole, or extended supervision).", normal_style))
+    story.append(Paragraph("3. You do not have any pending criminal cases or charges in any jurisdiction.", normal_style))
+    story.append(Paragraph("4. You are not currently required to register as a sex offender.", normal_style))
+    story.append(Spacer(1, 18))
+    
+    # Instructions section
+    instructions_text = (
+        "<b>Instructions:</b><br/>"
+        "• Please type or print legibly.<br/>"
+        "• Answer all questions completely. If a question does not apply to you, write 'N/A'.<br/>"
+        "• Attach additional pages if you need more space for any answer.<br/>"
+        "• You must submit this application and all supporting documents to the Governor's office.<br/>"
+        "• Do not leave any question blank."
+    )
+    story.append(Paragraph(instructions_text, normal_style))
+    story.append(Spacer(1, 24))
+    
+    # Page break after instructions
+    story.append(PageBreak())
+    
+    # PAGE 2 - Section 1: Personal Information (Expanded)
+    story.append(Paragraph("<b>Section 1: Personal Information</b>", heading_style))
+    story.append(Paragraph("1. Provide the following personal information:", normal_style))
+    story.append(Spacer(1, 12))
+    
     section_one = session.get('section_one', {})
     
+    # Expanded personal information table (more detailed)
     personal_data = [
-        ['Name (First Middle Last)', f"{section_one.get('first_name', '')} {section_one.get('middle_name', '')} {section_one.get('last_name', '')}"],
-        ['Date of birth (MM/DD/YYYY)', section_one.get('dob', '')],
-        ['Email address', section_one.get('email', '')],
-        ['Home phone', section_one.get('home_phone', '')],
-        ['Work phone', section_one.get('work_phone', '')],
-        ['Cell phone', section_one.get('cell_phone', '')],
-        ['Place of birth (City, State)', section_one.get('birth_place', '')],
-        ['Gender (optional)', section_one.get('gender', '')],
-        ['Social Security Number', section_one.get('ssn', '')],
-        ['Race or Ethnicity (optional)', section_one.get('ethnicity', '')],
-        ['Home address', section_one.get('home_address', '')],
-        ['Mailing address', section_one.get('mailing_address', '')],
-        ['Maiden/alias/former name(s)', section_one.get('alias_names', '')],
-        ['Dates used (MM/YY – MM/YY)', section_one.get('alias_dates', '')]
+        ['Name (First Middle Last)', 'Date of birth (MM/DD/YYYY)'],
+        [safe_str(f"{section_one.get('first_name', '')} {section_one.get('middle_name', '')} {section_one.get('last_name', '')}").strip(), safe_str(section_one.get('dob'))],
+        ['Email address', 'Home phone'],
+        [safe_str(section_one.get('email')), safe_str(section_one.get('home_phone'))],
+        ['Work phone', 'Cell phone'],
+        [safe_str(section_one.get('work_phone')), safe_str(section_one.get('cell_phone'))],
+        ['Place of birth (City, State)', 'Gender (optional)'],
+        [safe_str(section_one.get('birth_place')), safe_str(section_one.get('gender'))],
+        ['Social Security Number', 'Race or Ethnicity (optional)'],
+        [safe_str(section_one.get('ssn')), safe_str(section_one.get('ethnicity'))],
+        ['Home address (Street, City, State, ZIP)', ''],
+        [safe_str(section_one.get('home_address')), ''],
+        ['Mailing address (if different from home address)', ''],
+        [safe_str(section_one.get('mailing_address')), '']
     ]
     
-    personal_table = Table(personal_data, colWidths=[2.5*inch, 4*inch])
+    personal_table = Table(personal_data, colWidths=[3.7*inch, 3.7*inch], rowHeights=[0.4*inch]*len(personal_data))
     personal_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (0, -1), colors.lightgrey),
-        ('TEXTCOLOR', (0, 0), (-1, -1), colors.black),
-        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
         ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
-        ('FONTSIZE', (0, 0), (-1, -1), 10),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
-        ('BACKGROUND', (1, 0), (1, -1), colors.white),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black)
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('BACKGROUND', (0, 0), (1, 0), colors.lightgrey),
+        ('BACKGROUND', (0, 2), (1, 2), colors.lightgrey),
+        ('BACKGROUND', (0, 4), (1, 4), colors.lightgrey),
+        ('BACKGROUND', (0, 6), (1, 6), colors.lightgrey),
+        ('BACKGROUND', (0, 8), (1, 8), colors.lightgrey),
+        ('BACKGROUND', (0, 10), (1, 10), colors.lightgrey),
+        ('BACKGROUND', (0, 12), (1, 12), colors.lightgrey),
+        ('SPAN', (0, 10), (1, 10)),
+        ('SPAN', (0, 11), (1, 11)),
+        ('SPAN', (0, 12), (1, 12)),
+        ('SPAN', (0, 13), (1, 13)),
     ]))
     story.append(personal_table)
-    story.append(Spacer(1, 20))
+    story.append(Spacer(1, 18))
     
-    story.append(Paragraph("Section 2: Criminal History", heading_style))
+    # Alias information section (expanded)
+    story.append(Paragraph("2. Have you ever used or been known by any other name(s)? (Check one)", normal_style))
+    story.append(Spacer(1, 6))
+    
+    alias_used = section_one.get('alias_used', '').lower()
+    if alias_used == 'yes':
+        story.append(Paragraph("☑ Yes    ☐ No", normal_style))
+    else:
+        story.append(Paragraph("☐ Yes    ☑ No", normal_style))
+    
+    story.append(Spacer(1, 6))
+    story.append(Paragraph("If yes, complete the table below:", normal_style))
+    story.append(Spacer(1, 6))
+    
+    alias_data = [
+        ['Maiden/alias/former name(s)', 'Dates used (MM/YYYY - MM/YYYY)'],
+        [safe_str(section_one.get('alias_first_name', '') + ' ' + section_one.get('alias_last_name', '')).strip(), safe_str(section_one.get('alias_dates'))],
+        ['', ''],
+        ['', '']
+    ]
+    
+    alias_table = Table(alias_data, colWidths=[3.7*inch, 3.7*inch], rowHeights=[0.4*inch, 0.6*inch, 0.6*inch, 0.6*inch])
+    alias_table.setStyle(TableStyle([
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('BACKGROUND', (0, 0), (1, 0), colors.lightgrey),
+    ]))
+    story.append(alias_table)
+    story.append(Spacer(1, 24))
+    
+    # Page break before criminal history
+    story.append(PageBreak())
+    
+    # PAGE 3 - Section 2: Criminal History (Expanded)
+    story.append(Paragraph("<b>Section 2: Criminal History</b>", heading_style))
+    story.append(Paragraph("2. Complete the following for each case you are seeking a pardon for (attach additional sheets for multiple crimes):", normal_style))
+    story.append(Spacer(1, 12))
+    
     section_two = session.get('section_two', {})
     
-    offenses = []
-    for i in range(1, 4):  # Up to 3 offenses
-        offense_key = f'offense_{i}'
-        if offense_key in section_two:
-            offense = section_two[offense_key]
-            offenses.append([
-                ['Crime', offense.get('crime', '')],
-                ['Court case number', offense.get('case_number', '')],
-                ['County of conviction', offense.get('county', '')],
-                ['Date of offense', offense.get('offense_date', '')],
-                ['Sentencing date', offense.get('sentencing_date', '')],
-                ['Sentence received', offense.get('sentence', '')],
-                ['Date completed sentence', offense.get('completion_date', '')],
-                ['District attorney(s)', offense.get('district_attorney', '')],
-                ['Judge(s)', offense.get('judge', '')]
-            ])
+    # Criminal history table matching official format (expanded)
+    criminal_data = [
+        ['Crime/Charge', 'Case number'],
+        [safe_str(section_two.get('crime')), safe_str(section_two.get('case_number'))],
+        ['Court (include county)', 'Sentencing date (MM/DD/YYYY)'],
+        [safe_str(section_two.get('court')), safe_str(section_two.get('sentencing_date'))],
+        ['Sentencing judge', 'Sentence imposed'],
+        [safe_str(section_two.get('judge')), safe_str(section_two.get('sentence'))],
+        ['Start of sentence (MM/DD/YYYY)', 'End of sentence (MM/DD/YYYY)'],
+        [safe_str(section_two.get('sentence_start')), safe_str(section_two.get('sentence_end'))],
+        ['Type of supervision after release', 'Supervising agent/officer name'],
+        [safe_str(section_two.get('supervision_type')), safe_str(section_two.get('agent_name'))],
+        ['Start of supervision (MM/DD/YYYY)', 'End of supervision (MM/DD/YYYY)'],
+        [safe_str(section_two.get('supervision_start')), safe_str(section_two.get('supervision_end'))]
+    ]
     
-    for i, offense_data in enumerate(offenses, 1):
-        story.append(Paragraph(f"Crime #{i}", normal_style))
-        offense_table = Table(offense_data, colWidths=[2.5*inch, 4*inch])
-        offense_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (0, -1), colors.lightgrey),
-            ('TEXTCOLOR', (0, 0), (-1, -1), colors.black),
-            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+    criminal_table = Table(criminal_data, colWidths=[3.7*inch, 3.7*inch], rowHeights=[0.4*inch]*len(criminal_data))
+    criminal_table.setStyle(TableStyle([
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('BACKGROUND', (0, 0), (1, 0), colors.lightgrey),
+        ('BACKGROUND', (0, 2), (1, 2), colors.lightgrey),
+        ('BACKGROUND', (0, 4), (1, 4), colors.lightgrey),
+        ('BACKGROUND', (0, 6), (1, 6), colors.lightgrey),
+        ('BACKGROUND', (0, 8), (1, 8), colors.lightgrey),
+        ('BACKGROUND', (0, 10), (1, 10), colors.lightgrey),
+    ]))
+    story.append(criminal_table)
+    story.append(Spacer(1, 18))
+    
+    # Additional crimes section
+    story.append(Paragraph("3. Are you seeking a pardon for additional crimes? (Check one)", normal_style))
+    story.append(Spacer(1, 6))
+    additional_crimes = section_two.get('additional_crimes', '')
+    if additional_crimes.lower() == 'yes':
+        story.append(Paragraph("☑ Yes (attach additional sheets)    ☐ No", normal_style))
+    else:
+        story.append(Paragraph("☐ Yes (attach additional sheets)    ☑ No", normal_style))
+    story.append(Spacer(1, 18))
+    
+    # Criminal record questions
+    story.append(Paragraph("4. Do you have any other criminal convictions (including juvenile adjudications) not covered above? (Check one)", normal_style))
+    story.append(Spacer(1, 6))
+    other_records = section_two.get('other_records', '')
+    if other_records.lower() == 'yes':
+        story.append(Paragraph("☑ Yes    ☐ No", normal_style))
+    else:
+        story.append(Paragraph("☐ Yes    ☑ No", normal_style))
+    story.append(Spacer(1, 6))
+    story.append(Paragraph("If yes, explain:", normal_style))
+    story.append(Spacer(1, 6))
+    
+    # Text box for other records explanation
+    other_records_data = [['', '', ''], ['', '', ''], ['', '', '']]
+    other_records_table = Table(other_records_data, colWidths=[2.5*inch, 2.5*inch, 2.5*inch], rowHeights=[0.5*inch, 0.5*inch, 0.5*inch])
+    other_records_table.setStyle(TableStyle([
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('SPAN', (0, 0), (2, 0)),
+        ('SPAN', (0, 1), (2, 1)),
+        ('SPAN', (0, 2), (2, 2)),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+    ]))
+    if other_records.lower() == 'yes':
+        other_records_table = Table([[safe_str(section_two.get('other_records_explanation', ''))], [''], ['']], colWidths=[7.5*inch], rowHeights=[0.5*inch, 0.5*inch, 0.5*inch])
+        other_records_table.setStyle(TableStyle([
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
             ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
-            ('FONTSIZE', (0, 0), (-1, -1), 10),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
-            ('BACKGROUND', (1, 0), (1, -1), colors.white),
-            ('GRID', (0, 0), (-1, -1), 1, colors.black)
+            ('FONTSIZE', (0, 0), (-1, -1), 9),
         ]))
-        story.append(offense_table)
-        story.append(Spacer(1, 12))
+    story.append(other_records_table)
+    story.append(Spacer(1, 24))
     
-    story.append(Paragraph("4. Have you ever been convicted of any crimes other than those listed above?", normal_style))
-    story.append(Paragraph(section_two.get('other_crimes', 'No'), normal_style))
+    # Page break before next section
+    story.append(PageBreak())
+    
+    # PAGE 4 - Section 3: Employment History
+    story.append(Paragraph("<b>Section 3: Employment History</b>", heading_style))
+    story.append(Paragraph("5. List your employment history for the past 10 years (start with most recent):", normal_style))
     story.append(Spacer(1, 12))
     
-    story.append(Paragraph("5. Were you ordered to pay restitution for any of your crimes?", normal_style))
-    story.append(Paragraph(section_two.get('restitution_ordered', 'No'), normal_style))
-    story.append(Spacer(1, 12))
+    section_three = session.get('section_three', {})
     
-    story.append(Paragraph("6. Have you ever applied for pardon before?", normal_style))
-    story.append(Paragraph(section_two.get('previous_pardon', 'No'), normal_style))
-    story.append(Spacer(1, 12))
+    # Employment history table
+    employment_data = [
+        ['Employer name and address', 'Position/Job title', 'Start date (MM/YYYY)', 'End date (MM/YYYY)'],
+        [safe_str(section_three.get('employer_1_name', '') + '\n' + section_three.get('employer_1_address', '')), safe_str(section_three.get('position_1')), safe_str(section_three.get('start_date_1')), safe_str(section_three.get('end_date_1'))],
+        [safe_str(section_three.get('employer_2_name', '') + '\n' + section_three.get('employer_2_address', '')), safe_str(section_three.get('position_2')), safe_str(section_three.get('start_date_2')), safe_str(section_three.get('end_date_2'))],
+        [safe_str(section_three.get('employer_3_name', '') + '\n' + section_three.get('employer_3_address', '')), safe_str(section_three.get('position_3')), safe_str(section_three.get('start_date_3')), safe_str(section_three.get('end_date_3'))],
+        ['', '', '', ''],
+        ['', '', '', ''],
+        ['', '', '', '']
+    ]
     
-    story.append(Paragraph("7. Other interactions with law enforcement:", normal_style))
-    story.append(Paragraph(section_two.get('other_interactions', 'None'), normal_style))
-    story.append(Spacer(1, 20))
+    employment_table = Table(employment_data, colWidths=[2.5*inch, 2*inch, 1.5*inch, 1.5*inch], rowHeights=[0.6*inch]*len(employment_data))
+    employment_table.setStyle(TableStyle([
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 0), (-1, -1), 8),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('BACKGROUND', (0, 0), (3, 0), colors.lightgrey),
+    ]))
+    story.append(employment_table)
+    story.append(Spacer(1, 18))
     
-    story.append(Paragraph("Section 3: Grounds for a Pardon", heading_style))
+    # Current employment status
+    story.append(Paragraph("6. What is your current employment status? (Check one)", normal_style))
+    story.append(Spacer(1, 6))
     
-    section_seven = session.get('section_seven', {})
-    story.append(Paragraph("9. In your own words, describe in detail the crime(s) for which you are seeking a pardon:", normal_style))
-    story.append(Paragraph(section_seven.get('personal_statement', ''), normal_style))
-    story.append(Spacer(1, 12))
+    employment_status = section_three.get('employment_status', '')
+    status_options = {
+        'employed_full': '☑ Employed full-time',
+        'employed_part': '☐ Employed part-time', 
+        'self_employed': '☐ Self-employed',
+        'unemployed': '☐ Unemployed',
+        'retired': '☐ Retired',
+        'disabled': '☐ Disabled',
+        'student': '☐ Student'
+    }
     
-    story.append(Paragraph("10. Describe the specific reason(s) why you want or need a pardon:", normal_style))
-    story.append(Paragraph(section_seven.get('why_pardon', ''), normal_style))
-    story.append(Spacer(1, 12))
+    for key, option in status_options.items():
+        if employment_status == key:
+            option = option.replace('☐', '☑')
+        story.append(Paragraph(option, normal_style))
     
-    story.append(Paragraph("11. Describe any other reason(s) why a pardon should be granted:", normal_style))
-    story.append(Paragraph(section_seven.get('life_changes', ''), normal_style))
-    story.append(Spacer(1, 12))
+    story.append(Spacer(1, 18))
+    
+    # Page break before education section
+    story.append(PageBreak())
+    
+    # PAGE 5 - Section 4: Education
+    story.append(Paragraph("<b>Section 4: Education</b>", heading_style))
+    story.append(Paragraph("7. What is the highest grade you completed in school?", normal_style))
+    story.append(Spacer(1, 6))
     
     section_four = session.get('section_four', {})
-    story.append(Paragraph("12. List your employment history since your conviction:", normal_style))
-    story.append(Paragraph(section_four.get('employment_history', ''), normal_style))
-    story.append(Spacer(1, 12))
     
-    story.append(Paragraph("13. List the highest grade you completed or degree you received:", normal_style))
-    story.append(Paragraph(section_four.get('education_level', ''), normal_style))
-    story.append(Spacer(1, 12))
+    # Education level checkboxes
+    education_level = section_four.get('education_level', '')
+    education_options = [
+        ('elementary', 'Elementary school'),
+        ('middle', 'Middle school/Junior high'),
+        ('some_high', 'Some high school'),
+        ('high_school', 'High school diploma/GED'),
+        ('some_college', 'Some college'),
+        ('associates', "Associate's degree"),
+        ('bachelors', "Bachelor's degree"),
+        ('masters', "Master's degree"),
+        ('doctorate', 'Doctorate/Professional degree')
+    ]
     
-    story.append(Paragraph("14. Describe any education you have received since conviction:", normal_style))
-    story.append(Paragraph(section_four.get('education_since_conviction', ''), normal_style))
+    for key, option in education_options:
+        if education_level == key:
+            story.append(Paragraph(f"☑ {option}", normal_style))
+        else:
+            story.append(Paragraph(f"☐ {option}", normal_style))
+    
+    story.append(Spacer(1, 18))
+    
+    # Post-conviction education
+    story.append(Paragraph("8. Have you received any education, training, or certificates after your conviction? (Check one)", normal_style))
+    story.append(Spacer(1, 6))
+    
+    post_education = section_four.get('post_education', '')
+    if post_education.lower() == 'yes':
+        story.append(Paragraph("☑ Yes    ☐ No", normal_style))
+    else:
+        story.append(Paragraph("☐ Yes    ☑ No", normal_style))
+    
+    story.append(Spacer(1, 6))
+    story.append(Paragraph("If yes, describe:", normal_style))
+    story.append(Spacer(1, 6))
+    
+    # Text box for post-conviction education
+    post_edu_table = Table([[safe_str(section_four.get('post_education_details', ''))], [''], ['']], colWidths=[7.5*inch], rowHeights=[0.6*inch, 0.6*inch, 0.6*inch])
+    post_edu_table.setStyle(TableStyle([
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+    ]))
+    story.append(post_edu_table)
+    story.append(Spacer(1, 24))
+    
+    # Page break before community service
+    story.append(PageBreak())
+    
+    # PAGE 6 - Section 5: Community Service and Personal Growth
+    story.append(Paragraph("<b>Section 5: Community Service and Personal Growth</b>", heading_style))
+    story.append(Paragraph("9. Describe any volunteer work, community service, or other activities you have participated in since your conviction:", normal_style))
     story.append(Spacer(1, 12))
     
     section_five = session.get('section_five', {})
-    story.append(Paragraph("16. Describe any community service, activities, or volunteer work:", normal_style))
-    story.append(Paragraph(section_five.get('volunteer_work', ''), normal_style))
+    
+    # Community service text box
+    community_service_table = Table([[safe_str(section_five.get('community_service', ''))], [''], [''], ['']], colWidths=[7.5*inch], rowHeights=[0.8*inch, 0.8*inch, 0.8*inch, 0.8*inch])
+    community_service_table.setStyle(TableStyle([
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+    ]))
+    story.append(community_service_table)
+    story.append(Spacer(1, 18))
+    
+    # Counseling/treatment question
+    story.append(Paragraph("10. Have you received any counseling, treatment, or participated in any programs since your conviction? (Check one)", normal_style))
+    story.append(Spacer(1, 6))
+    
+    counseling = section_five.get('counseling', '')
+    if counseling.lower() == 'yes':
+        story.append(Paragraph("☑ Yes    ☐ No", normal_style))
+    else:
+        story.append(Paragraph("☐ Yes    ☑ No", normal_style))
+    
+    story.append(Spacer(1, 6))
+    story.append(Paragraph("If yes, describe:", normal_style))
+    story.append(Spacer(1, 6))
+    
+    # Counseling details text box
+    counseling_table = Table([[safe_str(section_five.get('counseling_details', ''))], [''], ['']], colWidths=[7.5*inch], rowHeights=[0.6*inch, 0.6*inch, 0.6*inch])
+    counseling_table.setStyle(TableStyle([
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+    ]))
+    story.append(counseling_table)
+    story.append(Spacer(1, 24))
+    
+    # Page break before essay questions
+    story.append(PageBreak())
+    
+    # PAGE 7 - Section 6: Grounds for a Pardon (Essay Questions)
+    story.append(Paragraph("<b>Section 6: Grounds for a Pardon</b>", heading_style))
+    story.append(Paragraph("Please answer ALL questions in this section completely. Use additional pages if necessary.", normal_style))
     story.append(Spacer(1, 12))
     
-    story.append(Paragraph("17. Describe any treatment or counseling you have participated in:", normal_style))
-    story.append(Paragraph(section_five.get('counseling_participation', ''), normal_style))
+    section_seven = session.get('section_seven', {})
+    
+    # Question 11: Crime description
+    story.append(Paragraph("11. In your own words, describe in detail the crime(s) for which you are seeking a pardon. Include the circumstances that led to the crime and your role in it:", question_style))
+    story.append(Spacer(1, 6))
+    
+    crime_description_table = Table([[safe_str(section_seven.get('personal_statement', ''))], [''], [''], [''], ['']], colWidths=[7.5*inch], rowHeights=[1*inch, 1*inch, 1*inch, 1*inch, 1*inch])
+    crime_description_table.setStyle(TableStyle([
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+    ]))
+    story.append(crime_description_table)
+    story.append(Spacer(1, 18))
+    
+    # Page break before next question
+    story.append(PageBreak())
+    
+    # PAGE 8 - Continued Essay Questions
+    # Question 12: Why do you want a pardon?
+    story.append(Paragraph("12. Why do you want or need a pardon? Be specific about how your conviction has affected your life and why a pardon would help you:", question_style))
+    story.append(Spacer(1, 6))
+    
+    why_pardon_table = Table([[safe_str(section_seven.get('why_pardon', ''))], [''], [''], [''], ['']], colWidths=[7.5*inch], rowHeights=[1*inch, 1*inch, 1*inch, 1*inch, 1*inch])
+    why_pardon_table.setStyle(TableStyle([
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+    ]))
+    story.append(why_pardon_table)
+    story.append(Spacer(1, 24))
+    
+    # Page break before next question
+    story.append(PageBreak())
+    
+    # PAGE 9 - Continued Essay Questions
+    # Question 13: How have you changed?
+    story.append(Paragraph("13. How have you changed since your conviction? Describe the steps you have taken toward rehabilitation and how you have demonstrated that you will not commit crimes in the future:", question_style))
+    story.append(Spacer(1, 6))
+    
+    life_changes_table = Table([[safe_str(section_seven.get('life_changes', ''))], [''], [''], [''], ['']], colWidths=[7.5*inch], rowHeights=[1*inch, 1*inch, 1*inch, 1*inch, 1*inch])
+    life_changes_table.setStyle(TableStyle([
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+    ]))
+    story.append(life_changes_table)
+    story.append(Spacer(1, 24))
+    
+    # Page break before authorization section
+    story.append(PageBreak())
+    
+    # PAGE 10 - Section 7: Notice of Pardon Application
+    story.append(Paragraph("<b>Section 7: Notice of Pardon Application</b>", heading_style))
+    story.append(Paragraph("You are required to send a copy of the Notice of Pardon Application to the sentencing judge and the district attorney who prosecuted your case.", normal_style))
     story.append(Spacer(1, 12))
     
-    story.append(Paragraph("18. Describe any other steps or actions you have taken:", normal_style))
-    story.append(Paragraph(section_five.get('personal_growth', ''), normal_style))
-    story.append(Spacer(1, 20))
+    story.append(Paragraph("14. I have sent the required Notice of Pardon Application to: (Check all that apply)", normal_style))
+    story.append(Spacer(1, 6))
     
-    story.append(Paragraph("Section 4: Notice of Pardon Application", heading_style))
-    story.append(Paragraph("20. I sent the notice forms to the clerk of courts and district attorney's office: ☐ Yes ☐ No", normal_style))
-    story.append(Spacer(1, 20))
+    section_three = session.get('section_three', {})
+    notice_judge = section_three.get('notice_judge', '')
+    notice_da = section_three.get('notice_da', '')
     
-    story.append(Paragraph("Section 5: Background Check Authorization", heading_style))
-    story.append(Paragraph("By signing this form, I authorize the State of Wisconsin to conduct a background investigation...", normal_style))
-    story.append(Spacer(1, 12))
-    story.append(Paragraph(f"Applicant signature: {section_seven.get('signature', '')}", normal_style))
-    story.append(Paragraph(f"Date: {section_seven.get('signature_date', '')}", normal_style))
-    story.append(Spacer(1, 20))
+    if notice_judge.lower() == 'yes':
+        story.append(Paragraph("☑ Sentencing judge", normal_style))
+    else:
+        story.append(Paragraph("☐ Sentencing judge", normal_style))
+        
+    if notice_da.lower() == 'yes':
+        story.append(Paragraph("☑ District attorney who prosecuted my case", normal_style))
+    else:
+        story.append(Paragraph("☐ District attorney who prosecuted my case", normal_style))
     
-    story.append(Paragraph("Section 6: Certification", heading_style))
-    story.append(Paragraph("I certify, under the penalty of perjury, that the information in this application is true and correct...", normal_style))
+    story.append(Spacer(1, 18))
+    
+    # Section 8: Background Check Authorization
+    story.append(Paragraph("<b>Section 8: Background Check Authorization</b>", heading_style))
+    bg_auth_text = (
+        "By signing this application, I authorize the State of Wisconsin to conduct a background investigation, "
+        "including a criminal history records check, to determine my fitness to receive a pardon. I understand "
+        "that the investigation may include contact with employers, schools, law enforcement agencies, courts, "
+        "and other persons and organizations with information relevant to my fitness to receive a pardon."
+    )
+    story.append(Paragraph(bg_auth_text, normal_style))
+    story.append(Spacer(1, 18))
+    
+    # Section 9: Certification
+    story.append(Paragraph("<b>Section 9: Certification</b>", heading_style))
+    certification_text = (
+        "I certify that I have read and understand this application and that the information I have provided "
+        "is true and complete to the best of my knowledge. I understand that any false statements may be "
+        "grounds for denial of this application or revocation of any pardon that may be granted. I understand "
+        "that I must notify the Governor's office immediately if any of the information in this application changes."
+    )
+    story.append(Paragraph(certification_text, normal_style))
+    story.append(Spacer(1, 18))
+    
+    # Signature lines with proper formatting
+    sig_data = [
+        ['Applicant signature', 'Date (MM/DD/YYYY)'],
+        ['', ''],
+        ['Print full name', 'Email address'],
+        ['', '']
+    ]
+    
+    sig_table = Table(sig_data, colWidths=[3.7*inch, 3.7*inch], rowHeights=[0.4*inch, 0.8*inch, 0.4*inch, 0.8*inch])
+    sig_table.setStyle(TableStyle([
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('BACKGROUND', (0, 0), (1, 0), colors.lightgrey),
+        ('BACKGROUND', (0, 2), (1, 2), colors.lightgrey),
+    ]))
+    story.append(sig_table)
+    story.append(Spacer(1, 24))
+    
+    # Notary section
+    story.append(Paragraph("<b>For Notary Public Use Only:</b>", heading_style))
+    story.append(Spacer(1, 6))
+    
+    notary_text = (
+        "State of Wisconsin, County of ________________<br/><br/>"
+        "Sworn to (or affirmed) and subscribed before me on ________________ by the above-named applicant.<br/><br/>"
+        "Signature of Notary Public: _________________________________<br/><br/>"
+        "My commission expires: _______________"
+    )
+    story.append(Paragraph(notary_text, normal_style))
+    
+    # Page break for Notice to District Attorney
+    story.append(PageBreak())
+    
+    # Notice to District Attorney of Pardon Application Page
+    story.append(Paragraph("Notice to District Attorney of Pardon Application", title_style))
     story.append(Spacer(1, 12))
-    story.append(Paragraph(f"Applicant signature: {section_seven.get('signature', '')}", normal_style))
-    story.append(Paragraph(f"Date: {section_seven.get('signature_date', '')}", normal_style))
+    
+    # Instructions for District Attorney notice
+    da_instructions = (
+        "<b>TO THE APPLICANT:</b> Fill out the information below. Mail this form to <b>each</b> district attorney's office "
+        "that oversaw your conviction. <b>Do not submit this form with your pardon application.</b> It is <b>strongly "
+        "encouraged</b> that you provide the district attorney's office a copy of your application materials or a "
+        "cover letter explaining why you are seeking a pardon."
+    )
+    story.append(Paragraph(da_instructions, normal_style))
     story.append(Spacer(1, 12))
-    story.append(Paragraph("Applicant must sign in the presence of a Notary Public.", normal_style))
+    
+    # DA Notice table
+    da_table_data = [
+        ['Applicant name', 'Date of birth (MM/DD/YYYY)'],
+        [safe_str(f"{section_one.get('first_name', '')} {section_one.get('middle_name', '')} {section_one.get('last_name', '')}").strip(), safe_str(section_one.get('dob'))],
+        ['Mailing address', 'Phone number and email address'],
+        [safe_str(section_one.get('mailing_address')), safe_str(f"{section_one.get('home_phone', '')} {section_one.get('email', '')}")]
+    ]
+    
+    da_table = Table(da_table_data, colWidths=[3.7*inch, 3.7*inch], rowHeights=[0.3*inch, 0.7*inch, 0.3*inch, 0.7*inch])
+    da_table.setStyle(TableStyle([
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('BACKGROUND', (0, 0), (1, 0), colors.lightgrey),
+        ('BACKGROUND', (0, 2), (1, 2), colors.lightgrey),
+    ]))
+    story.append(da_table)
+    story.append(Spacer(1, 12))
+    
+    story.append(Paragraph("I am seeking a pardon for the following crime(s):", normal_style))
+    story.append(Spacer(1, 6))
+    
+    # Crime details table for DA notice
+    crime_table_data = [
+        ['Crime', 'Court case number', 'Sentence', 'Sentencing date (MM/DD/YYYY)'],
+        [safe_str(section_two.get('crime')), safe_str(section_two.get('case_number')), safe_str(section_two.get('sentence')), safe_str(section_two.get('sentencing_date'))],
+        ['', '', '', ''],
+        ['', '', '', ''],
+        ['', '', '', '']
+    ]
+    
+    crime_table = Table(crime_table_data, colWidths=[1.8*inch, 1.8*inch, 1.8*inch, 1.8*inch])
+    crime_table.setStyle(TableStyle([
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 0), (-1, -1), 8),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('BACKGROUND', (0, 0), (3, 0), colors.lightgrey),
+    ]))
+    story.append(crime_table)
+    story.append(Spacer(1, 12))
+    
+    story.append(Paragraph("<b>Pardon applicant: do not fill out anything beyond this point.</b>", normal_style))
+    story.append(Spacer(1, 12))
+    
+    # DA response section
+    da_response_text = (
+        "<b>TO THE DISTRICT ATTORNEY:</b> The Governor and the Governor's Pardon Advisory Board request "
+        "your opinion on whether the above-named applicant should be granted a pardon. Your support or "
+        "opposition to a pardon will be given significant weight by the Governor and the Board. If you have "
+        "questions, please email GOVPardons@wisconsin.gov. Thank you for your assistance."
+    )
+    story.append(Paragraph(da_response_text, normal_style))
+    story.append(Spacer(1, 12))
+    
+    # DA comments table
+    da_comments_data = [
+        ["DA's or ADA's comments (Support / Oppose / No Opinion)"],
+        [""]
+    ]
+    da_comments_table = Table(da_comments_data, colWidths=[7.4*inch], rowHeights=[0.3*inch, 2*inch])
+    da_comments_table.setStyle(TableStyle([
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('BACKGROUND', (0, 0), (0, 0), colors.lightgrey),
+    ]))
+    story.append(da_comments_table)
+    story.append(Spacer(1, 12))
+    
+    # DA signature table
+    da_sig_data = [
+        ["DA's/ADA's name (print)", "DA's/ADA's signature", "Date"],
+        ["", "", ""]
+    ]
+    da_sig_table = Table(da_sig_data, colWidths=[2.4*inch, 2.5*inch, 2.5*inch], rowHeights=[0.3*inch, 0.5*inch])
+    da_sig_table.setStyle(TableStyle([
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('BACKGROUND', (0, 0), (2, 0), colors.lightgrey),
+    ]))
+    story.append(da_sig_table)
+    story.append(Spacer(1, 12))
+    
+    # Final instructions
+    final_instructions = (
+        "Please send the completed original form to Office of the Governor, Attn: Pardon Advisory Board, P.O. "
+        "Box 7863, Madison, WI 53707 <i>or</i> GOVPardons@wisconsin.gov, and a copy to the applicant at the "
+        "mailing address or email address listed above."
+    )
+    story.append(Paragraph(final_instructions, normal_style))
+    story.append(Spacer(1, 12))
+    story.append(Paragraph("Page 11", small_style))
     
     doc.build(story)
     
