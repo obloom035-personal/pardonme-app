@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wisconsin Pardon Application - Page 9</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='pardon_form.css') }}">
+</head>
+<body>
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">Wisconsin State Pardon Application</h1>
+      <h2 class="section-title">Page {{ page }} of 11 - Application Checklist</h2>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="government-form-container">
+    <div class="form-page">
+      <form method="post">
+        <div class="instruction-text">
+          <p class="bold-text">Section 7: Application Checklist</p>
+        </div>
+
+        <div class="instruction-text">
+          <p>Before submitting your pardon application, review the checklist below and check each item. You are <span class="underline-text">not</span> required to submit this form with your application; it is for your own personal use.</p>
+        </div>
+
+        <table class="yesno-table">
+          <thead>
+            <tr>
+              <th>Questions</th>
+              <th>Yes</th>
+              <th>No</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>I am eligible for a pardon, meaning I meet all eligibility criteria listed on page one (1) of the application.</td>
+              <td><input type="radio" name="eligible" value="yes" {{ 'checked' if current_data.get('eligible') == 'yes' }}></td>
+              <td><input type="radio" name="eligible" value="no" {{ 'checked' if current_data.get('eligible') == 'no' }}></td>
+            </tr>
+            <tr>
+              <td>I have answered every question on the pardon application.</td>
+              <td><input type="radio" name="answered_all" value="yes" {{ 'checked' if current_data.get('answered_all') == 'yes' }}></td>
+              <td><input type="radio" name="answered_all" value="no" {{ 'checked' if current_data.get('answered_all') == 'no' }}></td>
+            </tr>
+            <tr>
+              <td>I have made a copy of my pardon application for my own records.</td>
+              <td><input type="radio" name="made_copy" value="yes" {{ 'checked' if current_data.get('made_copy') == 'yes' }}></td>
+              <td><input type="radio" name="made_copy" value="no" {{ 'checked' if current_data.get('made_copy') == 'no' }}></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table class="yesno-table">
+          <thead>
+            <tr>
+              <th><span class="bold-text">I enclosed the following materials with my application:</span></th>
+              <th>Yes</th>
+              <th>No</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>The <em>certified</em> criminal complaint for <em>each</em> crime for which I am seeking a pardon.</td>
+              <td><input type="radio" name="criminal_complaint" value="yes" {{ 'checked' if current_data.get('criminal_complaint') == 'yes' }}></td>
+              <td><input type="radio" name="criminal_complaint" value="no" {{ 'checked' if current_data.get('criminal_complaint') == 'no' }}></td>
+            </tr>
+            <tr>
+              <td>The <em>certified</em> information document for <em>each</em> crime for which I am seeking a pardon.</td>
+              <td><input type="radio" name="information_document" value="yes" {{ 'checked' if current_data.get('information_document') == 'yes' }}></td>
+              <td><input type="radio" name="information_document" value="no" {{ 'checked' if current_data.get('information_document') == 'no' }}></td>
+            </tr>
+            <tr>
+              <td>The <em>certified</em> judgment of conviction for <em>each</em> crime for which I am seeking a pardon.</td>
+              <td><input type="radio" name="judgment_conviction" value="yes" {{ 'checked' if current_data.get('judgment_conviction') == 'yes' }}></td>
+              <td><input type="radio" name="judgment_conviction" value="no" {{ 'checked' if current_data.get('judgment_conviction') == 'no' }}></td>
+            </tr>
+            <tr>
+              <td>Letters of recommendation. (<em>Optional but strongly encouraged</em>)</td>
+              <td><input type="radio" name="recommendation_letters" value="yes" {{ 'checked' if current_data.get('recommendation_letters') == 'yes' }}></td>
+              <td><input type="radio" name="recommendation_letters" value="no" {{ 'checked' if current_data.get('recommendation_letters') == 'no' }}></td>
+            </tr>
+            <tr>
+              <td>Other relevant documents. (<em>Optional</em>)</td>
+              <td><input type="radio" name="other_documents" value="yes" {{ 'checked' if current_data.get('other_documents') == 'yes' }}></td>
+              <td><input type="radio" name="other_documents" value="no" {{ 'checked' if current_data.get('other_documents') == 'no' }}></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table class="yesno-table">
+          <thead>
+            <tr>
+              <th><span class="bold-text">I mailed a notice form to the parties listed below for each conviction I am seeking a pardon.</span> (Do <span class="underline-text">not</span> submit the notice forms with your application. Mail the forms directly to the parties listed below.)</th>
+              <th>Yes</th>
+              <th>No</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>The clerk of courts in the county of my conviction(s).</td>
+              <td><input type="radio" name="clerk_notice" value="yes" {{ 'checked' if current_data.get('clerk_notice') == 'yes' }}></td>
+              <td><input type="radio" name="clerk_notice" value="no" {{ 'checked' if current_data.get('clerk_notice') == 'no' }}></td>
+            </tr>
+            <tr>
+              <td>The district attorney's office in the county of my conviction(s).</td>
+              <td><input type="radio" name="da_notice" value="yes" {{ 'checked' if current_data.get('da_notice') == 'yes' }}></td>
+              <td><input type="radio" name="da_notice" value="no" {{ 'checked' if current_data.get('da_notice') == 'no' }}></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="instruction-text">
+          <p>Mail your completed application to the below address. Electronic submissions will <span class="underline-text">not</span> be accepted.</p>
+        </div>
+
+        <div class="instruction-text center-text">
+          <p>Office of the Governor<br>
+          Attn: Pardon Advisory Board<br>
+          P.O. Box 7863<br>
+          Madison, WI 53707</p>
+        </div>
+
+        <div class="form-navigation">
+          <div class="nav-buttons">
+            <a href="{{ url_for('pardon_form', page=8) }}" class="back-btn">Back to Page 8</a>
+            <button type="submit" class="continue-btn">Continue to Page 10</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

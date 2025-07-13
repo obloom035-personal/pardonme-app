@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wisconsin Pardon Application - Page 10</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='pardon_form.css') }}">
+</head>
+<body>
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">Wisconsin State Pardon Application</h1>
+      <h2 class="section-title">Page {{ page }} of 11 - Notice to Judge</h2>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="government-form-container">
+    <div class="form-page">
+      <form method="post">
+        <div class="instruction-text center-text">
+          <h2 class="bold-text">Notice to Judge of Pardon Application</h2>
+        </div>
+
+        <div class="instruction-text">
+          <p><span class="bold-text">TO THE APPLICANT:</span> Fill out the information below. Mail this form to <span class="underline-text">each</span> clerk of courts that oversaw your conviction. Do <span class="underline-text">not</span> submit this form with your pardon application. It is <span class="underline-text">strongly encouraged</span> that you provide the clerk of courts a copy of your application materials or a cover letter explaining why you are seeking a pardon.</p>
+        </div>
+
+        <table class="history-table">
+          <tbody>
+            <tr>
+              <td style="width: 50%; font-weight: bold;">Applicant name</td>
+              <td style="width: 50%; font-weight: bold;">Date of birth (MM/DD/YYYY)</td>
+            </tr>
+            <tr>
+              <td><input type="text" name="judge_applicant_name" value="{{ current_data.get('judge_applicant_name', '') }}"></td>
+              <td><input type="date" name="judge_applicant_dob" value="{{ current_data.get('judge_applicant_dob', '') }}"></td>
+            </tr>
+            <tr>
+              <td style="font-weight: bold;">Mailing address</td>
+              <td style="font-weight: bold;">Phone number and email address</td>
+            </tr>
+            <tr>
+              <td><textarea name="judge_mailing_address" rows="3">{{ current_data.get('judge_mailing_address', '') }}</textarea></td>
+              <td><textarea name="judge_contact_info" rows="3">{{ current_data.get('judge_contact_info', '') }}</textarea></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="instruction-text">
+          <p>I am seeking a pardon for the following crime(s):</p>
+        </div>
+
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Crime</th>
+              <th>Court case number</th>
+              <th>County</th>
+              <th>Sentence</th>
+              <th>Sentencing date (MM/DD/YYYY)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in range(4) %}
+            <tr>
+              <td><input type="text" name="judge_crime_{{ i+1 }}" value="{{ current_data.get('judge_crime_' + (i+1)|string, '') }}"></td>
+              <td><input type="text" name="judge_case_{{ i+1 }}" value="{{ current_data.get('judge_case_' + (i+1)|string, '') }}"></td>
+              <td><input type="text" name="judge_county_{{ i+1 }}" value="{{ current_data.get('judge_county_' + (i+1)|string, '') }}"></td>
+              <td><input type="text" name="judge_sentence_{{ i+1 }}" value="{{ current_data.get('judge_sentence_' + (i+1)|string, '') }}"></td>
+              <td><input type="date" name="judge_sentence_date_{{ i+1 }}" value="{{ current_data.get('judge_sentence_date_' + (i+1)|string, '') }}"></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div class="instruction-text center-text">
+          <p class="bold-text">Pardon applicant: do not fill out anything beyond this point.</p>
+        </div>
+
+        <div class="instruction-text">
+          <p><span class="bold-text">TO THE JUDGE:</span> The Governor and the Governor's Pardon Advisory Board request your opinion on whether the above-named applicant should be granted a pardon. Your support or opposition to a pardon will be given significant weight by the Governor and the Board. If you have questions, please email GOVPardons@wisconsin.gov. Thank you for your assistance.</p>
+        </div>
+
+        <div class="instruction-text">
+          <p>Judge's comments (<em>Support / Oppose/ No Opinion</em>)</p>
+        </div>
+
+        <textarea name="judge_comments" class="large-text-area" style="min-height: 2.5in;" readonly>{{ current_data.get('judge_comments', '') }}</textarea>
+
+        <table class="history-table">
+          <tbody>
+            <tr>
+              <td style="width: 33%; font-weight: bold;">Judge's name (print)</td>
+              <td style="width: 33%; font-weight: bold;">Judge's signature</td>
+              <td style="width: 33%; font-weight: bold;">Date</td>
+            </tr>
+            <tr>
+              <td><input type="text" name="judge_name_print" value="{{ current_data.get('judge_name_print', '') }}" readonly></td>
+              <td><input type="text" name="judge_signature_field" value="{{ current_data.get('judge_signature_field', '') }}" readonly></td>
+              <td><input type="date" name="judge_signature_date" value="{{ current_data.get('judge_signature_date', '') }}" readonly></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="instruction-text">
+          <p>Please send the completed original form to Office of the Governor, Attn: Pardon Advisory Board, P.O. Box 7863, Madison, WI 53707 or GOVPardons@wisconsin.gov, and a copy to the applicant at the mailing address or email address listed above.</p>
+        </div>
+
+        <div class="form-navigation">
+          <div class="nav-buttons">
+            <a href="{{ url_for('pardon_form', page=9) }}" class="back-btn">Back to Page 9</a>
+            <button type="submit" class="continue-btn">Continue to Page 11</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

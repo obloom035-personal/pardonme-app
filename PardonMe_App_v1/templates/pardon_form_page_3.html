@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wisconsin Pardon Application - Page 3</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='pardon_form.css') }}">
+</head>
+<body>
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">Wisconsin State Pardon Application</h1>
+      <h2 class="section-title">Page {{ page }} of 11 - Criminal History</h2>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="government-form-container">
+    <div class="form-page">
+      <div class="instruction-text">
+        <p class="bold-text">CRIMINAL HISTORY:</p>
+        <p>List ALL criminal convictions, including those for which you are seeking a pardon. Include juvenile adjudications if you were tried as an adult. Use additional sheets if necessary.</p>
+      </div>
+
+      <form method="post">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Crime/Offense</th>
+              <th>Court Case Number</th>
+              <th>County of Conviction</th>
+              <th>Date of Offense</th>
+              <th>Date of Conviction</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in range(5) %}
+            <tr>
+              <td><input type="text" name="crime_{{ i+1 }}" value="{{ current_data.get('crime_' + (i+1)|string, '') }}"></td>
+              <td><input type="text" name="case_number_{{ i+1 }}" value="{{ current_data.get('case_number_' + (i+1)|string, '') }}"></td>
+              <td><input type="text" name="county_{{ i+1 }}" value="{{ current_data.get('county_' + (i+1)|string, '') }}"></td>
+              <td><input type="date" name="offense_date_{{ i+1 }}" value="{{ current_data.get('offense_date_' + (i+1)|string, '') }}"></td>
+              <td><input type="date" name="conviction_date_{{ i+1 }}" value="{{ current_data.get('conviction_date_' + (i+1)|string, '') }}"></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Sentence Imposed</th>
+              <th>Date Sentence Began</th>
+              <th>Date Sentence Completed</th>
+              <th>Supervising Agent/Probation Officer</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in range(5) %}
+            <tr>
+              <td><textarea name="sentence_imposed_{{ i+1 }}" rows="2">{{ current_data.get('sentence_imposed_' + (i+1)|string, '') }}</textarea></td>
+              <td><input type="date" name="sentence_start_{{ i+1 }}" value="{{ current_data.get('sentence_start_' + (i+1)|string, '') }}"></td>
+              <td><input type="date" name="sentence_end_{{ i+1 }}" value="{{ current_data.get('sentence_end_' + (i+1)|string, '') }}"></td>
+              <td><input type="text" name="supervising_agent_{{ i+1 }}" value="{{ current_data.get('supervising_agent_' + (i+1)|string, '') }}"></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div class="instruction-text">
+          <p class="bold-text">PENDING CHARGES:</p>
+          <p>Do you have any pending criminal charges or outstanding warrants?</p>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="radio" name="pending_charges" value="yes" id="pending_yes" {{ 'checked' if current_data.get('pending_charges') == 'yes' }}>
+          <label for="pending_yes">Yes</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="radio" name="pending_charges" value="no" id="pending_no" {{ 'checked' if current_data.get('pending_charges') == 'no' }}>
+          <label for="pending_no">No</label>
+        </div>
+
+        <div class="field-group">
+          <label>If yes, please explain:</label>
+          <textarea name="pending_charges_explanation" class="large-text-area">{{ current_data.get('pending_charges_explanation', '') }}</textarea>
+        </div>
+
+        <div class="form-navigation">
+          <div class="nav-buttons">
+            <a href="{{ url_for('pardon_form', page=2) }}" class="back-btn">Back to Page 2</a>
+            <button type="submit" class="continue-btn">Continue to Page 4</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

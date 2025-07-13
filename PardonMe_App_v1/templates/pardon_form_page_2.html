@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wisconsin Pardon Application - Page 2</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='pardon_form.css') }}">
+</head>
+<body>
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">Wisconsin State Pardon Application</h1>
+      <h2 class="section-title">Page {{ page }} of 11 - Personal Information</h2>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="government-form-container">
+    <div class="form-page">
+      <div class="instruction-text">
+        <p class="bold-text">PERSONAL INFORMATION (continued):</p>
+      </div>
+
+      <form method="post">
+        <div class="field-group">
+          <label>Have you ever used any other names?</label>
+          <select name="other_names_used" required>
+            <option value="">Select...</option>
+            <option value="yes" {{ 'selected' if current_data.get('other_names_used') == 'yes' }}>Yes</option>
+            <option value="no" {{ 'selected' if current_data.get('other_names_used') == 'no' }}>No</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label>If yes, list all other names used:</label>
+          <input type="text" name="other_names_list" value="{{ current_data.get('other_names_list', '') }}">
+        </div>
+
+        <div class="field-group">
+          <label>Gender:</label>
+          <select name="gender" required>
+            <option value="">Select...</option>
+            <option value="male" {{ 'selected' if current_data.get('gender') == 'male' }}>Male</option>
+            <option value="female" {{ 'selected' if current_data.get('gender') == 'female' }}>Female</option>
+            <option value="other" {{ 'selected' if current_data.get('gender') == 'other' }}>Other</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label>Race/Ethnicity:</label>
+          <input type="text" name="race_ethnicity" value="{{ current_data.get('race_ethnicity', '') }}">
+        </div>
+
+        <div class="field-group">
+          <label>Height:</label>
+          <input type="text" name="height" value="{{ current_data.get('height', '') }}" placeholder="e.g., 5'10&quot;">
+        </div>
+
+        <div class="field-group">
+          <label>Weight:</label>
+          <input type="text" name="weight" value="{{ current_data.get('weight', '') }}" placeholder="e.g., 180 lbs">
+        </div>
+
+        <div class="field-group">
+          <label>Eye Color:</label>
+          <input type="text" name="eye_color" value="{{ current_data.get('eye_color', '') }}">
+        </div>
+
+        <div class="field-group">
+          <label>Hair Color:</label>
+          <input type="text" name="hair_color" value="{{ current_data.get('hair_color', '') }}">
+        </div>
+
+        <div class="instruction-text">
+          <p class="bold-text">MAILING ADDRESS (if different from current address):</p>
+        </div>
+
+        <div class="field-group">
+          <label>Street Address:</label>
+          <input type="text" name="mailing_street" value="{{ current_data.get('mailing_street', '') }}">
+        </div>
+
+        <div class="two-column">
+          <div class="column">
+            <div class="field-group">
+              <label>City:</label>
+              <input type="text" name="mailing_city" value="{{ current_data.get('mailing_city', '') }}">
+            </div>
+          </div>
+          <div class="column">
+            <div class="field-group">
+              <label>State:</label>
+              <input type="text" name="mailing_state" value="{{ current_data.get('mailing_state', '') }}">
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>ZIP Code:</label>
+          <input type="text" name="mailing_zip" value="{{ current_data.get('mailing_zip', '') }}" pattern="[0-9]{5}(-[0-9]{4})?">
+        </div>
+
+        <div class="instruction-text">
+          <p class="bold-text">EMPLOYMENT INFORMATION:</p>
+        </div>
+
+        <div class="field-group">
+          <label>Current Employer:</label>
+          <input type="text" name="current_employer" value="{{ current_data.get('current_employer', '') }}">
+        </div>
+
+        <div class="field-group">
+          <label>Job Title:</label>
+          <input type="text" name="job_title" value="{{ current_data.get('job_title', '') }}">
+        </div>
+
+        <div class="field-group">
+          <label>Work Address:</label>
+          <input type="text" name="work_address" value="{{ current_data.get('work_address', '') }}">
+        </div>
+
+        <div class="field-group">
+          <label>Work Phone:</label>
+          <input type="tel" name="work_phone" value="{{ current_data.get('work_phone', '') }}">
+        </div>
+
+        <div class="field-group">
+          <label>Length of Employment:</label>
+          <input type="text" name="employment_length" value="{{ current_data.get('employment_length', '') }}">
+        </div>
+
+        <div class="form-navigation">
+          <div class="nav-buttons">
+            <a href="{{ url_for('pardon_form', page=1) }}" class="back-btn">Back to Page 1</a>
+            <button type="submit" class="continue-btn">Continue to Page 3</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

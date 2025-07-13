@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wisconsin Pardon Application - Page 4</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='pardon_form.css') }}">
+</head>
+<body>
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">Wisconsin State Pardon Application</h1>
+      <h2 class="section-title">Page {{ page }} of 11 - Sentence Details</h2>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="government-form-container">
+    <div class="form-page">
+      <div class="instruction-text">
+        <p class="bold-text">SENTENCE AND INCARCERATION DETAILS:</p>
+        <p>Provide detailed information about your sentence and any periods of incarceration.</p>
+      </div>
+
+      <form method="post">
+        <div class="instruction-text">
+          <p class="bold-text">1. Were you sentenced to prison or jail time?</p>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="radio" name="sentenced_prison" value="yes" id="prison_yes" {{ 'checked' if current_data.get('sentenced_prison') == 'yes' }}>
+          <label for="prison_yes">Yes</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="radio" name="sentenced_prison" value="no" id="prison_no" {{ 'checked' if current_data.get('sentenced_prison') == 'no' }}>
+          <label for="prison_no">No</label>
+        </div>
+
+        <div class="field-group">
+          <label>If yes, name of institution(s) where you served time:</label>
+          <textarea name="institutions" class="large-text-area">{{ current_data.get('institutions', '') }}</textarea>
+        </div>
+
+        <div class="instruction-text">
+          <p class="bold-text">2. Were you sentenced to probation or parole?</p>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="radio" name="sentenced_probation" value="yes" id="probation_yes" {{ 'checked' if current_data.get('sentenced_probation') == 'yes' }}>
+          <label for="probation_yes">Yes</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="radio" name="sentenced_probation" value="no" id="probation_no" {{ 'checked' if current_data.get('sentenced_probation') == 'no' }}>
+          <label for="probation_no">No</label>
+        </div>
+
+        <div class="field-group">
+          <label>If yes, provide details (length, conditions, supervising agency):</label>
+          <textarea name="probation_details" class="large-text-area">{{ current_data.get('probation_details', '') }}</textarea>
+        </div>
+
+        <div class="instruction-text">
+          <p class="bold-text">3. Were you ordered to pay fines, restitution, or court costs?</p>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="radio" name="ordered_payments" value="yes" id="payments_yes" {{ 'checked' if current_data.get('ordered_payments') == 'yes' }}>
+          <label for="payments_yes">Yes</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="radio" name="ordered_payments" value="no" id="payments_no" {{ 'checked' if current_data.get('ordered_payments') == 'no' }}>
+          <label for="payments_no">No</label>
+        </div>
+
+        <div class="field-group">
+          <label>If yes, provide details and current status of payments:</label>
+          <textarea name="payment_details" class="large-text-area">{{ current_data.get('payment_details', '') }}</textarea>
+        </div>
+
+        <div class="instruction-text">
+          <p class="bold-text">4. Have you completed all terms of your sentence?</p>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="radio" name="sentence_completed" value="yes" id="completed_yes" {{ 'checked' if current_data.get('sentence_completed') == 'yes' }}>
+          <label for="completed_yes">Yes</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="radio" name="sentence_completed" value="no" id="completed_no" {{ 'checked' if current_data.get('sentence_completed') == 'no' }}>
+          <label for="completed_no">No</label>
+        </div>
+
+        <div class="field-group">
+          <label>If no, explain what remains to be completed:</label>
+          <textarea name="remaining_sentence" class="large-text-area">{{ current_data.get('remaining_sentence', '') }}</textarea>
+        </div>
+
+        <div class="form-navigation">
+          <div class="nav-buttons">
+            <a href="{{ url_for('pardon_form', page=3) }}" class="back-btn">Back to Page 3</a>
+            <button type="submit" class="continue-btn">Continue to Page 5</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

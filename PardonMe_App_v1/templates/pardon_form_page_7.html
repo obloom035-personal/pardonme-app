@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wisconsin Pardon Application - Page 7</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='pardon_form.css') }}">
+</head>
+<body>
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">Wisconsin State Pardon Application</h1>
+      <h2 class="section-title">Page {{ page }} of 11 - Education & Community Service</h2>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="government-form-container">
+    <div class="form-page">
+      <form method="post">
+        <div class="instruction-text">
+          <p><span class="bold-text">13.</span> List the highest grade you completed or degree you received: ________________________</p>
+        </div>
+
+        <div class="field-group">
+          <label>Highest education level:</label>
+          <input type="text" name="highest_education" value="{{ current_data.get('highest_education', '') }}" required>
+        </div>
+
+        <div class="instruction-text">
+          <p><span class="bold-text">14.</span> Describe any education you have received <span class="underline-text">since conviction</span>. List all courses, programs, certificates, or degrees completed, including prison programs. Transcripts, diplomas, or other documentation may be attached, but are not necessary. <em>Attach additional pages if necessary.</em></p>
+        </div>
+
+        <textarea name="education_since_conviction" class="large-text-area" style="min-height: 1.5in;">{{ current_data.get('education_since_conviction', '') }}</textarea>
+
+        <div class="instruction-text">
+          <p><span class="bold-text">15.</span> If you served in the military, provide the details of your service, including the dates of service, the branch of service, rank or rate, and type of discharge received. <em>Attach additional pages if necessary.</em></p>
+        </div>
+
+        <textarea name="military_service" class="large-text-area" style="min-height: 1.5in;">{{ current_data.get('military_service', '') }}</textarea>
+
+        <div class="instruction-text">
+          <p><span class="bold-text">16.</span> Describe any community service, activities, or volunteer work you have participated in <span class="underline-text">since conviction</span>. <em>Attach additional pages if necessary.</em></p>
+        </div>
+
+        <textarea name="community_service" class="large-text-area" style="min-height: 1.5in;">{{ current_data.get('community_service', '') }}</textarea>
+
+        <div class="instruction-text">
+          <p><span class="bold-text">17.</span> Describe any treatment or counseling you have participated in <span class="underline-text">since conviction</span>. <em>Attach additional pages if necessary.</em></p>
+        </div>
+
+        <textarea name="treatment_counseling" class="large-text-area" style="min-height: 1.5in;">{{ current_data.get('treatment_counseling', '') }}</textarea>
+
+        <div class="instruction-text">
+          <p><span class="bold-text">18.</span> Describe any other steps or actions that you have not mentioned so far that you have taken since conviction to address your criminal behavior or to become a positive member of your community. <em>Attach additional pages if necessary.</em></p>
+        </div>
+
+        <textarea name="other_steps" class="large-text-area" style="min-height: 1.5in;">{{ current_data.get('other_steps', '') }}</textarea>
+
+        <div class="instruction-text">
+          <p><span class="bold-text">19.</span> Attach <span class="bold-text">letters of recommendation</span> and any other relevant documents that you would like the Pardon Advisory Board to consider. <em>Optional but strongly encouraged.</em></p>
+        </div>
+
+        <div class="form-navigation">
+          <div class="nav-buttons">
+            <a href="{{ url_for('pardon_form', page=6) }}" class="back-btn">Back to Page 6</a>
+            <button type="submit" class="continue-btn">Continue to Page 8</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

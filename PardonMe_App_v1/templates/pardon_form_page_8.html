@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wisconsin Pardon Application - Page 8</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='pardon_form.css') }}">
+</head>
+<body>
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">Wisconsin State Pardon Application</h1>
+      <h2 class="section-title">Page {{ page }} of 11 - Notice & Authorization</h2>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="government-form-container">
+    <div class="form-page">
+      <form method="post">
+        <div class="instruction-text">
+          <p class="bold-text">Section 4: Notice of Pardon Application</p>
+        </div>
+
+        <div class="instruction-text">
+          <p><span class="bold-text">20.</span> Complete and mail the notice forms (provided below) to <span class="underline-text">each</span> clerk of courts and <span class="underline-text">each</span> district attorney's office that oversaw over your conviction(s). If you are seeking a pardon for convictions from multiple counties, the clerk of courts and district attorney's office from <span class="underline-text">each</span> county must be sent a notice form. It is <span class="underline-text">strongly encouraged</span> that you provide the clerk of courts and district attorney's office a copy of your application materials or a cover letter explaining why you are seeking a pardon.</p>
+        </div>
+
+        <div class="instruction-text">
+          <p>I sent the notice forms to the clerk of courts and district attorney's office that oversaw my conviction(s). Yes ☐ &nbsp;&nbsp;&nbsp; No ☐</p>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="radio" name="notice_sent" value="yes" id="notice_yes" {{ 'checked' if current_data.get('notice_sent') == 'yes' }}>
+          <label for="notice_yes">Yes</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="radio" name="notice_sent" value="no" id="notice_no" {{ 'checked' if current_data.get('notice_sent') == 'no' }}>
+          <label for="notice_no">No</label>
+        </div>
+
+        <div class="instruction-text">
+          <p class="bold-text">Section 5: Background Check Authorization</p>
+        </div>
+
+        <div class="instruction-text">
+          <p>By signing this form, I authorize the State of Wisconsin to conduct a background investigation and verify the information provided above. I also authorize the Department of Corrections to release any confinement or supervision records to the Office of the Governor, any designee tasked with evaluating pardon applications, and the Pardon Advisory Board. In connection with this consent, I authorize the use of law enforcement agencies and/or private background check organizations to assist in collecting this information. I also authorize and request any present or former employer, school, police department, financial institution or other person(s) with personal knowledge of me to provide the requestor with any and all information in their possession regarding me in connection with my application for pardon. I authorize that a photocopy of this authorization be accepted with the same authority as the original.</p>
+        </div>
+
+        <div class="signature-section">
+          <div class="signature-line">
+            <label>Applicant signature:</label>
+            <input type="text" name="applicant_signature_auth" value="{{ current_data.get('applicant_signature_auth', '') }}" class="signature-field">
+            <label>Date:</label>
+            <input type="date" name="signature_date_auth" value="{{ current_data.get('signature_date_auth', '') }}" class="date-field">
+          </div>
+        </div>
+
+        <div class="instruction-text">
+          <p class="bold-text">Section 6: Certification</p>
+        </div>
+
+        <div class="instruction-text">
+          <p>I certify, under the penalty of perjury, that the information in this application is true and correct to the best of my knowledge and that I have complied with the above Section 4 notice requirements.</p>
+        </div>
+
+        <div class="signature-section">
+          <div class="signature-line">
+            <label>Applicant signature:</label>
+            <input type="text" name="applicant_signature_cert" value="{{ current_data.get('applicant_signature_cert', '') }}" class="signature-field">
+            <label>Date:</label>
+            <input type="date" name="signature_date_cert" value="{{ current_data.get('signature_date_cert', '') }}" class="date-field">
+          </div>
+        </div>
+
+        <div class="instruction-text">
+          <p><em>Applicant must sign in the presence of a Notary Public.</em></p>
+        </div>
+
+        <div class="instruction-text">
+          <p class="bold-text">FOR NOTARY USE ONLY:</p>
+        </div>
+
+        <div class="signature-section">
+          <div class="signature-line">
+            <label>Subscribed and sworn before me this</label>
+            <input type="text" name="notary_day" value="{{ current_data.get('notary_day', '') }}" style="width: 60px;">
+            <label>day of</label>
+            <input type="text" name="notary_month" value="{{ current_data.get('notary_month', '') }}" style="width: 120px;">
+            <label>, 20</label>
+            <input type="text" name="notary_year" value="{{ current_data.get('notary_year', '') }}" style="width: 40px;">
+          </div>
+          
+          <div class="signature-line">
+            <label>Notary public signature:</label>
+            <input type="text" name="notary_signature" value="{{ current_data.get('notary_signature', '') }}" class="signature-field">
+          </div>
+          
+          <div class="signature-line">
+            <label>My commission is permanent/expires:</label>
+            <input type="text" name="notary_commission" value="{{ current_data.get('notary_commission', '') }}" class="signature-field">
+          </div>
+        </div>
+
+        <div class="instruction-text">
+          <p class="bold-text">FOR PREPARER USE ONLY:</p>
+          <p><em>To be completed and signed if application was completed by someone other than the applicant.</em></p>
+        </div>
+
+        <div class="signature-section">
+          <div class="signature-line">
+            <label>Preparer's Printed Name:</label>
+            <input type="text" name="preparer_name" value="{{ current_data.get('preparer_name', '') }}" class="signature-field">
+          </div>
+          
+          <div class="signature-line">
+            <label>Preparer's Signature:</label>
+            <input type="text" name="preparer_signature" value="{{ current_data.get('preparer_signature', '') }}" class="signature-field">
+            <label>Date:</label>
+            <input type="date" name="preparer_date" value="{{ current_data.get('preparer_date', '') }}" class="date-field">
+          </div>
+        </div>
+
+        <div class="form-navigation">
+          <div class="nav-buttons">
+            <a href="{{ url_for('pardon_form', page=7) }}" class="back-btn">Back to Page 7</a>
+            <button type="submit" class="continue-btn">Continue to Page 9</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

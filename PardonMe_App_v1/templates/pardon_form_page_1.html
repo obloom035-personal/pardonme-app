@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wisconsin Pardon Application - Page 1</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='pardon_form.css') }}">
+</head>
+<body>
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">Wisconsin State Pardon Application</h1>
+      <h2 class="section-title">Page {{ page }} of 11 - Application for Executive Clemency</h2>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="government-form-container">
+    <div class="form-page">
+      <header class="document-header">
+        <h1>Application for Executive Clemency</h1>
+        <div class="state-info">State of Wisconsin</div>
+      </header>
+      
+      <form method="post" action="">
+        <div class="instruction-text">
+          <p class="bold-text">INSTRUCTIONS:</p>
+          <p>This application must be completed in its entirety. Incomplete applications will be returned. Please type or print clearly in black ink. Attach additional sheets if necessary.</p>
+        </div>
+
+        <div class="instruction-text">
+          <p class="bold-text">APPLICANT INFORMATION:</p>
+        </div>
+
+        <div class="field-group">
+          <label>Full Legal Name:</label>
+          <input type="text" name="full_legal_name" value="{{ current_data.get('full_legal_name', '') }}" required>
+        </div>
+
+        <div class="two-column">
+          <div class="column">
+            <div class="field-group">
+              <label>First Name:</label>
+              <input type="text" name="first_name" value="{{ current_data.get('first_name', '') }}" required>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field-group">
+              <label>Middle Name:</label>
+              <input type="text" name="middle_name" value="{{ current_data.get('middle_name', '') }}">
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Last Name:</label>
+          <input type="text" name="last_name" value="{{ current_data.get('last_name', '') }}" required>
+        </div>
+
+        <div class="field-group">
+          <label>Date of Birth:</label>
+          <input type="date" name="date_of_birth" value="{{ current_data.get('date_of_birth', '') }}" required>
+        </div>
+
+        <div class="field-group">
+          <label>Place of Birth (City, State):</label>
+          <input type="text" name="place_of_birth" value="{{ current_data.get('place_of_birth', '') }}" required>
+        </div>
+
+        <div class="field-group">
+          <label>Social Security Number:</label>
+          <input type="text" name="ssn" value="{{ current_data.get('ssn', '') }}" pattern="[0-9]{3}-[0-9]{2}-[0-9]{4}" placeholder="XXX-XX-XXXX" required>
+        </div>
+
+        <div class="instruction-text">
+          <p class="bold-text">CURRENT ADDRESS:</p>
+        </div>
+
+        <div class="field-group">
+          <label>Street Address:</label>
+          <input type="text" name="current_street" value="{{ current_data.get('current_street', '') }}" required>
+        </div>
+
+        <div class="two-column">
+          <div class="column">
+            <div class="field-group">
+              <label>City:</label>
+              <input type="text" name="current_city" value="{{ current_data.get('current_city', '') }}" required>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field-group">
+              <label>State:</label>
+              <input type="text" name="current_state" value="{{ current_data.get('current_state', '') }}" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>ZIP Code:</label>
+          <input type="text" name="current_zip" value="{{ current_data.get('current_zip', '') }}" pattern="[0-9]{5}(-[0-9]{4})?" required>
+        </div>
+
+        <div class="two-column">
+          <div class="column">
+            <div class="field-group">
+              <label>Home Phone:</label>
+              <input type="tel" name="home_phone" value="{{ current_data.get('home_phone', '') }}">
+            </div>
+          </div>
+          <div class="column">
+            <div class="field-group">
+              <label>Cell Phone:</label>
+              <input type="tel" name="cell_phone" value="{{ current_data.get('cell_phone', '') }}">
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Email Address:</label>
+          <input type="email" name="email" value="{{ current_data.get('email', '') }}">
+        </div>
+
+        <div class="form-navigation">
+          <div class="nav-buttons">
+            <button type="submit" class="continue-btn">Continue to Page 2</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

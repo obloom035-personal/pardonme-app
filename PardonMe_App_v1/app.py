@@ -120,6 +120,67 @@ def section_three():
     # Placeholder for the next section to prevent 404 errors on redirect
     return "<h1>Section 3 - Coming Soon!</h1><p><a href='/section_two'>Go Back</a></p>"
 
+@app.route("/pardon_form", methods=["GET", "POST"])
+@app.route("/pardon_form/<int:page>", methods=["GET", "POST"])
+def pardon_form(page=1):
+    if page < 1 or page > 11:
+        return redirect(url_for('pardon_form', page=1))
+    
+    if request.method == "POST":
+        if 'pardon_form_data' not in session:
+            session['pardon_form_data'] = {}
+        
+        page_data = {}
+        for key, value in request.form.items():
+            if isinstance(value, list):
+                page_data[key] = value
+            else:
+                page_data[key] = value
+        
+        session['pardon_form_data'][f'page_{page}'] = page_data
+        
+        if IS_DEVELOPMENT:
+            print(f"DEV MODE: Writing pardon form page {page} data...")
+            os.makedirs("logs", exist_ok=True)
+            with open(f"logs/pardon_form_page_{page}.json", "w") as f:
+                json.dump(page_data, f, indent=4)
+        
+        if page < 11:
+            return redirect(url_for('pardon_form', page=page + 1))
+        else:
+            return redirect(url_for('generate_pardon_pdf'))
+    
+    current_data = {}
+    if 'pardon_form_data' in session and f'page_{page}' in session['pardon_form_data']:
+        current_data = session['pardon_form_data'][f'page_{page}']
+    
+    progress = int((page / 11) * 100)
+    return render_template(f"pardon_form_page_{page}.html", 
+                         page=page, 
+                         progress=progress, 
+                         current_data=current_data)
+
+@app.route("/generate_pardon_pdf")
+def generate_pardon_pdf():
+    if 'pardon_form_data' not in session:
+        return redirect(url_for('pardon_form', page=1))
+    
+    from weasyprint import HTML, CSS
+    from flask import make_response
+    
+    html_content = render_template('pardon_form_pdf.html', 
+                                 form_data=session['pardon_form_data'])
+    
+    pdf = HTML(string=html_content).write_pdf(
+        stylesheets=[CSS(filename='static/pardon_form_pdf.css')]
+    )
+    
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'attachment; filename=wisconsin_pardon_application.pdf'
+    
+    return response
+
 if __name__ == '__main__':
     # The `debug=True` flag is great for local development.
     # The `IS_DEVELOPMENT` flag we set above will control the JSON logging.

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wisconsin State Pardon Application</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='pardon_form_pdf.css') }}">
+</head>
+<body>
+  {% for page_num in range(1, 12) %}
+    <div class="pdf-page" id="page-{{ page_num }}">
+      {% set page_data = form_data.get('page_' + page_num|string, {}) %}
+      
+      {% if page_num == 1 %}
+        <header class="document-header">
+          <h1>Application for Executive Clemency</h1>
+          <div class="state-info">State of Wisconsin</div>
+        </header>
+        
+        <div class="instruction-text">
+          <p class="bold-text">INSTRUCTIONS:</p>
+          <p>This application must be completed in its entirety. Incomplete applications will be returned. Please type or print clearly in black ink. Attach additional sheets if necessary.</p>
+        </div>
+
+        <div class="instruction-text">
+          <p class="bold-text">APPLICANT INFORMATION:</p>
+        </div>
+
+        <div class="field-group">
+          <label>Full Legal Name:</label>
+          <span class="field-value">{{ page_data.get('full_legal_name', '') }}</span>
+        </div>
+
+        <div class="two-column">
+          <div class="column">
+            <div class="field-group">
+              <label>First Name:</label>
+              <span class="field-value">{{ page_data.get('first_name', '') }}</span>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field-group">
+              <label>Middle Name:</label>
+              <span class="field-value">{{ page_data.get('middle_name', '') }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Last Name:</label>
+          <span class="field-value">{{ page_data.get('last_name', '') }}</span>
+        </div>
+
+        <div class="field-group">
+          <label>Date of Birth:</label>
+          <span class="field-value">{{ page_data.get('date_of_birth', '') }}</span>
+        </div>
+
+        <div class="field-group">
+          <label>Place of Birth (City, State):</label>
+          <span class="field-value">{{ page_data.get('place_of_birth', '') }}</span>
+        </div>
+
+        <div class="field-group">
+          <label>Social Security Number:</label>
+          <span class="field-value">{{ page_data.get('ssn', '') }}</span>
+        </div>
+
+        <div class="instruction-text">
+          <p class="bold-text">CURRENT ADDRESS:</p>
+        </div>
+
+        <div class="field-group">
+          <label>Street Address:</label>
+          <span class="field-value">{{ page_data.get('current_street', '') }}</span>
+        </div>
+
+        <div class="two-column">
+          <div class="column">
+            <div class="field-group">
+              <label>City:</label>
+              <span class="field-value">{{ page_data.get('current_city', '') }}</span>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field-group">
+              <label>State:</label>
+              <span class="field-value">{{ page_data.get('current_state', '') }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>ZIP Code:</label>
+          <span class="field-value">{{ page_data.get('current_zip', '') }}</span>
+        </div>
+
+        <div class="two-column">
+          <div class="column">
+            <div class="field-group">
+              <label>Home Phone:</label>
+              <span class="field-value">{{ page_data.get('home_phone', '') }}</span>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field-group">
+              <label>Cell Phone:</label>
+              <span class="field-value">{{ page_data.get('cell_phone', '') }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Email Address:</label>
+          <span class="field-value">{{ page_data.get('email', '') }}</span>
+        </div>
+
+      {% elif page_num == 2 %}
+        <div class="instruction-text">
+          <p class="bold-text">PERSONAL INFORMATION (continued):</p>
+        </div>
+
+        <div class="field-group">
+          <label>Have you ever used any other names?</label>
+          <span class="field-value">{{ page_data.get('other_names_used', '') }}</span>
+        </div>
+
+        <div class="field-group">
+          <label>If yes, list all other names used:</label>
+          <span class="field-value">{{ page_data.get('other_names_list', '') }}</span>
+        </div>
+
+        <div class="field-group">
+          <label>Gender:</label>
+          <span class="field-value">{{ page_data.get('gender', '') }}</span>
+        </div>
+
+        <div class="field-group">
+          <label>Race/Ethnicity:</label>
+          <span class="field-value">{{ page_data.get('race_ethnicity', '') }}</span>
+        </div>
+
+        <div class="field-group">
+          <label>Height:</label>
+          <span class="field-value">{{ page_data.get('height', '') }}</span>
+        </div>
+
+        <div class="field-group">
+          <label>Weight:</label>
+          <span class="field-value">{{ page_data.get('weight', '') }}</span>
+        </div>
+
+        <div class="field-group">
+          <label>Eye Color:</label>
+          <span class="field-value">{{ page_data.get('eye_color', '') }}</span>
+        </div>
+
+        <div class="field-group">
+          <label>Hair Color:</label>
+          <span class="field-value">{{ page_data.get('hair_color', '') }}</span>
+        </div>
+
+        <div class="instruction-text">
+          <p class="bold-text">MAILING ADDRESS (if different from current address):</p>
+        </div>
+
+        <div class="field-group">
+          <label>Street Address:</label>
+          <span class="field-value">{{ page_data.get('mailing_street', '') }}</span>
+        </div>
+
+        <div class="two-column">
+          <div class="column">
+            <div class="field-group">
+              <label>City:</label>
+              <span class="field-value">{{ page_data.get('mailing_city', '') }}</span>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field-group">
+              <label>State:</label>
+              <span class="field-value">{{ page_data.get('mailing_state', '') }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>ZIP Code:</label>
+          <span class="field-value">{{ page_data.get('mailing_zip', '') }}</span>
+        </div>
+
+        <div class="instruction-text">
+          <p class="bold-text">EMPLOYMENT INFORMATION:</p>
+        </div>
+
+        <div class="field-group">
+          <label>Current Employer:</label>
+          <span class="field-value">{{ page_data.get('current_employer', '') }}</span>
+        </div>
+
+        <div class="field-group">
+          <label>Job Title:</label>
+          <span class="field-value">{{ page_data.get('job_title', '') }}</span>
+        </div>
+
+        <div class="field-group">
+          <label>Work Address:</label>
+          <span class="field-value">{{ page_data.get('work_address', '') }}</span>
+        </div>
+
+        <div class="field-group">
+          <label>Work Phone:</label>
+          <span class="field-value">{{ page_data.get('work_phone', '') }}</span>
+        </div>
+
+        <div class="field-group">
+          <label>Length of Employment:</label>
+          <span class="field-value">{{ page_data.get('employment_length', '') }}</span>
+        </div>
+
+      {% elif page_num == 3 %}
+        <div class="instruction-text">
+          <p class="bold-text">CRIMINAL HISTORY:</p>
+          <p>List ALL criminal convictions, including those for which you are seeking a pardon. Include juvenile adjudications if you were tried as an adult. Use additional sheets if necessary.</p>
+        </div>
+
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Crime/Offense</th>
+              <th>Court Case Number</th>
+              <th>County of Conviction</th>
+              <th>Date of Offense</th>
+              <th>Date of Conviction</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in range(5) %}
+            <tr>
+              <td>{{ page_data.get('crime_' + (i+1)|string, '') }}</td>
+              <td>{{ page_data.get('case_number_' + (i+1)|string, '') }}</td>
+              <td>{{ page_data.get('county_' + (i+1)|string, '') }}</td>
+              <td>{{ page_data.get('offense_date_' + (i+1)|string, '') }}</td>
+              <td>{{ page_data.get('conviction_date_' + (i+1)|string, '') }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Sentence Imposed</th>
+              <th>Date Sentence Began</th>
+              <th>Date Sentence Completed</th>
+              <th>Supervising Agent/Probation Officer</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in range(5) %}
+            <tr>
+              <td>{{ page_data.get('sentence_imposed_' + (i+1)|string, '') }}</td>
+              <td>{{ page_data.get('sentence_start_' + (i+1)|string, '') }}</td>
+              <td>{{ page_data.get('sentence_end_' + (i+1)|string, '') }}</td>
+              <td>{{ page_data.get('supervising_agent_' + (i+1)|string, '') }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div class="instruction-text">
+          <p class="bold-text">PENDING CHARGES:</p>
+          <p>Do you have any pending criminal charges or outstanding warrants?</p>
+        </div>
+
+        <div class="checkbox-group">
+          <span class="checkbox-mark {{ 'checked' if page_data.get('pending_charges') == 'yes' }}"></span>
+          <label>Yes</label>
+          <span class="checkbox-mark {{ 'checked' if page_data.get('pending_charges') == 'no' }}"></span>
+          <label>No</label>
+        </div>
+
+        <div class="field-group">
+          <label>If yes, please explain:</label>
+          <div class="text-area-content">{{ page_data.get('pending_charges_explanation', '') }}</div>
+        </div>
+
+      {% else %}
+        <div class="instruction-text center-text">
+          <p class="bold-text">Page {{ page_num }} Content</p>
+          <p>Additional form content for page {{ page_num }} would be rendered here based on the specific page data and layout requirements.</p>
+        </div>
+      {% endif %}
+    </div>
+  {% endfor %}
+</body>
+</html>

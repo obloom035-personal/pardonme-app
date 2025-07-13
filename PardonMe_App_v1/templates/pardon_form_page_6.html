@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wisconsin Pardon Application - Page 6</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='pardon_form.css') }}">
+</head>
+<body>
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">Wisconsin State Pardon Application</h1>
+      <h2 class="section-title">Page {{ page }} of 11 - Additional Information</h2>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="government-form-container">
+    <div class="form-page">
+      <form method="post">
+        <div class="instruction-text">
+          <p><span class="bold-text">11.</span> Describe any other reason(s) why a pardon should be granted. This includes the length of time since conviction, the lack of subsequent criminal contacts, personal development and growth since conviction, additional documented need for a pardon, etc. <em>Attach additional pages if necessary.</em></p>
+        </div>
+
+        <textarea name="additional_reasons" class="large-text-area" style="min-height: 2.5in;">{{ current_data.get('additional_reasons', '') }}</textarea>
+
+        <div class="instruction-text">
+          <p><span class="bold-text">12.</span> List your employment history since your conviction. Include times when you were unemployed. <em>Attach additional pages if necessary.</em></p>
+        </div>
+
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Employer</th>
+              <th>Position held</th>
+              <th>Employer address and phone number</th>
+              <th>Name of supervisor</th>
+              <th>Dates of employment</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in range(6) %}
+            <tr>
+              <td><input type="text" name="employer_{{ i+1 }}" value="{{ current_data.get('employer_' + (i+1)|string, '') }}"></td>
+              <td><input type="text" name="position_{{ i+1 }}" value="{{ current_data.get('position_' + (i+1)|string, '') }}"></td>
+              <td><textarea name="employer_address_{{ i+1 }}" rows="2">{{ current_data.get('employer_address_' + (i+1)|string, '') }}</textarea></td>
+              <td><input type="text" name="supervisor_{{ i+1 }}" value="{{ current_data.get('supervisor_' + (i+1)|string, '') }}"></td>
+              <td><input type="text" name="employment_dates_{{ i+1 }}" value="{{ current_data.get('employment_dates_' + (i+1)|string, '') }}"></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div class="form-navigation">
+          <div class="nav-buttons">
+            <a href="{{ url_for('pardon_form', page=5) }}" class="back-btn">Back to Page 5</a>
+            <button type="submit" class="continue-btn">Continue to Page 7</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

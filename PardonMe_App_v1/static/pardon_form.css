@@ -1,0 +1,364 @@
+/* Extend existing top bar styling */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #0a1f2e;
+  color: white;
+  padding: 20px 30px;
+  border-bottom: 3px solid #00cc66;
+}
+
+.logo-title {
+  flex-shrink: 0;
+}
+
+.logo-img {
+  height: 150px;
+}
+
+.title-center {
+  text-align: center;
+  flex-grow: 1;
+}
+
+.title-center h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.title-center .section-title {
+  margin: 5px 0;
+  font-size: 1.2rem;
+}
+
+.progress-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.progress-bar {
+  width: 200px;
+  height: 10px;
+  background-color: #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #00cc66;
+}
+
+/* Government form container */
+.government-form-container {
+  background-color: #f5f5f5;
+  min-height: calc(100vh - 120px);
+  padding: 20px;
+}
+
+.form-page {
+  width: 8.5in;
+  min-height: 11in;
+  margin: 0 auto;
+  padding: 0.75in;
+  background: white;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  font-family: 'Times New Roman', serif;
+  font-size: 12pt;
+  line-height: 1.2;
+}
+
+/* Document header styling */
+.document-header {
+  text-align: center;
+  margin-bottom: 0.5in;
+}
+
+.document-header h1 {
+  font-size: 16pt;
+  font-weight: bold;
+  margin: 0 0 0.2in 0;
+  text-transform: uppercase;
+}
+
+.state-info {
+  font-size: 14pt;
+  margin-bottom: 0.3in;
+}
+
+/* Form field styling */
+.field-group {
+  display: flex;
+  margin-bottom: 0.15in;
+  align-items: baseline;
+}
+
+.field-group label {
+  width: 2.5in;
+  font-weight: normal;
+  font-size: 11pt;
+  flex-shrink: 0;
+}
+
+.field-group input[type="text"],
+.field-group input[type="date"],
+.field-group input[type="email"],
+.field-group input[type="tel"] {
+  border: none;
+  border-bottom: 1px solid black;
+  flex: 1;
+  padding: 2px 0;
+  font-family: inherit;
+  font-size: 11pt;
+  background: transparent;
+  outline: none;
+}
+
+.field-group select {
+  border: none;
+  border-bottom: 1px solid black;
+  flex: 1;
+  padding: 2px 0;
+  font-family: inherit;
+  font-size: 11pt;
+  background: transparent;
+  outline: none;
+}
+
+/* Two column layout */
+.two-column {
+  display: flex;
+  gap: 0.5in;
+}
+
+.column {
+  flex: 1;
+}
+
+/* Table styling for criminal history pages */
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.25in 0;
+  font-size: 10pt;
+}
+
+.history-table th,
+.history-table td {
+  border: 1px solid black;
+  padding: 6px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.history-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+  text-align: center;
+  font-size: 9pt;
+}
+
+.history-table input[type="text"],
+.history-table input[type="date"],
+.history-table textarea {
+  border: none;
+  width: 100%;
+  font-family: inherit;
+  font-size: 9pt;
+  background: transparent;
+  resize: none;
+  outline: none;
+}
+
+/* Large text areas */
+.large-text-area {
+  width: 100%;
+  min-height: 2in;
+  border: 1px solid black;
+  padding: 8px;
+  font-family: inherit;
+  font-size: 11pt;
+  resize: vertical;
+  outline: none;
+}
+
+/* Signature line styling */
+.signature-section {
+  margin: 0.3in 0;
+}
+
+.signature-line {
+  display: flex;
+  align-items: baseline;
+  margin: 0.2in 0;
+}
+
+.signature-line label {
+  margin-right: 0.2in;
+  font-size: 11pt;
+}
+
+.signature-field {
+  border-bottom: 1px solid black;
+  height: 20px;
+  display: inline-block;
+  min-width: 2.5in;
+  flex: 1;
+}
+
+.date-field {
+  border-bottom: 1px solid black;
+  height: 20px;
+  display: inline-block;
+  width: 1.2in;
+  margin-left: 0.2in;
+}
+
+/* Checkbox styling */
+.checkbox-group {
+  margin: 0.1in 0;
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.checkbox-group label {
+  font-size: 11pt;
+  cursor: pointer;
+}
+
+/* Yes/No table styling */
+.yesno-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.2in 0;
+  font-size: 11pt;
+}
+
+.yesno-table th,
+.yesno-table td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.yesno-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+.yesno-table td:first-child {
+  text-align: left;
+  width: 70%;
+}
+
+.yesno-table input[type="radio"] {
+  margin: 0;
+}
+
+/* Navigation styling */
+.form-navigation {
+  text-align: center;
+  margin-top: 0.5in;
+  padding-top: 0.3in;
+  border-top: 1px solid #ccc;
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.continue-btn,
+.back-btn {
+  background-color: #00cc66;
+  color: white;
+  padding: 12px 24px;
+  font-size: 14pt;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.back-btn {
+  background-color: #666;
+}
+
+.continue-btn:hover {
+  background-color: #00e673;
+}
+
+.back-btn:hover {
+  background-color: #777;
+}
+
+/* Special styling for specific pages */
+.instruction-text {
+  font-size: 11pt;
+  margin: 0.2in 0;
+  line-height: 1.3;
+}
+
+.bold-text {
+  font-weight: bold;
+}
+
+.underline-text {
+  text-decoration: underline;
+}
+
+.center-text {
+  text-align: center;
+}
+
+/* Print/PDF specific styling */
+@media print {
+  .top-bar,
+  .form-navigation {
+    display: none;
+  }
+  
+  .form-page {
+    margin: 0;
+    box-shadow: none;
+    page-break-after: always;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .government-form-container {
+    background: white;
+    padding: 0;
+  }
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 1024px) {
+  .form-page {
+    width: 95%;
+    padding: 0.5in;
+  }
+  
+  .two-column {
+    flex-direction: column;
+    gap: 0.2in;
+  }
+}

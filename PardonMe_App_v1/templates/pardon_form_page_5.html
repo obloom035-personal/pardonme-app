@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wisconsin Pardon Application - Page 5</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='pardon_form.css') }}">
+</head>
+<body>
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">Wisconsin State Pardon Application</h1>
+      <h2 class="section-title">Page {{ page }} of 11 - Grounds for Pardon</h2>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="government-form-container">
+    <div class="form-page">
+      <div class="instruction-text">
+        <p class="bold-text">Section 3: Grounds for a Pardon</p>
+      </div>
+
+      <form method="post">
+        <div class="instruction-text">
+          <p><span class="bold-text">9.</span> In your own words, describe <em>in detail</em> the crime(s) for which you are seeking a pardon. Explain what happened, why you committed the crime(s), and any other information you believe the Pardon Advisory Board should consider related to the criminal activity. <em>Attach additional pages if necessary.</em></p>
+        </div>
+
+        <textarea name="crime_description" class="large-text-area" style="min-height: 3.5in;" required>{{ current_data.get('crime_description', '') }}</textarea>
+
+        <div class="instruction-text">
+          <p><span class="bold-text">10.</span> Describe the specific reason(s) why you want or need a pardon. This includes whether the pardon is necessary for a specific occupational license or other professional reasons. <em>Attach additional pages if necessary.</em></p>
+        </div>
+
+        <textarea name="pardon_reasons" class="large-text-area" style="min-height: 3.5in;" required>{{ current_data.get('pardon_reasons', '') }}</textarea>
+
+        <div class="form-navigation">
+          <div class="nav-buttons">
+            <a href="{{ url_for('pardon_form', page=4) }}" class="back-btn">Back to Page 4</a>
+            <button type="submit" class="continue-btn">Continue to Page 6</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
