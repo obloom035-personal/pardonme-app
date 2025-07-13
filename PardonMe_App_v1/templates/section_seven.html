@@ -127,6 +127,74 @@
     // Auto-fill today's date
     document.getElementById('signature_date').valueAsDate = new Date();
 
+    // Custom confirmation popup
+    function showCustomConfirmation(event) {
+      event.preventDefault();
+      
+      // Create overlay
+      const overlay = document.createElement('div');
+      overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      `;
+      
+      // Create popup
+      const popup = document.createElement('div');
+      popup.style.cssText = `
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        max-width: 500px;
+        width: 90%;
+      `;
+      
+      popup.innerHTML = `
+        <img src="${document.querySelector('.logo-img').src}" alt="PardonMe Logo" style="width: 150px; margin-bottom: 20px;">
+        <h3 style="color: #112d3e; margin-bottom: 15px;">Complete Your Application</h3>
+        <p style="margin-bottom: 25px; color: #495057; line-height: 1.5;">
+          Are you ready to submit your completed pardon application? This will finalize your application and generate your PDF.
+        </p>
+        <div>
+          <button id="confirm-submit" style="background: #28a745; color: white; padding: 12px 24px; border: none; border-radius: 5px; margin: 0 10px; cursor: pointer; font-size: 16px;">
+            Yes, Submit Application
+          </button>
+          <button id="cancel-submit" style="background: #6c757d; color: white; padding: 12px 24px; border: none; border-radius: 5px; margin: 0 10px; cursor: pointer; font-size: 16px;">
+            Cancel
+          </button>
+        </div>
+      `;
+      
+      overlay.appendChild(popup);
+      document.body.appendChild(overlay);
+      
+      // Handle button clicks
+      document.getElementById('confirm-submit').onclick = function() {
+        document.body.removeChild(overlay);
+        event.target.submit();
+      };
+      
+      document.getElementById('cancel-submit').onclick = function() {
+        document.body.removeChild(overlay);
+      };
+      
+      // Close on overlay click
+      overlay.onclick = function(e) {
+        if (e.target === overlay) {
+          document.body.removeChild(overlay);
+        }
+      };
+    }
+
     // Form validation
     document.querySelector('form').addEventListener('submit', function(e) {
       const signature = document.getElementById('signature').value.trim();
@@ -144,10 +212,8 @@
         return;
       }
       
-      // Final confirmation
-      if (!confirm('Are you ready to submit your completed pardon application? This will finalize your application.')) {
-        e.preventDefault();
-      }
+      // Final confirmation with custom popup
+      showCustomConfirmation(e);
     });
   </script>
 

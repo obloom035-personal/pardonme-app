@@ -88,12 +88,18 @@
                 <option value="20k_40k">$20,000 - $40,000</option>
                 <option value="40k_60k">$40,000 - $60,000</option>
                 <option value="60k_80k">$60,000 - $80,000</option>
-                <option value="over_80k">Over $80,000</option>
+                <option value="80k_100k">$80,000 - $100,000</option>
+                <option value="over_100k">$100,000 or above</option>
                 <option value="prefer_not_say">Prefer not to say</option>
               </select><br><br>
 
-              <label for="employment_history">Employment History Since Conviction:</label>
-              <textarea id="employment_history" name="employment_history" rows="4" placeholder="List previous jobs, dates, and responsibilities since your conviction..."></textarea><br><br>
+              <label>Employment History Since Conviction:</label>
+              <div id="employment-history-container">
+                <!-- Employment history entries will be added here -->
+              </div>
+              <div id="add-employment-wrapper" style="text-align: center; margin: 10px 0;">
+                <button type="button" onclick="addEmploymentHistory()" style="background-color: #28a745; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">Add Employment History</button>
+              </div><br><br>
             </div>
 
             <!-- Column 2 -->
@@ -121,7 +127,10 @@
               <textarea id="certifications" name="certifications" rows="3" placeholder="List any professional certifications, licenses, or credentials..."></textarea><br><br>
 
               <label for="career_goals">Career Goals and Aspirations:</label>
-              <textarea id="career_goals" name="career_goals" rows="3" placeholder="Describe your career goals and how you plan to achieve them..."></textarea><br><br>
+              <textarea id="career_goals" name="career_goals" rows="3" placeholder="Describe your career goals and how you plan to achieve them..."></textarea>
+              <div id="career_goals_warning" style="display: none; color: #856404; background-color: #fff3cd; border: 1px solid #ffeaa7; padding: 8px; border-radius: 4px; margin-top: 5px; font-size: 0.9rem;">
+                ⚠️ It would be beneficial to add something here for a better outcome of the application.
+              </div><br><br>
 
               <label for="financial_stability">Financial Stability and Responsibility:</label>
               <textarea id="financial_stability" name="financial_stability" rows="3" placeholder="Describe how you manage finances, support family, pay bills, etc..."></textarea><br><br>
@@ -135,6 +144,101 @@
       </div>
     </div>
   </div>
+
+  <!-- Employment History Template -->
+  <template id="employment-template">
+    <div class="employment-card" style="border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 5px; background-color: #f9f9f9;">
+      <h4>Employment History <span class="employment-number"></span></h4>
+      
+      <label>Job Title/Position:</label>
+      <input type="text" name="employment_job_title[]" placeholder="Your job title or role" required style="width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ccc; border-radius: 4px; font-family: 'Segoe UI', sans-serif;">
+      
+      <label>Company/Employer:</label>
+      <input type="text" name="employment_company[]" placeholder="Company or organization name" required style="width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ccc; border-radius: 4px; font-family: 'Segoe UI', sans-serif;">
+      
+      <label>Employment Dates:</label>
+      <div style="display: flex; gap: 10px;">
+        <input type="date" name="employment_start_date[]" placeholder="Start Date" required style="flex: 1; padding: 8px; margin: 5px 0; border: 1px solid #ccc; border-radius: 4px; font-family: 'Segoe UI', sans-serif;">
+        <input type="date" name="employment_end_date[]" placeholder="End Date (leave blank if current)" style="flex: 1; padding: 8px; margin: 5px 0; border: 1px solid #ccc; border-radius: 4px; font-family: 'Segoe UI', sans-serif;">
+      </div>
+      
+      <label>Job Responsibilities:</label>
+      <textarea name="employment_responsibilities[]" rows="2" placeholder="Describe your main responsibilities and achievements..." style="width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ccc; border-radius: 4px; font-family: 'Segoe UI', sans-serif;"></textarea>
+      
+      <button type="button" onclick="deleteEmploymentHistory(this)" style="background-color: #dc3545; color: white; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px;">Delete Employment History</button>
+    </div>
+  </template>
+
+  <script>
+    let employmentCount = 0;
+    const maxEmployments = 5;
+
+    function addEmploymentHistory() {
+      if (employmentCount >= maxEmployments) {
+        alert("Maximum of 5 employment history entries allowed.");
+        return;
+      }
+
+      employmentCount++;
+      const template = document.getElementById("employment-template");
+      const clone = template.content.cloneNode(true);
+      
+      // Update employment number
+      clone.querySelector(".employment-number").innerText = employmentCount;
+      
+      // Add to container
+      document.getElementById("employment-history-container").appendChild(clone);
+      
+      // Hide add button if at max
+      if (employmentCount >= maxEmployments) {
+        document.getElementById("add-employment-wrapper").style.display = "none";
+      }
+    }
+
+    function deleteEmploymentHistory(button) {
+      const employmentCard = button.closest(".employment-card");
+      employmentCard.remove();
+      employmentCount--;
+      
+      // Renumber remaining employment entries
+      const remainingCards = document.querySelectorAll(".employment-card");
+      remainingCards.forEach((card, index) => {
+        card.querySelector(".employment-number").innerText = index + 1;
+      });
+      
+      // Show add button if under max
+      if (employmentCount < maxEmployments) {
+        document.getElementById("add-employment-wrapper").style.display = "block";
+      }
+    }
+
+    // Career goals warning
+    function checkCareerGoals() {
+      const careerGoalsField = document.getElementById('career_goals');
+      const warningDiv = document.getElementById('career_goals_warning');
+      
+      if (careerGoalsField.value.trim() === '') {
+        warningDiv.style.display = 'block';
+      } else {
+        warningDiv.style.display = 'none';
+      }
+    }
+
+    // Setup event listeners on page load
+    window.onload = function() {
+      // Add first employment history entry
+      addEmploymentHistory();
+      
+      // Setup career goals warning
+      const careerGoalsField = document.getElementById('career_goals');
+      careerGoalsField.addEventListener('blur', checkCareerGoals);
+      careerGoalsField.addEventListener('input', function() {
+        if (this.value.trim() !== '') {
+          document.getElementById('career_goals_warning').style.display = 'none';
+        }
+      });
+    };
+  </script>
 
 </body>
 </html>

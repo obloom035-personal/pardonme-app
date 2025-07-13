@@ -94,14 +94,16 @@
               <input type="text" id="supervision_officer" name="supervision_officer" placeholder="Officer name and agency"><br><br>
 
               <label for="compliance_issues">Did you have any compliance issues during supervision?</label>
-              <select id="compliance_issues" name="compliance_issues">
+              <select id="compliance_issues" name="compliance_issues" data-conditional="compliance_details_wrapper">
                 <option value="">Select...</option>
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
               </select><br><br>
 
-              <label for="compliance_details">If yes, explain any violations or issues:</label>
-              <textarea id="compliance_details" name="compliance_details" rows="4" placeholder="Describe any violations, sanctions, or compliance issues..."></textarea><br><br>
+              <div id="compliance_details_wrapper" style="display: none;">
+                <label for="compliance_details">If yes, explain any violations or issues:</label>
+                <textarea id="compliance_details" name="compliance_details" rows="4" placeholder="Describe any violations, sanctions, or compliance issues..."></textarea><br><br>
+              </div>
 
               <label for="programs_completed">Programs Completed During Incarceration:</label>
               <textarea id="programs_completed" name="programs_completed" rows="3" placeholder="List educational, vocational, or treatment programs completed..."></textarea><br><br>
@@ -118,6 +120,41 @@
       </div>
     </div>
   </div>
+
+  <script>
+    // Setup conditional fields
+    function setupConditionalFields() {
+      const yesNoSelects = document.querySelectorAll('select[data-conditional]');
+      yesNoSelects.forEach(select => {
+        const targetField = document.getElementById(select.dataset.conditional);
+        
+        select.addEventListener('change', function() {
+          if (this.value === 'yes') {
+            targetField.style.display = 'block';
+            const textarea = targetField.querySelector('textarea');
+            if (textarea) textarea.required = true;
+          } else {
+            targetField.style.display = 'none';
+            const textarea = targetField.querySelector('textarea');
+            if (textarea) {
+              textarea.required = false;
+              textarea.value = '';
+            }
+          }
+        });
+        
+        // Initialize hidden
+        if (targetField) {
+          targetField.style.display = 'none';
+        }
+      });
+    }
+
+    // Setup on page load
+    window.onload = function() {
+      setupConditionalFields();
+    };
+  </script>
 
 </body>
 </html>

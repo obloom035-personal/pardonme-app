@@ -46,12 +46,11 @@
   </style>
 </head>
 <body>
-  <!-- Logo -->
-  <div class="logo-container">
-    <img src="{{ url_for('static', filename='logo.png') }}" alt="PardonMe Logo" width="300">
-  </div>
-
   <div class="completion-container">
+    <!-- Logo moved inside container to prevent overlap -->
+    <div style="margin-bottom: 20px;">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="PardonMe Logo" width="200">
+    </div>
     <div class="success-icon">✅</div>
     <h1>Congratulations!</h1>
     <h2>Your Pardon Application is Complete</h2>

@@ -3,12 +3,13 @@
 
 /* Section 5 specific overrides and additions */
 .section-title {
-  color: #2c3e50;
+  color: #ffffff;
 }
 
 .form-grid textarea {
   resize: vertical;
   min-height: 80px;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .form-column textarea[required] {

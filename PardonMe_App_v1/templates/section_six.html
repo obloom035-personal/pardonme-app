@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Section Six – PardonMe Application</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles_section_six.css') }}">
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dO_BjuHVaRVVRE&libraries=places" async defer></script>
 </head>
 <body>
   <!-- Top Bar -->
@@ -64,6 +65,17 @@
             <button type="button" onclick="addReference()">+ Add Another Reference</button>
           </div>
 
+          <!-- Reference Letter Generator -->
+          <div style="margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 5px;">
+            <h4>Reference Letter Generator (Coming Soon)</h4>
+            <p style="font-size: 0.9rem; color: #666;">
+              Generate a reference letter template using your Community Involvement and Employment information.
+            </p>
+            <button type="button" class="start-btn" onclick="generateReferenceLetterPlaceholder()" style="background-color: #6c757d;">
+              Generate Reference Letter Template
+            </button>
+          </div>
+
           <!-- Reference Letters Upload -->
           <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #ddd;">
             <h4>Reference Letters</h4>
@@ -120,7 +132,7 @@
           <input type="email" name="reference_email[]">
 
           <label>Mailing Address:</label>
-          <textarea name="reference_address[]" rows="2" placeholder="Full mailing address..."></textarea>
+          <textarea name="reference_address[]" rows="2" placeholder="Full mailing address..." class="address-autocomplete"></textarea>
 
           <label>How long have they known you?</label>
           <select name="reference_years_known[]" required>
@@ -135,6 +147,7 @@
       </div>
 
       <button type="button" class="done-btn" onclick="markReferenceComplete(this)">Done with this reference</button>
+      <button type="button" onclick="deleteReference(this)" style="background-color: #dc3545; color: white; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; margin-left: 10px;">Delete Reference</button>
       <hr>
     </div>
   </template>
@@ -160,15 +173,78 @@
 
     function markReferenceComplete(button) {
       const referenceCard = button.closest(".reference-card");
-      referenceCard.classList.add("completed");
+      
+      // Validate all required fields in this reference
+      const requiredFields = referenceCard.querySelectorAll('input[required], select[required], textarea[required]');
+      let isComplete = true;
+      
+      requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+          field.style.borderColor = 'red';
+          field.style.boxShadow = '0 0 5px rgba(255, 0, 0, 0.5)';
+          isComplete = false;
+        } else {
+          field.style.borderColor = '#ccc';
+          field.style.boxShadow = 'none';
+        }
+      });
+      
+      if (isComplete) {
+        referenceCard.classList.add("completed");
+        if (referenceCount < maxReferences) {
+          document.getElementById("add-reference-wrapper").style.display = "block";
+        }
+      } else {
+        alert("Please complete all required fields before marking this reference as complete.");
+      }
+    }
 
+    function deleteReference(button) {
+      const referenceCard = button.closest(".reference-card");
+      referenceCard.remove();
+      referenceCount--;
+      
+      // Renumber remaining references
+      const remainingCards = document.querySelectorAll(".reference-card");
+      remainingCards.forEach((card, index) => {
+        card.querySelector(".reference-number").innerText = index + 1;
+      });
+      
+      // Show add button if under max
       if (referenceCount < maxReferences) {
         document.getElementById("add-reference-wrapper").style.display = "block";
       }
     }
 
-    // Load first reference on page load
-    window.onload = addReference;
+    function generateReferenceLetterPlaceholder() {
+      alert("Reference Letter Generator\n\nThis feature will be available in the next update. It will use your Community Involvement and Employment information to generate a reference letter template for your references to sign.\n\nFor now, please work directly with your references to obtain letters of recommendation.");
+    }
+
+    // Setup Google Maps autocomplete for address fields
+    function initializeGoogleMaps() {
+      if (typeof google !== 'undefined' && google.maps && google.maps.places) {
+        const addressFields = document.querySelectorAll('.address-autocomplete');
+        addressFields.forEach(field => {
+          const autocomplete = new google.maps.places.Autocomplete(field, {
+            types: ['address'],
+            componentRestrictions: { country: 'us' }
+          });
+        });
+      }
+    }
+
+    // Load first reference on page load and setup Google Maps
+    window.onload = function() {
+      addReference();
+      initializeGoogleMaps();
+      
+      // Re-initialize Google Maps when new references are added
+      const originalAddReference = addReference;
+      addReference = function() {
+        originalAddReference();
+        setTimeout(initializeGoogleMaps, 100); // Small delay to ensure DOM is updated
+      };
+    };
   </script>
 
 </body>
