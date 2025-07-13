@@ -298,11 +298,11 @@ def section_six():
             if reference_names[i]:  # Only add if name is provided
                 reference_data = {
                     "name": reference_names[i],
-                    "relationship": reference_relationships[i],
-                    "phone": reference_phones[i],
-                    "email": reference_emails[i],
-                    "address": reference_addresses[i],
-                    "years_known": reference_years_known[i]
+                    "relationship": reference_relationships[i] if i < len(reference_relationships) else "",
+                    "phone": reference_phones[i] if i < len(reference_phones) else "",
+                    "email": reference_emails[i] if i < len(reference_emails) else "",
+                    "address": reference_addresses[i] if i < len(reference_addresses) else "",
+                    "years_known": reference_years_known[i] if i < len(reference_years_known) else ""
                 }
                 references.append(reference_data)
 

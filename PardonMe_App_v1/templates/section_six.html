@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Section Six – PardonMe Application</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles_section_six.css') }}">
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dO_BjuHVaRVVRE&libraries=places" async defer></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7n5UZkma43GNrl4rgElaQVcDIorrXShg&libraries=places&callback=initAutocomplete" async defer></script>
 </head>
 <body>
   <!-- Top Bar -->
@@ -220,29 +220,42 @@
       alert("Reference Letter Generator\n\nThis feature will be available in the next update. It will use your Community Involvement and Employment information to generate a reference letter template for your references to sign.\n\nFor now, please work directly with your references to obtain letters of recommendation.");
     }
 
-    // Setup Google Maps autocomplete for address fields
-    function initializeGoogleMaps() {
-      if (typeof google !== 'undefined' && google.maps && google.maps.places) {
-        const addressFields = document.querySelectorAll('.address-autocomplete');
-        addressFields.forEach(field => {
+    function initAutocomplete() {
+      const addressFields = document.querySelectorAll('.address-autocomplete');
+      addressFields.forEach(field => {
+        if (!field.hasAttribute('data-autocomplete-initialized')) {
           const autocomplete = new google.maps.places.Autocomplete(field, {
             types: ['address'],
-            componentRestrictions: { country: 'us' }
+            componentRestrictions: { country: "us" },
+            fields: ['formatted_address']
           });
-        });
-      }
+          autocomplete.addListener("place_changed", () => {
+            const place = autocomplete.getPlace();
+            if (place && place.formatted_address) {
+              field.value = place.formatted_address;
+            }
+          });
+          field.setAttribute('data-autocomplete-initialized', 'true');
+        }
+      });
     }
 
     // Load first reference on page load and setup Google Maps
     window.onload = function() {
       addReference();
-      initializeGoogleMaps();
+      if (typeof google !== 'undefined' && google.maps && google.maps.places) {
+        initAutocomplete();
+      }
       
       // Re-initialize Google Maps when new references are added
       const originalAddReference = addReference;
       addReference = function() {
         originalAddReference();
-        setTimeout(initializeGoogleMaps, 100); // Small delay to ensure DOM is updated
+        setTimeout(() => {
+          if (typeof google !== 'undefined' && google.maps && google.maps.places) {
+            initAutocomplete();
+          }
+        }, 100);
       };
     };
   </script>
