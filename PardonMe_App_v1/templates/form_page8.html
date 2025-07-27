@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pardon Application – Page 8</title>
+  <style>
+    body {
+      margin: 0;
+      background: #eee;
+      font-family: Arial, sans-serif;
+    }
+    .form-page {
+      position: relative;
+      width: 850px;
+      margin: 20px auto;
+    }
+    .form-page img {
+      width: 100%;
+      display: block;
+    }
+    .field {
+      position: absolute;
+      background: transparent;
+      border: 1px dashed #999;
+      font-size: 14px;
+      padding: 2px;
+    }
+    .checkbox-label {
+      position: absolute;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <form method="POST" action="/page8">
+    <div class="form-page">
+      <img src="{{ url_for('static', filename='forms/PardonApp_Aug2021_page8.png') }}" alt="Pardon Application Page 8">
+
+      <!-- Section 4: Notice sent -->
+      <label class="checkbox-label" style="top: 140px; left: 360px;">
+        <input type="checkbox" name="notice_sent_yes" /> Yes
+      </label>
+      <label class="checkbox-label" style="top: 140px; left: 420px;">
+        <input type="checkbox" name="notice_sent_no" /> No
+      </label>
+
+      <!-- Section 5: Background check authorization signature -->
+      <input class="field" name="background_signature" placeholder="Applicant Signature"
+             style="top: 375px; left: 180px; width: 340px;" />
+      <input class="field" name="background_date" placeholder="Date"
+             style="top: 375px; left: 550px; width: 120px;" />
+
+      <!-- Section 6: Applicant certification signature -->
+      <input class="field" name="cert_signature" placeholder="Applicant Signature"
+             style="top: 445px; left: 180px; width: 340px;" />
+      <input class="field" name="cert_date" placeholder="Date"
+             style="top: 445px; left: 550px; width: 120px;" />
+
+      <!-- Notary section -->
+      <input class="field" name="notary_day" placeholder="Day"
+             style="top: 485px; left: 240px; width: 80px;" />
+      <input class="field" name="notary_month" placeholder="Month"
+             style="top: 485px; left: 350px; width: 110px;" />
+      <input class="field" name="notary_year" placeholder="Year"
+             style="top: 485px; left: 480px; width: 60px;" />
+
+      <input class="field" name="notary_signature" placeholder="Notary Signature"
+             style="top: 510px; left: 260px; width: 360px;" />
+      <input class="field" name="notary_expires" placeholder="Commission Expiration"
+             style="top: 540px; left: 260px; width: 360px;" />
+
+      <!-- Preparer section -->
+      <input class="field" name="preparer_name" placeholder="Preparer Name"
+             style="top: 600px; left: 260px; width: 360px;" />
+      <input class="field" name="preparer_signature" placeholder="Preparer Signature"
+             style="top: 630px; left: 260px; width: 260px;" />
+      <input class="field" name="preparer_date" placeholder="Date"
+             style="top: 630px; left: 540px; width: 100px;" />
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+      <button type="submit">Next Page</button>
+    </div>
+  </form>
+</body>
+</html>
