@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Section Five – PardonMe Application</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles_section_five.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script src="{{ url_for('static', filename='ai_integration.js') }}"></script>
 </head>
 <body>
   <!-- Top Bar -->
@@ -59,11 +61,27 @@
           <div class="form-grid">
             <!-- Column 1 -->
             <div class="form-column">
-              <label for="volunteer_work">Volunteer Work and Organizations:</label>
-              <textarea id="volunteer_work" name="volunteer_work" rows="4" placeholder="Describe volunteer work, organizations you've helped, roles, and time commitment..."></textarea><br><br>
+              <label for="volunteer_work">Volunteer Work and Organizations:
+                <span class="tooltip">
+                  <span class="help-icon" data-field="volunteer_work">?</span>
+                  <span class="tooltip-content" id="tooltip-volunteer_work"></span>
+                </span>
+              </label>
+              <div class="textarea-container">
+                <textarea id="volunteer_work" name="volunteer_work" rows="4" placeholder="Describe volunteer work, organizations you've helped, roles, and time commitment..."></textarea>
+                <button type="button" class="ai-assistant-btn" data-field="volunteer_work">✨ AI Legal Assistant</button>
+              </div><br><br>
 
-              <label for="community_service">Community Service Activities:</label>
-              <textarea id="community_service" name="community_service" rows="3" placeholder="List community service projects, cleanup efforts, fundraising, etc..."></textarea><br><br>
+              <label for="community_service">Community Service Activities:
+                <span class="tooltip">
+                  <span class="help-icon" data-field="community_service">?</span>
+                  <span class="tooltip-content" id="tooltip-community_service"></span>
+                </span>
+              </label>
+              <div class="textarea-container">
+                <textarea id="community_service" name="community_service" rows="3" placeholder="List community service projects, cleanup efforts, fundraising, etc..."></textarea>
+                <button type="button" class="ai-assistant-btn" data-field="community_service">✨ AI Legal Assistant</button>
+              </div><br><br>
 
               <label for="religious_involvement">Religious or Spiritual Involvement:</label>
               <textarea id="religious_involvement" name="religious_involvement" rows="3" placeholder="Describe church attendance, religious activities, spiritual growth..."></textarea><br><br>
@@ -71,8 +89,16 @@
               <label for="support_groups">Support Groups or Recovery Programs:</label>
               <textarea id="support_groups" name="support_groups" rows="3" placeholder="AA, NA, anger management, or other support group participation..."></textarea><br><br>
 
-              <label for="counseling_participation">Counseling or Therapy Participation:</label>
-              <textarea id="counseling_participation" name="counseling_participation" rows="3" placeholder="Individual or group counseling, therapy sessions, mental health support..."></textarea><br><br>
+              <label for="counseling_participation">Counseling or Therapy Participation:
+                <span class="tooltip">
+                  <span class="help-icon" data-field="counseling_participation">?</span>
+                  <span class="tooltip-content" id="tooltip-counseling_participation"></span>
+                </span>
+              </label>
+              <div class="textarea-container">
+                <textarea id="counseling_participation" name="counseling_participation" rows="3" placeholder="Individual or group counseling, therapy sessions, mental health support..."></textarea>
+                <button type="button" class="ai-assistant-btn" data-field="counseling_participation">✨ AI Legal Assistant</button>
+              </div><br><br>
             </div>
 
             <!-- Column 2 -->
@@ -89,8 +115,16 @@
               <label for="civic_participation">Civic Participation:</label>
               <textarea id="civic_participation" name="civic_participation" rows="3" placeholder="Voting, attending town halls, community meetings, civic engagement..."></textarea><br><br>
 
-              <label for="personal_growth">Personal Growth and Self-Improvement:</label>
-              <textarea id="personal_growth" name="personal_growth" rows="4" placeholder="Describe how you've grown as a person, lessons learned, positive changes made..." required></textarea><br><br>
+              <label for="personal_growth">Personal Growth and Self-Improvement:
+                <span class="tooltip">
+                  <span class="help-icon" data-field="rehabilitation_steps">?</span>
+                  <span class="tooltip-content" id="tooltip-rehabilitation_steps"></span>
+                </span>
+              </label>
+              <div class="textarea-container">
+                <textarea id="personal_growth" name="personal_growth" rows="4" placeholder="Describe how you've grown as a person, lessons learned, positive changes made..." required></textarea>
+                <button type="button" class="ai-assistant-btn" data-field="rehabilitation_steps">✨ AI Legal Assistant</button>
+              </div><br><br>
             </div>
           </div>
 

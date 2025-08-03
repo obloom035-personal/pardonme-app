@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Section Two – PardonMe Application</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles_section_two.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script src="{{ url_for('static', filename='ai_integration.js') }}"></script>
 </head>
 <body>
   <!-- Top Bar -->
@@ -68,15 +70,28 @@
           <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #ddd;">
             <h3 style="text-align:center;">Additional Criminal History Information</h3>
             
-            <label>Have you ever been convicted of any crimes other than those listed above?</label>
+            <label>Have you ever been convicted of any crimes other than those listed above?
+              <span class="tooltip">
+                <span class="help-icon" data-field="other_crimes">?</span>
+                <span class="tooltip-content" id="tooltip-other_crimes"></span>
+              </span>
+            </label>
             <select name="other_crimes" required>
               <option value="">Select...</option>
               <option value="yes">Yes</option>
               <option value="no">No</option>
             </select>
             
-            <label id="other_crimes_details_label" style="display: none;">If yes, provide details (include juvenile cases, expunged cases, other states, federal):</label>
-            <textarea id="other_crimes_details" name="other_crimes_details" rows="4" placeholder="Crime, court case number, county, sentence, completion date..." style="display: none;"></textarea>
+            <label id="other_crimes_details_label" style="display: none;">If yes, provide details (include juvenile cases, expunged cases, other states, federal):
+              <span class="tooltip">
+                <span class="help-icon" data-field="other_crimes_details">?</span>
+                <span class="tooltip-content" id="tooltip-other_crimes_details"></span>
+              </span>
+            </label>
+            <div class="textarea-container">
+              <textarea id="other_crimes_details" name="other_crimes_details" rows="4" placeholder="Crime, court case number, county, sentence, completion date..." style="display: none;"></textarea>
+              <button type="button" class="ai-assistant-btn" data-field="other_crimes_details" style="display: none;">✨ AI Legal Assistant</button>
+            </div>
             
             <label>Were you ordered to pay restitution for any of your crimes?</label>
             <select name="restitution_ordered">
@@ -106,8 +121,16 @@
             <label id="previous_pardon_date_label" style="display: none;">If yes, provide the date (MM/YYYY):</label>
             <input type="text" id="previous_pardon_date" name="previous_pardon_date" placeholder="MM/YYYY" style="display: none;">
             
-            <label id="previous_pardon_details_label" style="display: none;">If yes, describe the outcome (hearing, formal denial, etc.):</label>
-            <textarea id="previous_pardon_details" name="previous_pardon_details" rows="3" placeholder="Describe hearing or denial details..." style="display: none;"></textarea>
+            <label id="previous_pardon_details_label" style="display: none;">If yes, describe the outcome (hearing, formal denial, etc.):
+              <span class="tooltip">
+                <span class="help-icon" data-field="previous_pardon_details">?</span>
+                <span class="tooltip-content" id="tooltip-previous_pardon_details"></span>
+              </span>
+            </label>
+            <div class="textarea-container">
+              <textarea id="previous_pardon_details" name="previous_pardon_details" rows="3" placeholder="Describe hearing or denial details..." style="display: none;"></textarea>
+              <button type="button" class="ai-assistant-btn" data-field="previous_pardon_details" style="display: none;">✨ AI Legal Assistant</button>
+            </div>
             
             <label>Have you had any other interactions with law enforcement (arrests without charges, dismissed charges, investigations)?</label>
             <select name="other_law_enforcement">
@@ -116,8 +139,16 @@
               <option value="no">No</option>
             </select>
             
-            <label id="other_law_enforcement_details_label" style="display: none;">If yes, explain the interactions (date, state, county, circumstances):</label>
-            <textarea id="other_law_enforcement_details" name="other_law_enforcement_details" rows="4" placeholder="Describe law enforcement interactions..." style="display: none;"></textarea>
+            <label id="other_law_enforcement_details_label" style="display: none;">If yes, explain the interactions (date, state, county, circumstances):
+              <span class="tooltip">
+                <span class="help-icon" data-field="other_law_enforcement_details">?</span>
+                <span class="tooltip-content" id="tooltip-other_law_enforcement_details"></span>
+              </span>
+            </label>
+            <div class="textarea-container">
+              <textarea id="other_law_enforcement_details" name="other_law_enforcement_details" rows="4" placeholder="Describe law enforcement interactions..." style="display: none;"></textarea>
+              <button type="button" class="ai-assistant-btn" data-field="other_law_enforcement_details" style="display: none;">✨ AI Legal Assistant</button>
+            </div>
           </div>
 
           <!-- Continue -->
@@ -258,15 +289,18 @@
       document.querySelector('select[name="other_crimes"]').addEventListener('change', function() {
         const detailsLabel = document.getElementById('other_crimes_details_label');
         const detailsField = document.getElementById('other_crimes_details');
+        const aiButton = detailsField.parentElement.querySelector('.ai-assistant-btn');
         if (this.value === 'yes') {
           detailsLabel.style.display = 'block';
           detailsField.style.display = 'block';
           detailsField.required = true;
+          if (aiButton) aiButton.style.display = 'block';
         } else {
           detailsLabel.style.display = 'none';
           detailsField.style.display = 'none';
           detailsField.required = false;
           detailsField.value = '';
+          if (aiButton) aiButton.style.display = 'none';
         }
       });
 
@@ -312,22 +346,25 @@
         const dateField = document.getElementById('previous_pardon_date');
         const detailsLabel = document.getElementById('previous_pardon_details_label');
         const detailsField = document.getElementById('previous_pardon_details');
+        const aiButton = detailsField.parentElement.querySelector('.ai-assistant-btn');
         if (this.value === 'yes') {
           dateLabel.style.display = 'block';
           dateField.style.display = 'block';
+          dateField.required = true;
           detailsLabel.style.display = 'block';
           detailsField.style.display = 'block';
-          dateField.required = true;
           detailsField.required = true;
+          if (aiButton) aiButton.style.display = 'block';
         } else {
           dateLabel.style.display = 'none';
           dateField.style.display = 'none';
+          dateField.required = false;
+          dateField.value = '';
           detailsLabel.style.display = 'none';
           detailsField.style.display = 'none';
-          dateField.required = false;
           detailsField.required = false;
-          dateField.value = '';
           detailsField.value = '';
+          if (aiButton) aiButton.style.display = 'none';
         }
       });
 
@@ -335,15 +372,18 @@
       document.querySelector('select[name="other_law_enforcement"]').addEventListener('change', function() {
         const detailsLabel = document.getElementById('other_law_enforcement_details_label');
         const detailsField = document.getElementById('other_law_enforcement_details');
+        const aiButton = detailsField.parentElement.querySelector('.ai-assistant-btn');
         if (this.value === 'yes') {
           detailsLabel.style.display = 'block';
           detailsField.style.display = 'block';
           detailsField.required = true;
+          if (aiButton) aiButton.style.display = 'block';
         } else {
           detailsLabel.style.display = 'none';
           detailsField.style.display = 'none';
           detailsField.required = false;
           detailsField.value = '';
+          if (aiButton) aiButton.style.display = 'none';
         }
       });
     }

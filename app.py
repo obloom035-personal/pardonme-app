@@ -1,10 +1,22 @@
-from flask import Flask, render_template, request, redirect, session, url_for, make_response, send_file
+from flask import Flask, render_template, request, redirect, session, url_for, make_response, send_file, jsonify
 from werkzeug.utils import secure_filename
 import json
 import os
 import io
 from datetime import datetime
 import pdf_service
+from field_help_texts import get_help_text
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+try:
+    import openai
+    OPENAI_AVAILABLE = True
+except ImportError:
+    OPENAI_AVAILABLE = False
+    print("Warning: OpenAI not available. Install with 'pip install openai' for AI features.")
 
 app = Flask(__name__)
 # Using a placeholder for local development. This should be a real secret in production.
@@ -400,6 +412,152 @@ def generate_pdf():
     except Exception as e:
         # Handle PDF generation errors gracefully
         return f"Error generating PDF: {str(e)}", 500
+
+# AI Integration Routes
+
+@app.route('/get_field_help/<field_name>', methods=['GET'])
+def get_field_help(field_name):
+    """
+    Get help text for a specific field name.
+    Returns JSON with help text content for tooltips.
+    """
+    try:
+        help_text = get_help_text(field_name)
+        return jsonify({
+            'success': True,
+            'field_name': field_name,
+            'help_text': help_text
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': f'Error retrieving help text: {str(e)}'
+        }), 500
+
+@app.route('/ai_help', methods=['POST'])
+def ai_help():
+    """
+    AI Legal Assistant endpoint.
+    Receives user input and session context, returns AI feedback and improved version.
+    """
+    if not OPENAI_AVAILABLE:
+        return jsonify({
+            'success': False,
+            'error': 'AI features are not available. OpenAI library not installed.'
+        }), 503
+    
+    try:
+        # Get request data
+        data = request.get_json()
+        if not data:
+            return jsonify({
+                'success': False,
+                'error': 'No data provided'
+            }), 400
+        
+        user_input = data.get('user_input', '').strip()
+        field_name = data.get('field_name', '')
+        
+        # Validate input
+        if not user_input or len(user_input) < 10:
+            return jsonify({
+                'success': False,
+                'error': 'Please provide more detailed input (at least 10 characters)'
+            }), 400
+        
+        if not field_name:
+            return jsonify({
+                'success': False,
+                'error': 'Field name is required'
+            }), 400
+        
+        # Get session context (sanitized for AI)
+        session_context = {}
+        for key, value in session.items():
+            # Only include relevant form data, exclude sensitive information
+            if isinstance(value, (str, int, float)) and not key.startswith('_'):
+                if len(str(value)) < 200:  # Limit context size
+                    session_context[key] = value
+        
+        # Set up OpenAI API key
+        openai_api_key = os.environ.get('OPENAI_API_KEY')
+        if not openai_api_key:
+            return jsonify({
+                'success': False,
+                'error': 'AI service temporarily unavailable - API key not configured'
+            }), 503
+        
+        # Configure OpenAI client
+        client = openai.OpenAI(api_key=openai_api_key)
+        
+        # Create AI prompt
+        prompt = f"""You are an AI legal assistant helping someone complete a Wisconsin pardon application.
+
+Field being completed: {field_name}
+User's current response: "{user_input}"
+
+Session context (other information they've provided):
+{json.dumps(session_context, indent=2)}
+
+Please provide:
+1. Constructive feedback on their current response
+2. An improved/rewritten version that would be more effective
+
+Focus on:
+- Demonstrating rehabilitation and personal growth
+- Showing accountability and remorse
+- Highlighting positive contributions to society
+- Using appropriate tone for legal documents
+- Being specific and detailed where helpful
+
+Respond in JSON format:
+{{
+    "feedback": "Your constructive feedback here",
+    "improved_version": "Your improved/rewritten version here"
+}}"""
+        
+        # Make API call to OpenAI
+        response = client.chat.completions.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are a helpful legal assistant specializing in Wisconsin pardon applications. Always respond with valid JSON."},
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=1000,
+            temperature=0.7
+        )
+        
+        # Parse AI response
+        ai_response_text = response.choices[0].message.content.strip()
+        
+        # Try to parse JSON response from AI
+        try:
+            ai_data = json.loads(ai_response_text)
+            feedback = ai_data.get('feedback', 'No feedback provided')
+            improved_version = ai_data.get('improved_version', user_input)
+        except json.JSONDecodeError:
+            # Fallback if AI doesn't return valid JSON
+            feedback = "I've reviewed your response. Consider being more specific about your actions, showing accountability, and highlighting positive changes you've made."
+            improved_version = user_input
+        
+        return jsonify({
+            'success': True,
+            'field_name': field_name,
+            'original_input': user_input,
+            'feedback': feedback,
+            'improved_version': improved_version
+        })
+        
+    except openai.APIError as e:
+        return jsonify({
+            'success': False,
+            'error': f'AI service error: {str(e)}'
+        }), 503
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': f'Unexpected error: {str(e)}'
+        }), 500
 
 if __name__ == '__main__':
     # The `debug=True` flag is great for local development.

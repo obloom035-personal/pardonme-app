@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Section Seven – PardonMe Application</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles_section_seven.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script src="{{ url_for('static', filename='ai_integration.js') }}"></script>
 </head>
 <body>
   <!-- Top Bar -->
@@ -59,24 +61,64 @@
           <div class="form-grid">
             <!-- Column 1 -->
             <div class="form-column">
-              <label for="personal_statement">Personal Statement:</label>
-              <textarea id="personal_statement" name="personal_statement" rows="6" placeholder="Tell your story in your own words. This is your opportunity to explain your journey, growth, and transformation..." required></textarea>
+              <label for="personal_statement">Personal Statement:
+                <span class="tooltip">
+                  <span class="help-icon" data-field="personal_statement">?</span>
+                  <span class="tooltip-content" id="tooltip-personal_statement"></span>
+                </span>
+              </label>
+              <div class="textarea-container">
+                <textarea id="personal_statement" name="personal_statement" rows="6" placeholder="Tell your story in your own words. This is your opportunity to explain your journey, growth, and transformation..." required></textarea>
+                <button type="button" class="ai-assistant-btn" data-field="personal_statement">✨ AI Legal Assistant</button>
+              </div>
               <p style="font-size: 0.8rem; color: #666;">Character count: <span id="statement-count">0</span>/2000 recommended</p><br>
 
-              <label for="why_pardon">Why do you believe you deserve a pardon?</label>
-              <textarea id="why_pardon" name="why_pardon" rows="4" placeholder="Explain why you believe a pardon is warranted in your case..." required></textarea><br><br>
+              <label for="why_pardon">Why do you believe you deserve a pardon?
+                <span class="tooltip">
+                  <span class="help-icon" data-field="why_pardon">?</span>
+                  <span class="tooltip-content" id="tooltip-why_pardon"></span>
+                </span>
+              </label>
+              <div class="textarea-container">
+                <textarea id="why_pardon" name="why_pardon" rows="4" placeholder="Explain why you believe a pardon is warranted in your case..." required></textarea>
+                <button type="button" class="ai-assistant-btn" data-field="why_pardon">✨ AI Legal Assistant</button>
+              </div><br><br>
 
-              <label for="life_changes">How has your life changed since your conviction?</label>
-              <textarea id="life_changes" name="life_changes" rows="4" placeholder="Describe the positive changes you've made in your life..." required></textarea><br><br>
+              <label for="life_changes">How has your life changed since your conviction?
+                <span class="tooltip">
+                  <span class="help-icon" data-field="life_changes">?</span>
+                  <span class="tooltip-content" id="tooltip-life_changes"></span>
+                </span>
+              </label>
+              <div class="textarea-container">
+                <textarea id="life_changes" name="life_changes" rows="4" placeholder="Describe the positive changes you've made in your life..." required></textarea>
+                <button type="button" class="ai-assistant-btn" data-field="life_changes">✨ AI Legal Assistant</button>
+              </div><br><br>
 
-              <label for="future_goals">What are your future goals and plans?</label>
-              <textarea id="future_goals" name="future_goals" rows="3" placeholder="Describe your plans for the future and how a pardon would help..." required></textarea><br><br>
+              <label for="future_goals">What are your future goals and plans?
+                <span class="tooltip">
+                  <span class="help-icon" data-field="future_goals">?</span>
+                  <span class="tooltip-content" id="tooltip-future_goals"></span>
+                </span>
+              </label>
+              <div class="textarea-container">
+                <textarea id="future_goals" name="future_goals" rows="3" placeholder="Describe your plans for the future and how a pardon would help..." required></textarea>
+                <button type="button" class="ai-assistant-btn" data-field="future_goals">✨ AI Legal Assistant</button>
+              </div><br><br>
             </div>
 
             <!-- Column 2 -->
             <div class="form-column">
-              <label for="remorse_statement">Statement of Remorse and Responsibility:</label>
-              <textarea id="remorse_statement" name="remorse_statement" rows="4" placeholder="Express your remorse and take responsibility for your actions..." required></textarea><br><br>
+              <label for="remorse_statement">Statement of Remorse and Responsibility:
+                <span class="tooltip">
+                  <span class="help-icon" data-field="remorse_statement">?</span>
+                  <span class="tooltip-content" id="tooltip-remorse_statement"></span>
+                </span>
+              </label>
+              <div class="textarea-container">
+                <textarea id="remorse_statement" name="remorse_statement" rows="4" placeholder="Express your remorse and take responsibility for your actions..." required></textarea>
+                <button type="button" class="ai-assistant-btn" data-field="remorse_statement">✨ AI Legal Assistant</button>
+              </div><br><br>
 
               <div style="border: 2px solid #ddd; padding: 20px; margin: 20px 0; background-color: #f9f9f9;">
                 <h4>Application Certification</h4>

@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Section Three – PardonMe Application</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles_section_three.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script src="{{ url_for('static', filename='ai_integration.js') }}"></script>
 </head>
 <body>
   <!-- Top Bar -->
@@ -59,8 +61,16 @@
           <div class="form-grid">
             <!-- Column 1 -->
             <div class="form-column">
-              <label for="sentence_details">Detailed Description of Sentence:</label>
-              <textarea id="sentence_details" name="sentence_details" rows="4" placeholder="Describe your complete sentence including confinement and supervision..." required></textarea><br><br>
+              <label for="sentence_details">Detailed Description of Sentence:
+                <span class="tooltip">
+                  <span class="help-icon" data-field="sentence_details">?</span>
+                  <span class="tooltip-content" id="tooltip-sentence_details"></span>
+                </span>
+              </label>
+              <div class="textarea-container">
+                <textarea id="sentence_details" name="sentence_details" rows="4" placeholder="Describe your complete sentence including confinement and supervision..." required></textarea>
+                <button type="button" class="ai-assistant-btn" data-field="sentence_details">✨ AI Legal Assistant</button>
+              </div><br><br>
 
               <label for="incarceration_location">Where did you serve your sentence?</label>
               <input type="text" id="incarceration_location" name="incarceration_location" placeholder="Institution name and location"><br><br>

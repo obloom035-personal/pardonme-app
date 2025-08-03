@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Section Four – PardonMe Application</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles_section_four.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script src="{{ url_for('static', filename='ai_integration.js') }}"></script>
 </head>
 <body>
   <!-- Top Bar -->
@@ -117,8 +119,16 @@
                 <option value="trade_school">Trade School Certificate</option>
               </select><br><br>
 
-              <label for="education_since_conviction">Education Completed Since Conviction:</label>
-              <textarea id="education_since_conviction" name="education_since_conviction" rows="3" placeholder="Describe any degrees, certificates, or courses completed since your conviction..."></textarea><br><br>
+              <label for="education_since_conviction">Education Completed Since Conviction:
+                <span class="tooltip">
+                  <span class="help-icon" data-field="education_since_conviction">?</span>
+                  <span class="tooltip-content" id="tooltip-education_since_conviction"></span>
+                </span>
+              </label>
+              <div class="textarea-container">
+                <textarea id="education_since_conviction" name="education_since_conviction" rows="3" placeholder="Describe any degrees, certificates, or courses completed since your conviction..."></textarea>
+                <button type="button" class="ai-assistant-btn" data-field="education_since_conviction">✨ AI Legal Assistant</button>
+              </div><br><br>
 
               <label for="vocational_training">Vocational or Technical Training:</label>
               <textarea id="vocational_training" name="vocational_training" rows="3" placeholder="List any trade skills, technical training, or apprenticeships..."></textarea><br><br>

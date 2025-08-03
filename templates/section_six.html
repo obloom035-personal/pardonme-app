@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Section Six – PardonMe Application</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles_section_six.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script src="{{ url_for('static', filename='ai_integration.js') }}"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7n5UZkma43GNrl4rgElaQVcDIorrXShg&libraries=places&callback=initAutocomplete" async defer></script>
 </head>
 <body>
@@ -85,8 +87,16 @@
               You can upload letters of recommendation here, or your references can send them directly to the Pardon Advisory Board.
             </p>
 
-            <label for="additional_references">Additional Reference Information:</label>
-            <textarea id="additional_references" name="additional_references" rows="3" placeholder="Any additional information about your references or character witnesses..."></textarea>
+            <label for="additional_references">Additional Reference Information:
+              <span class="tooltip">
+                <span class="help-icon" data-field="additional_references">?</span>
+                <span class="tooltip-content" id="tooltip-additional_references"></span>
+              </span>
+            </label>
+            <div class="textarea-container">
+              <textarea id="additional_references" name="additional_references" rows="3" placeholder="Any additional information about your references or character witnesses..."></textarea>
+              <button type="button" class="ai-assistant-btn" data-field="additional_references">✨ AI Legal Assistant</button>
+            </div>
           </div>
 
           <!-- Continue -->
