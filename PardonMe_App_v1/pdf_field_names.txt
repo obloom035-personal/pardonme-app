@@ -1,0 +1,162 @@
+Wisconsin Pardon Application PDF Field Names
+==================================================
+
+  1. 13List the highest grade you completed or degree you received
+  2. Applicant nameRow1
+  3. Applicant nameRow1_2
+  4. Cell phoneRow1
+  5. County of convictionRow1
+  6. County of convictionRow1_2
+  7. County of convictionRow1_3
+  8. County of convictionRow1_4
+  9. County of convictionRow2
+ 10. County of convictionRow3
+ 11. County of convictionRow4
+ 12. County of convictionRow5
+ 13. CountyRow1
+ 14. CountyRow2
+ 15. CountyRow3
+ 16. CountyRow4
+ 17. Court case numberRow1
+ 18. Court case numberRow1_2
+ 19. Court case numberRow1_3
+ 20. Court case numberRow1_4
+ 21. Court case numberRow1_5
+ 22. Court case numberRow1_6
+ 23. Court case numberRow2
+ 24. Court case numberRow2_2
+ 25. Court case numberRow2_3
+ 26. Court case numberRow3
+ 27. Court case numberRow3_2
+ 28. Court case numberRow3_3
+ 29. Court case numberRow4
+ 30. Court case numberRow4_2
+ 31. Court case numberRow4_3
+ 32. Court case numberRow5
+ 33. CrimeRow1
+ 34. CrimeRow1_2
+ 35. CrimeRow1_3
+ 36. CrimeRow1_4
+ 37. CrimeRow1_5
+ 38. CrimeRow1_6
+ 39. CrimeRow2
+ 40. CrimeRow2_2
+ 41. CrimeRow2_3
+ 42. CrimeRow3
+ 43. CrimeRow3_2
+ 44. CrimeRow3_3
+ 45. CrimeRow4
+ 46. CrimeRow4_2
+ 47. CrimeRow4_3
+ 48. CrimeRow5
+ 49. Date of birth MMDDYYYYRow1
+ 50. Date of birth MMDDYYYYRow1_2
+ 51. Date of birth MMDDYYYYRow1_3
+ 52. Date of offenseRow1
+ 53. Date of offenseRow1_2
+ 54. Date of offenseRow1_3
+ 55. Date sentence completedRow1
+ 56. Date sentence completedRow2
+ 57. Date sentence completedRow3
+ 58. Date sentence completedRow4
+ 59. Date sentence completedRow5
+ 60. Date you completed your sentenceRow1
+ 61. Date you completed your sentenceRow1_2
+ 62. Date you completed your sentenceRow1_3
+ 63. Dates of employmentRow2
+ 64. Dates of employmentRow3
+ 65. Dates of employmentRow4
+ 66. Dates of employmentRow5
+ 67. Dates of employmentRow6
+ 68. Dates used MMYY  MMYYRow1
+ 69. Dates used MMYY  MMYYRow2
+ 70. Dates used MMYY  MMYYRow3
+ 71. Describe any community service, activities, or volunteer work you have participated in since conviction
+ 72. Describe any education you have received since conviction
+ 73. Describe any other steps or actions that you have not mentioned so far
+ 74. Describe any treatment or counseling you have participated in since conviction
+ 75. District attorneys who oversaw your convictionRow1
+ 76. District attorneys who oversaw your convictionRow1_2
+ 77. District attorneys who oversaw your convictionRow1_3
+ 78. Email addressRow1
+ 79. Employer address and phone numberRow2
+ 80. Employer address and phone numberRow3
+ 81. Employer address and phone numberRow4
+ 82. Employer address and phone numberRow5
+ 83. Employer address and phone numberRow6
+ 84. EmployerRow1
+ 85. EmployerRow2
+ 86. EmployerRow3
+ 87. EmployerRow4
+ 88. EmployerRow5
+ 89. EmployerRow6
+ 90. Gender optionalRow1
+ 91. Home addressRow1
+ 92. Home phoneRow1
+ 93. If yes explain what happened and when Attach additional pages if necessary
+ 94. If yes please provide the date of the request MMYYYY
+ 95. If you served in the military, provide the details of your service
+ 96. Judges who presided over your convictionRow1
+ 97. Judges who presided over your convictionRow1_2
+ 98. Judges who presided over your convictionRow1_3
+ 99. Maidenaliasformer namesRow1
+100. Maidenaliasformer namesRow2
+101. Maidenaliasformer namesRow3
+102. Mailing addressRow1
+103. Mailing addressRow1_2
+104. Mailing addressRow1_3
+105. Name First Middle LastRow1
+106. Name of supervisorRow2
+107. Name of supervisorRow3
+108. Name of supervisorRow4
+109. Name of supervisorRow5
+110. Name of supervisorRow6
+111. Phone number and email addressRow1
+112. Phone number and email addressRow1_2
+113. Place of birth City StateRow1
+114. Position heldRow1
+115. Position heldRow2
+116. Position heldRow3
+117. Position heldRow4
+118. Position heldRow5
+119. Position heldRow6
+120. Race or Ethnicity optionalRow1
+121. Sentence received confinement and supervisionRow1
+122. Sentence received confinement and supervisionRow1_2
+123. Sentence received confinement and supervisionRow1_3
+124. Sentence received confinement and supervisionRow1_4
+125. Sentence received confinement and supervisionRow2
+126. Sentence received confinement and supervisionRow3
+127. Sentence received confinement and supervisionRow4
+128. Sentence received confinement and supervisionRow5
+129. SentenceRow1
+130. SentenceRow1_2
+131. SentenceRow2
+132. SentenceRow2_2
+133. SentenceRow3
+134. SentenceRow3_2
+135. SentenceRow4
+136. SentenceRow4_2
+137. Sentencing date MMDDYYYYRow1
+138. Sentencing date MMDDYYYYRow1_2
+139. Sentencing date MMDDYYYYRow2
+140. Sentencing date MMDDYYYYRow2_2
+141. Sentencing date MMDDYYYYRow3
+142. Sentencing date MMDDYYYYRow3_2
+143. Sentencing date MMDDYYYYRow4
+144. Sentencing date MMDDYYYYRow4_2
+145. Sentencing dateRow1
+146. Sentencing dateRow1_2
+147. Sentencing dateRow1_3
+148. Social Security NumberRow1
+149. Work phoneRow1
+150. additional pages if necessary
+151. additional pages if necessary_2
+152. employment
+153. hearing andor receipt of formal denial
+154. number
+155. pages if necessary
+156. supervisor
+157. the circumstances which led to the contacts Attach additional pages if necessary
+
+Total fields: 157

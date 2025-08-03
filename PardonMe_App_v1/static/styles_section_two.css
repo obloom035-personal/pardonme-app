@@ -188,6 +188,7 @@ form textarea {
   padding: 8px 10px;
   margin-top: 5px;
   font-size: 0.95rem;
+  font-family: 'Segoe UI', sans-serif;
   border: 1px solid #ccc;
   border-radius: 6px;
   box-sizing: border-box;

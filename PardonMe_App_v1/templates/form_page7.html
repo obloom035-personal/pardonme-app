@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pardon Application – Page 7</title>
+  <style>
+    body {
+      margin: 0;
+      background: #eee;
+      font-family: Arial, sans-serif;
+    }
+    .form-page {
+      position: relative;
+      width: 850px;
+      margin: 20px auto;
+    }
+    .form-page img {
+      width: 100%;
+      display: block;
+    }
+    .field {
+      position: absolute;
+      background: transparent;
+      border: 1px dashed #999;
+      font-size: 14px;
+      padding: 2px;
+    }
+    textarea.field {
+      resize: none;
+    }
+  </style>
+</head>
+<body>
+  <form method="POST" action="/page7">
+    <div class="form-page">
+      <img src="{{ url_for('static', filename='forms/PardonApp_Aug2021_page7.png') }}" alt="Pardon Application Page 7">
+
+      <!-- Q13: Highest grade/degree -->
+      <input class="field" name="highest_grade" style="top: 35px; left: 460px; width: 300px;" />
+
+      <!-- Q14: Education since conviction -->
+      <textarea class="field" name="education_since_conviction"
+                style="top: 80px; left: 30px; width: 780px; height: 75px;"></textarea>
+
+      <!-- Q15: Military service details -->
+      <textarea class="field" name="military_service"
+                style="top: 185px; left: 30px; width: 780px; height: 60px;"></textarea>
+
+      <!-- Q16: Community service -->
+      <textarea class="field" name="community_service"
+                style="top: 260px; left: 30px; width: 780px; height: 60px;"></textarea>
+
+      <!-- Q17: Treatment or counseling -->
+      <textarea class="field" name="treatment_counseling"
+                style="top: 335px; left: 30px; width: 780px; height: 60px;"></textarea>
+
+      <!-- Q18: Other positive actions -->
+      <textarea class="field" name="other_positive_actions"
+                style="top: 410px; left: 30px; width: 780px; height: 60px;"></textarea>
+
+      <!-- Q19 is a document upload instruction, no field needed -->
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+      <button type="submit">Next Page</button>
+    </div>
+  </form>
+</body>
+</html>

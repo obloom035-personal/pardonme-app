@@ -96,6 +96,11 @@ body {
   color: white;
   padding: 20px;
   width: 220px;
+  height: 100vh;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .sidebar-item {
@@ -111,6 +116,12 @@ body {
   color: #000;
   font-weight: bold;
   animation: pulse-glow 1.8s ease-in-out infinite;
+}
+
+.sidebar-item.completed {
+  background-color: #00cc66;
+  color: #000;
+  font-weight: bold;
 }
 
 /* --- Sidebar Header --- */
