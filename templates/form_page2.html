@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pardon Application – Page 2</title>
+  <style>
+    body {
+      margin: 0;
+      background: #eee;
+      font-family: Arial, sans-serif;
+    }
+    .form-page {
+      position: relative;
+      width: 850px;
+      margin: 20px auto;
+    }
+    .form-page img {
+      width: 100%;
+      display: block;
+    }
+    .field {
+      position: absolute;
+      background: transparent;
+      border: 1px dashed #999;
+      font-size: 14px;
+      padding: 2px;
+    }
+    textarea.field {
+      resize: none;
+      height: 60px;
+    }
+    .submit-btn {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <form method="POST" action="/page2">
+    <div class="form-page">
+      <img src="{{ url_for('static', filename='forms/PardonApp_Aug2021_page2.png') }}" alt="Pardon Application Page 2">
+
+      <!-- Section 1 Fields -->
+      <input class="field" name="full_name" placeholder="Full Name" style="top: 140px; left: 30px; width: 360px;" />
+      <input class="field" name="dob" placeholder="MM/DD/YYYY" style="top: 140px; left: 440px; width: 180px;" />
+
+      <input class="field" name="email" placeholder="Email" style="top: 170px; left: 30px; width: 280px;" />
+      <input class="field" name="home_phone" placeholder="Home Phone" style="top: 170px; left: 330px; width: 290px;" />
+
+      <input class="field" name="work_phone" placeholder="Work Phone" style="top: 200px; left: 30px; width: 280px;" />
+      <input class="field" name="cell_phone" placeholder="Cell Phone" style="top: 200px; left: 330px; width: 290px;" />
+
+      <input class="field" name="birth_city_state" placeholder="City, State" style="top: 230px; left: 30px; width: 280px;" />
+      <input class="field" name="gender" placeholder="Gender" style="top: 230px; left: 330px; width: 290px;" />
+
+      <input class="field" name="ssn" placeholder="SSN" style="top: 260px; left: 30px; width: 280px;" />
+      <input class="field" name="ethnicity" placeholder="Race/Ethnicity" style="top: 260px; left: 330px; width: 290px;" />
+
+      <textarea class="field" name="home_address" placeholder="Home Address" style="top: 290px; left: 30px; width: 280px;"></textarea>
+      <textarea class="field" name="mailing_address" placeholder="Mailing Address" style="top: 290px; left: 330px; width: 290px;"></textarea>
+
+      <input class="field" name="alias1" placeholder="Maiden/Alias/Former Name 1" style="top: 360px; left: 30px; width: 280px;" />
+      <input class="field" name="alias1_dates" placeholder="MM/YY - MM/YY" style="top: 360px; left: 330px; width: 290px;" />
+
+      <input class="field" name="alias2" style="top: 390px; left: 30px; width: 280px;" />
+      <input class="field" name="alias2_dates" style="top: 390px; left: 330px; width: 290px;" />
+
+      <input class="field" name="alias3" style="top: 420px; left: 30px; width: 280px;" />
+      <input class="field" name="alias3_dates" style="top: 420px; left: 330px; width: 290px;" />
+
+      <!-- Section 2 – Criminal History (single row to start) -->
+      <input class="field" name="crime" placeholder="Crime" style="top: 495px; left: 30px; width: 170px;" />
+      <input class="field" name="case_number" placeholder="Case #" style="top: 495px; left: 220px; width: 170px;" />
+      <input class="field" name="county" placeholder="County" style="top: 495px; left: 410px; width: 210px;" />
+
+      <input class="field" name="offense_date" placeholder="Offense Date" style="top: 525px; left: 30px; width: 170px;" />
+      <input class="field" name="sentencing_date" placeholder="Sentencing Date" style="top: 525px; left: 220px; width: 170px;" />
+      <input class="field" name="sentence_received" placeholder="Sentence" style="top: 525px; left: 410px; width: 210px;" />
+
+      <input class="field" name="completed_date" placeholder="Completion Date" style="top: 555px; left: 30px; width: 170px;" />
+      <input class="field" name="district_attorney" placeholder="DA" style="top: 555px; left: 220px; width: 170px;" />
+      <input class="field" name="judge" placeholder="Judge" style="top: 555px; left: 410px; width: 210px;" />
+
+    </div>
+
+    <div style="text-align: center;">
+      <button class="submit-btn" type="submit">Next Page</button>
+    </div>
+  </form>
+</body>
+</html>

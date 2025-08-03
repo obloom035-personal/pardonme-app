@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Section Two – PardonMe Application</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles_section_two.css') }}">
+</head>
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">PardonMe, Inc.</h1>
+      <h2 class="section-title">Section 2 – Offense Details</h2>
+      <p class="section-description">Tell us about the offense(s) you’re seeking a pardon for.</p>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Layout -->
+  <div class="page-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h3 class="sidebar-title">📝 To Do List</h3>
+      {% set section_names = [
+        'Personal Information',
+        'Offense Details',
+        'Sentence & Incarceration',
+        'Employment & Education',
+        'Community Involvement',
+        'Character References',
+        'Statement & Signature'
+      ] %}
+      {% for i in range(1, 8) %}
+        <div class="sidebar-item{% if i == current_section %} active{% elif i < current_section %} completed{% endif %}">
+          <strong>Section {{ i }}</strong>
+          <p>{{ section_names[i-1] }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="form-card">
+        <form method="POST" action="{{ url_for('section_two') }}" enctype="multipart/form-data">
+          <h3 style="text-align:center;">Offense Details</h3>
+          <p style="text-align:center; font-size: 0.9rem; color: #888;">
+            You may submit up to three offenses. Complete one offense at a time, including document attachments or confirmation.
+          </p>
+
+          <!-- Dynamic Offense Cards -->
+          <div id="offense-forms-container"></div>
+
+          <!-- Add Another Offense -->
+          <div id="add-offense-wrapper" style="text-align: center; display: none;">
+            <button type="button" onclick="addOffense()">+ Add Another Offense</button>
+          </div>
+
+          <!-- Additional Wisconsin Application Fields -->
+          <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #ddd;">
+            <h3 style="text-align:center;">Additional Criminal History Information</h3>
+            
+            <label>Have you ever been convicted of any crimes other than those listed above?</label>
+            <select name="other_crimes" required>
+              <option value="">Select...</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+            
+            <label id="other_crimes_details_label" style="display: none;">If yes, provide details (include juvenile cases, expunged cases, other states, federal):</label>
+            <textarea id="other_crimes_details" name="other_crimes_details" rows="4" placeholder="Crime, court case number, county, sentence, completion date..." style="display: none;"></textarea>
+            
+            <label>Were you ordered to pay restitution for any of your crimes?</label>
+            <select name="restitution_ordered">
+              <option value="">Select...</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+            
+            <label id="restitution_paid_label" style="display: none;">If yes, have you paid the full amount ordered?</label>
+            <select id="restitution_paid" name="restitution_paid" style="display: none;">
+              <option value="">Select...</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+            
+            <label id="restitution_proof_label" style="display: none;">If you have proof of restitution payment, upload document or describe it:</label>
+            <input type="file" id="restitution_proof_file" name="restitution_proof_file" accept=".pdf,.jpg,.png,.doc,.docx" style="display: none;">
+            <textarea id="restitution_proof" name="restitution_proof" rows="2" placeholder="Describe proof of payment..." style="display: none;"></textarea>
+            
+            <label>Have you ever applied for pardon before?</label>
+            <select name="previous_pardon">
+              <option value="">Select...</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+            
+            <label id="previous_pardon_date_label" style="display: none;">If yes, provide the date (MM/YYYY):</label>
+            <input type="text" id="previous_pardon_date" name="previous_pardon_date" placeholder="MM/YYYY" style="display: none;">
+            
+            <label id="previous_pardon_details_label" style="display: none;">If yes, describe the outcome (hearing, formal denial, etc.):</label>
+            <textarea id="previous_pardon_details" name="previous_pardon_details" rows="3" placeholder="Describe hearing or denial details..." style="display: none;"></textarea>
+            
+            <label>Have you had any other interactions with law enforcement (arrests without charges, dismissed charges, investigations)?</label>
+            <select name="other_law_enforcement">
+              <option value="">Select...</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+            
+            <label id="other_law_enforcement_details_label" style="display: none;">If yes, explain the interactions (date, state, county, circumstances):</label>
+            <textarea id="other_law_enforcement_details" name="other_law_enforcement_details" rows="4" placeholder="Describe law enforcement interactions..." style="display: none;"></textarea>
+          </div>
+
+          <!-- Continue -->
+          <div style="text-align:center; margin-top: 30px;">
+            <button type="submit">Save & Continue</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Offense Template -->
+  <template id="offense-template">
+    <div class="offense-card">
+      <h4>Offense #<span class="offense-number"></span></h4>
+
+      <label>Crime:</label>
+      <input type="text" name="crime[]" required>
+
+      <label>Court Case Number:</label>
+      <input type="text" name="case_number[]">
+
+      <label>County of Conviction:</label>
+      <input type="text" name="county[]">
+
+      <label>Date of Offense:</label>
+      <input type="date" name="offense_date[]">
+
+      <label>Sentencing Date:</label>
+      <input type="date" name="sentencing_date[]">
+
+      <label>Sentence Received (confinement and supervision):</label>
+      <textarea name="sentence_received[]" rows="2"></textarea>
+
+      <label>Date Sentence Completed:</label>
+      <input type="date" name="sentence_completed[]">
+
+      <label>District Attorney(s) Who Oversaw Conviction:</label>
+      <input type="text" name="district_attorney[]">
+
+      <label>Judge(s) Who Presided:</label>
+      <input type="text" name="judge[]">
+
+      <!-- Document Upload Step -->
+      <div class="doc-upload-section">
+        <label>
+          Upload Certified Documents
+          <button type="button" class="help-btn" onclick="showHelp()">?</button>
+        </label>
+        <input type="file" name="documents[]" multiple accept=".pdf,.jpg,.png">
+
+        <label style="margin-top:10px;">
+          <input type="checkbox" name="sending_physical_docs[]">
+          I have paper copies and will mail them separately.
+        </label>
+      </div>
+
+      <button type="button" class="done-btn" onclick="markOffenseComplete(this)">Done with this offense</button>
+      <button type="button" class="delete-btn" onclick="deleteOffense(this)" style="background-color: #dc3545; color: white; margin-left: 10px;">Delete Offense</button>
+      <hr>
+    </div>
+  </template>
+
+  <script>
+    let offenseCount = 0;
+    const maxOffenses = 3;
+
+    function addOffense() {
+      if (offenseCount >= maxOffenses) return;
+
+      offenseCount++;
+      const template = document.getElementById("offense-template");
+      const clone = template.content.cloneNode(true);
+      clone.querySelector(".offense-number").innerText = offenseCount;
+
+      document.getElementById("offense-forms-container").appendChild(clone);
+
+      if (offenseCount >= maxOffenses) {
+        document.getElementById("add-offense-wrapper").style.display = "none";
+      }
+    }
+
+    function validateOffenseCompletion(offenseCard) {
+      const requiredFields = offenseCard.querySelectorAll('input[required], select[required], textarea[required]');
+      let isComplete = true;
+      
+      requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+          field.style.borderColor = 'red';
+          field.style.boxShadow = '0 0 5px rgba(255, 0, 0, 0.5)';
+          isComplete = false;
+        } else {
+          field.style.borderColor = '#ccc';
+          field.style.boxShadow = 'none';
+        }
+      });
+      
+      return isComplete;
+    }
+
+    function markOffenseComplete(button) {
+      const offenseCard = button.closest(".offense-card");
+      
+      if (validateOffenseCompletion(offenseCard)) {
+        offenseCard.classList.add("completed");
+        if (offenseCount < maxOffenses) {
+          document.getElementById("add-offense-wrapper").style.display = "block";
+        }
+      } else {
+        alert("Please complete all required fields before marking this offense as complete.");
+      }
+    }
+
+    function deleteOffense(button) {
+      const offenseCard = button.closest(".offense-card");
+      offenseCard.remove();
+      offenseCount--;
+      
+      // Renumber remaining offenses
+      const remainingCards = document.querySelectorAll(".offense-card");
+      remainingCards.forEach((card, index) => {
+        card.querySelector(".offense-number").innerText = index + 1;
+      });
+      
+      // Show add button if under max
+      if (offenseCount < maxOffenses) {
+        document.getElementById("add-offense-wrapper").style.display = "block";
+      }
+    }
+
+    function showHelp() {
+      alert("You must attach certified copies of: (1) the criminal complaint, (2) the information, and (3) the judgment of conviction. These can be obtained from the clerk of courts in the county of conviction. Photocopy and certification fees may apply.");
+    }
+
+    // Setup conditional fields
+    function setupConditionalFields() {
+      // Other crimes details
+      document.querySelector('select[name="other_crimes"]').addEventListener('change', function() {
+        const detailsLabel = document.getElementById('other_crimes_details_label');
+        const detailsField = document.getElementById('other_crimes_details');
+        if (this.value === 'yes') {
+          detailsLabel.style.display = 'block';
+          detailsField.style.display = 'block';
+          detailsField.required = true;
+        } else {
+          detailsLabel.style.display = 'none';
+          detailsField.style.display = 'none';
+          detailsField.required = false;
+          detailsField.value = '';
+        }
+      });
+
+      // Restitution fields
+      document.querySelector('select[name="restitution_ordered"]').addEventListener('change', function() {
+        const paidLabel = document.getElementById('restitution_paid_label');
+        const paidField = document.getElementById('restitution_paid');
+        if (this.value === 'yes') {
+          paidLabel.style.display = 'block';
+          paidField.style.display = 'block';
+          paidField.required = true;
+        } else {
+          paidLabel.style.display = 'none';
+          paidField.style.display = 'none';
+          paidField.required = false;
+          paidField.value = '';
+          // Hide proof fields too
+          document.getElementById('restitution_proof_label').style.display = 'none';
+          document.getElementById('restitution_proof_file').style.display = 'none';
+          document.getElementById('restitution_proof').style.display = 'none';
+        }
+      });
+
+      // Restitution proof fields
+      document.getElementById('restitution_paid').addEventListener('change', function() {
+        const proofLabel = document.getElementById('restitution_proof_label');
+        const proofFile = document.getElementById('restitution_proof_file');
+        const proofText = document.getElementById('restitution_proof');
+        if (this.value === 'yes') {
+          proofLabel.style.display = 'block';
+          proofFile.style.display = 'block';
+          proofText.style.display = 'block';
+        } else {
+          proofLabel.style.display = 'none';
+          proofFile.style.display = 'none';
+          proofText.style.display = 'none';
+        }
+      });
+
+      // Previous pardon fields
+      document.querySelector('select[name="previous_pardon"]').addEventListener('change', function() {
+        const dateLabel = document.getElementById('previous_pardon_date_label');
+        const dateField = document.getElementById('previous_pardon_date');
+        const detailsLabel = document.getElementById('previous_pardon_details_label');
+        const detailsField = document.getElementById('previous_pardon_details');
+        if (this.value === 'yes') {
+          dateLabel.style.display = 'block';
+          dateField.style.display = 'block';
+          detailsLabel.style.display = 'block';
+          detailsField.style.display = 'block';
+          dateField.required = true;
+          detailsField.required = true;
+        } else {
+          dateLabel.style.display = 'none';
+          dateField.style.display = 'none';
+          detailsLabel.style.display = 'none';
+          detailsField.style.display = 'none';
+          dateField.required = false;
+          detailsField.required = false;
+          dateField.value = '';
+          detailsField.value = '';
+        }
+      });
+
+      // Other law enforcement fields
+      document.querySelector('select[name="other_law_enforcement"]').addEventListener('change', function() {
+        const detailsLabel = document.getElementById('other_law_enforcement_details_label');
+        const detailsField = document.getElementById('other_law_enforcement_details');
+        if (this.value === 'yes') {
+          detailsLabel.style.display = 'block';
+          detailsField.style.display = 'block';
+          detailsField.required = true;
+        } else {
+          detailsLabel.style.display = 'none';
+          detailsField.style.display = 'none';
+          detailsField.required = false;
+          detailsField.value = '';
+        }
+      });
+    }
+
+    // Load first offense and setup conditional fields on page load
+    window.onload = function() {
+      addOffense();
+      setupConditionalFields();
+    };
+  </script>
+</body>
+</html>

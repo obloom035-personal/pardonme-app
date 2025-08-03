@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Section Seven – PardonMe Application</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles_section_seven.css') }}">
+</head>
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">PardonMe, Inc.</h1>
+      <h2 class="section-title">Section 7 – Statement & Signature</h2>
+      <p class="section-description">Complete your personal statement and finalize your application.</p>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Layout -->
+  <div class="page-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h3 class="sidebar-title">📝 To Do List</h3>
+      {% set section_names = [
+        'Personal Information',
+        'Offense Details',
+        'Sentence & Incarceration',
+        'Employment & Education',
+        'Community Involvement',
+        'Character References',
+        'Statement & Signature'
+      ] %}
+      {% for i in range(1, 8) %}
+        <div class="sidebar-item{% if i == current_section %} active{% elif i < current_section %} completed{% endif %}">
+          <strong>Section {{ i }}</strong>
+          <p>{{ section_names[i-1] }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="form-card">
+        <form method="POST" action="{{ url_for('section_seven') }}">
+          <h3 style="text-align:center;">Personal Statement & Application Completion</h3>
+          <p style="text-align:center; font-size: 0.9rem; color: #888;">
+            This is your opportunity to tell your story and explain why you deserve a pardon.
+          </p>
+
+          <div class="form-grid">
+            <!-- Column 1 -->
+            <div class="form-column">
+              <label for="personal_statement">Personal Statement:</label>
+              <textarea id="personal_statement" name="personal_statement" rows="6" placeholder="Tell your story in your own words. This is your opportunity to explain your journey, growth, and transformation..." required></textarea>
+              <p style="font-size: 0.8rem; color: #666;">Character count: <span id="statement-count">0</span>/2000 recommended</p><br>
+
+              <label for="why_pardon">Why do you believe you deserve a pardon?</label>
+              <textarea id="why_pardon" name="why_pardon" rows="4" placeholder="Explain why you believe a pardon is warranted in your case..." required></textarea><br><br>
+
+              <label for="life_changes">How has your life changed since your conviction?</label>
+              <textarea id="life_changes" name="life_changes" rows="4" placeholder="Describe the positive changes you've made in your life..." required></textarea><br><br>
+
+              <label for="future_goals">What are your future goals and plans?</label>
+              <textarea id="future_goals" name="future_goals" rows="3" placeholder="Describe your plans for the future and how a pardon would help..." required></textarea><br><br>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="form-column">
+              <label for="remorse_statement">Statement of Remorse and Responsibility:</label>
+              <textarea id="remorse_statement" name="remorse_statement" rows="4" placeholder="Express your remorse and take responsibility for your actions..." required></textarea><br><br>
+
+              <div style="border: 2px solid #ddd; padding: 20px; margin: 20px 0; background-color: #f9f9f9;">
+                <h4>Application Certification</h4>
+                <p style="font-size: 0.9rem; margin-bottom: 15px;">
+                  By signing below, I certify that all information provided in this application is true and complete to the best of my knowledge. I understand that providing false information may result in the denial of my pardon application.
+                </p>
+
+                <label for="signature">Digital Signature (Type your full legal name):</label>
+                <input type="text" id="signature" name="signature" placeholder="Type your full legal name as your digital signature" required><br><br>
+
+                <label for="signature_date">Date:</label>
+                <input type="date" id="signature_date" name="signature_date" required><br><br>
+
+                <label>
+                  <input type="checkbox" id="application_complete" name="application_complete" required>
+                  I certify that this application is complete and accurate
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div style="text-align:center; margin-top: 30px;">
+            <button type="submit" class="start-btn">Complete Application</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Character counter for personal statement
+    const personalStatement = document.getElementById('personal_statement');
+    const statementCount = document.getElementById('statement-count');
+
+    personalStatement.addEventListener('input', function() {
+      const count = this.value.length;
+      statementCount.textContent = count;
+      
+      if (count > 2000) {
+        statementCount.style.color = 'red';
+      } else if (count > 1800) {
+        statementCount.style.color = 'orange';
+      } else {
+        statementCount.style.color = '#666';
+      }
+    });
+
+    // Auto-fill today's date
+    document.getElementById('signature_date').valueAsDate = new Date();
+
+    // Custom confirmation popup
+    function showCustomConfirmation(event) {
+      event.preventDefault();
+      
+      // Create overlay
+      const overlay = document.createElement('div');
+      overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      `;
+      
+      // Create popup
+      const popup = document.createElement('div');
+      popup.style.cssText = `
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        max-width: 500px;
+        width: 90%;
+      `;
+      
+      popup.innerHTML = `
+        <img src="${document.querySelector('.logo-img').src}" alt="PardonMe Logo" style="width: 150px; margin-bottom: 20px;">
+        <h3 style="color: #112d3e; margin-bottom: 15px;">Complete Your Application</h3>
+        <p style="margin-bottom: 25px; color: #495057; line-height: 1.5;">
+          Are you ready to submit your completed pardon application? This will finalize your application and generate your PDF.
+        </p>
+        <div>
+          <button id="confirm-submit" style="background: #28a745; color: white; padding: 12px 24px; border: none; border-radius: 5px; margin: 0 10px; cursor: pointer; font-size: 16px;">
+            Yes, Submit Application
+          </button>
+          <button id="cancel-submit" style="background: #6c757d; color: white; padding: 12px 24px; border: none; border-radius: 5px; margin: 0 10px; cursor: pointer; font-size: 16px;">
+            Cancel
+          </button>
+        </div>
+      `;
+      
+      overlay.appendChild(popup);
+      document.body.appendChild(overlay);
+      
+      // Handle button clicks
+      document.getElementById('confirm-submit').onclick = function() {
+        document.body.removeChild(overlay);
+        event.target.submit();
+      };
+      
+      document.getElementById('cancel-submit').onclick = function() {
+        document.body.removeChild(overlay);
+      };
+      
+      // Close on overlay click
+      overlay.onclick = function(e) {
+        if (e.target === overlay) {
+          document.body.removeChild(overlay);
+        }
+      };
+    }
+
+    // Form validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+      const signature = document.getElementById('signature').value.trim();
+      const checkbox = document.getElementById('application_complete').checked;
+      
+      if (!signature) {
+        alert('Please provide your digital signature.');
+        e.preventDefault();
+        return;
+      }
+      
+      if (!checkbox) {
+        alert('Please certify that your application is complete and accurate.');
+        e.preventDefault();
+        return;
+      }
+      
+      // Final confirmation with custom popup
+      showCustomConfirmation(e);
+    });
+  </script>
+
+</body>
+</html>

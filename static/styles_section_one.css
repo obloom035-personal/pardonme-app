@@ -1,0 +1,270 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f2f6f9;
+  color: #333;
+}
+
+/* --- Top Bar --- */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #0a1f2e;
+  color: white;
+  padding: 20px 30px;
+  border-bottom: 3px solid #00cc66;
+}
+
+.logo-title {
+  flex-shrink: 0;
+}
+
+.logo-img {
+  height: 150px; /* Slightly smaller for balance */
+}
+
+.title-center {
+  text-align: center;
+  flex-grow: 1;
+}
+
+.title-center h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.title-center .section-title {
+  margin: 5px 0;
+  font-size: 1.2rem;
+}
+
+.title-center .section-description {
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  color: #cfd8dc;
+}
+
+.progress-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.progress-bar {
+  width: 200px;
+  height: 10px;
+  background-color: #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #00cc66;
+}
+
+/* --- Arrows --- */
+.nav-arrows {
+  flex-shrink: 0;
+}
+
+.nav-arrows .nav-btn {
+  background-color: #00cc66;
+  border: none;
+  padding: 10px 15px;
+  font-weight: bold;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.nav-btn:hover {
+  background-color: #00e673;
+}
+
+/* --- Layout --- */
+.page-layout {
+  display: flex;
+  height: calc(100vh - 120px);
+}
+
+.sidebar {
+  background-color: #112d3e;
+  color: white;
+  padding: 20px;
+  width: 220px;
+  height: 100vh;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.sidebar-item {
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  background-color: #1b3f53;
+  cursor: pointer;
+}
+
+.sidebar-item.active {
+  background-color: #00cc66;
+  color: #000;
+  font-weight: bold;
+  animation: pulse-glow 1.8s ease-in-out infinite;
+}
+
+.sidebar-item.completed {
+  background-color: #00cc66;
+  color: #000;
+  font-weight: bold;
+}
+
+/* --- Sidebar Header --- */
+.sidebar-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 255, 102, 0.9), 0 0 40px rgba(0, 255, 102, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.4);
+  }
+}
+
+/* --- Main Content --- */
+.main-content {
+  flex-grow: 1;
+  padding: 30px;
+}
+
+.form-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-grid {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.form-column {
+  flex: 1;
+  min-width: 300px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="date"],
+textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+input:invalid,
+textarea:invalid {
+  border-color: red;
+  box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 6px;
+  display: inline-block;
+}
+
+.start-btn {
+  background-color: #00cc66;
+  color: white;
+  padding: 14px 26px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 204, 102, 0.4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.start-btn:hover {
+  background-color: #00e673;
+  box-shadow: 0 8px 24px rgba(0, 255, 140, 0.6);
+  transform: translateY(-2px);
+}
+
+.ssn-input {
+  width: 100%;
+  flex: 1;
+  min-width: 0;
+}
+
+.ssn-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.ssn-btn img {
+  transition: transform 0.2s ease;
+}
+
+.ssn-btn:hover img {
+  transform: scale(1.2);
+}
+
+.ssn-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+#ssn {
+  height: 48px;
+  padding: 10px;
+  font-size: 18px;
+  box-sizing: border-box;
+}
+
+select {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  background-color: #fff;
+  appearance: none;
+}
+
+select:focus {
+  outline: none;
+  border-color: #00cc66;
+  box-shadow: 0 0 3px rgba(0, 204, 102, 0.5);
+}

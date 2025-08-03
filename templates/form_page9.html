@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pardon Application – Page 9</title>
+  <style>
+    body {
+      margin: 0;
+      background: #eee;
+      font-family: Arial, sans-serif;
+    }
+    .form-page {
+      position: relative;
+      width: 850px;
+      margin: 20px auto;
+    }
+    .form-page img {
+      width: 100%;
+      display: block;
+    }
+    .checkbox-label {
+      position: absolute;
+    }
+  </style>
+</head>
+<body>
+  <form method="POST" action="/page9">
+    <div class="form-page">
+      <img src="{{ url_for('static', filename='forms/PardonApp_Aug2021_page9.png') }}" alt="Pardon Application Page 9">
+
+      <!-- Section: Questions -->
+      <label class="checkbox-label" style="top: 155px; left: 700px;">
+        <input type="checkbox" name="eligible_yes" /> 
+      </label>
+      <label class="checkbox-label" style="top: 155px; left: 745px;">
+        <input type="checkbox" name="eligible_no" />
+      </label>
+
+      <label class="checkbox-label" style="top: 185px; left: 700px;">
+        <input type="checkbox" name="answered_all_yes" /> 
+      </label>
+      <label class="checkbox-label" style="top: 185px; left: 745px;">
+        <input type="checkbox" name="answered_all_no" />
+      </label>
+
+      <label class="checkbox-label" style="top: 215px; left: 700px;">
+        <input type="checkbox" name="copy_made_yes" /> 
+      </label>
+      <label class="checkbox-label" style="top: 215px; left: 745px;">
+        <input type="checkbox" name="copy_made_no" />
+      </label>
+
+      <!-- Enclosed materials -->
+      <label class="checkbox-label" style="top: 280px; left: 700px;">
+        <input type="checkbox" name="complaint_yes" /> 
+      </label>
+      <label class="checkbox-label" style="top: 280px; left: 745px;">
+        <input type="checkbox" name="complaint_no" />
+      </label>
+
+      <label class="checkbox-label" style="top: 310px; left: 700px;">
+        <input type="checkbox" name="info_doc_yes" /> 
+      </label>
+      <label class="checkbox-label" style="top: 310px; left: 745px;">
+        <input type="checkbox" name="info_doc_no" />
+      </label>
+
+      <label class="checkbox-label" style="top: 340px; left: 700px;">
+        <input type="checkbox" name="judgment_yes" /> 
+      </label>
+      <label class="checkbox-label" style="top: 340px; left: 745px;">
+        <input type="checkbox" name="judgment_no" />
+      </label>
+
+      <label class="checkbox-label" style="top: 370px; left: 700px;">
+        <input type="checkbox" name="recommendation_yes" /> 
+      </label>
+      <label class="checkbox-label" style="top: 370px; left: 745px;">
+        <input type="checkbox" name="recommendation_no" />
+      </label>
+
+      <label class="checkbox-label" style="top: 400px; left: 700px;">
+        <input type="checkbox" name="other_docs_yes" /> 
+      </label>
+      <label class="checkbox-label" style="top: 400px; left: 745px;">
+        <input type="checkbox" name="other_docs_no" />
+      </label>
+
+      <!-- Notice mailed -->
+      <label class="checkbox-label" style="top: 475px; left: 700px;">
+        <input type="checkbox" name="clerk_notice_yes" /> 
+      </label>
+      <label class="checkbox-label" style="top: 475px; left: 745px;">
+        <input type="checkbox" name="clerk_notice_no" />
+      </label>
+
+      <label class="checkbox-label" style="top: 505px; left: 700px;">
+        <input type="checkbox" name="da_notice_yes" /> 
+      </label>
+      <label class="checkbox-label" style="top: 505px; left: 745px;">
+        <input type="checkbox" name="da_notice_no" />
+      </label>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+      <button type="submit">Finish</button>
+    </div>
+  </form>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Section Three – PardonMe Application</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles_section_three.css') }}">
+</head>
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">PardonMe, Inc.</h1>
+      <h2 class="section-title">Section 3 – Sentence & Incarceration</h2>
+      <p class="section-description">Tell us about your sentence and time served.</p>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Layout -->
+  <div class="page-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h3 class="sidebar-title">📝 To Do List</h3>
+      {% set section_names = [
+        'Personal Information',
+        'Offense Details',
+        'Sentence & Incarceration',
+        'Employment & Education',
+        'Community Involvement',
+        'Character References',
+        'Statement & Signature'
+      ] %}
+      {% for i in range(1, 8) %}
+        <div class="sidebar-item{% if i == current_section %} active{% elif i < current_section %} completed{% endif %}">
+          <strong>Section {{ i }}</strong>
+          <p>{{ section_names[i-1] }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="form-card">
+        <form method="POST" action="{{ url_for('section_three') }}">
+          <h3 style="text-align:center;">Sentence & Incarceration Details</h3>
+          <p style="text-align:center; font-size: 0.9rem; color: #888;">
+            Provide details about your sentence, incarceration, and supervision.
+          </p>
+
+          <div class="form-grid">
+            <!-- Column 1 -->
+            <div class="form-column">
+              <label for="sentence_details">Detailed Description of Sentence:</label>
+              <textarea id="sentence_details" name="sentence_details" rows="4" placeholder="Describe your complete sentence including confinement and supervision..." required></textarea><br><br>
+
+              <label for="incarceration_location">Where did you serve your sentence?</label>
+              <input type="text" id="incarceration_location" name="incarceration_location" placeholder="Institution name and location"><br><br>
+
+              <label for="incarceration_start">Incarceration Start Date:</label>
+              <input type="date" id="incarceration_start" name="incarceration_start"><br><br>
+
+              <label for="incarceration_end">Incarceration End Date:</label>
+              <input type="date" id="incarceration_end" name="incarceration_end"><br><br>
+
+              <label for="supervision_type">Type of Supervision (Probation, Parole, Extended Supervision):</label>
+              <select id="supervision_type" name="supervision_type">
+                <option value="">Select supervision type...</option>
+                <option value="probation">Probation</option>
+                <option value="parole">Parole</option>
+                <option value="extended_supervision">Extended Supervision</option>
+                <option value="other">Other</option>
+                <option value="none">No Supervision</option>
+              </select><br><br>
+
+              <label for="supervision_start">Supervision Start Date:</label>
+              <input type="date" id="supervision_start" name="supervision_start"><br><br>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="form-column">
+              <label for="supervision_end">Supervision End Date:</label>
+              <input type="date" id="supervision_end" name="supervision_end"><br><br>
+
+              <label for="supervision_officer">Supervising Officer/Agency:</label>
+              <input type="text" id="supervision_officer" name="supervision_officer" placeholder="Officer name and agency"><br><br>
+
+              <label for="compliance_issues">Did you have any compliance issues during supervision?</label>
+              <select id="compliance_issues" name="compliance_issues" data-conditional="compliance_details_wrapper">
+                <option value="">Select...</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select><br><br>
+
+              <div id="compliance_details_wrapper" style="display: none;">
+                <label for="compliance_details">If yes, explain any violations or issues:</label>
+                <textarea id="compliance_details" name="compliance_details" rows="4" placeholder="Describe any violations, sanctions, or compliance issues..."></textarea><br><br>
+              </div>
+
+              <label for="programs_completed">Programs Completed During Incarceration:</label>
+              <textarea id="programs_completed" name="programs_completed" rows="3" placeholder="List educational, vocational, or treatment programs completed..."></textarea><br><br>
+
+              <label for="treatment_programs">Treatment or Counseling Programs:</label>
+              <textarea id="treatment_programs" name="treatment_programs" rows="3" placeholder="Describe substance abuse, anger management, or other treatment programs..."></textarea><br><br>
+            </div>
+          </div>
+
+          <div style="text-align:center; margin-top: 20px;">
+            <button type="submit" class="start-btn">Continue to Section Four</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Setup conditional fields
+    function setupConditionalFields() {
+      const yesNoSelects = document.querySelectorAll('select[data-conditional]');
+      yesNoSelects.forEach(select => {
+        const targetField = document.getElementById(select.dataset.conditional);
+        
+        select.addEventListener('change', function() {
+          if (this.value === 'yes') {
+            targetField.style.display = 'block';
+            const textarea = targetField.querySelector('textarea');
+            if (textarea) textarea.required = true;
+          } else {
+            targetField.style.display = 'none';
+            const textarea = targetField.querySelector('textarea');
+            if (textarea) {
+              textarea.required = false;
+              textarea.value = '';
+            }
+          }
+        });
+        
+        // Initialize hidden
+        if (targetField) {
+          targetField.style.display = 'none';
+        }
+      });
+    }
+
+    // Setup on page load
+    window.onload = function() {
+      setupConditionalFields();
+    };
+  </script>
+
+</body>
+</html>

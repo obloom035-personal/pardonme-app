@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Section Four – PardonMe Application</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles_section_four.css') }}">
+</head>
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">PardonMe, Inc.</h1>
+      <h2 class="section-title">Section 4 – Employment & Education</h2>
+      <p class="section-description">Tell us about your work and educational achievements.</p>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Layout -->
+  <div class="page-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h3 class="sidebar-title">📝 To Do List</h3>
+      {% set section_names = [
+        'Personal Information',
+        'Offense Details',
+        'Sentence & Incarceration',
+        'Employment & Education',
+        'Community Involvement',
+        'Character References',
+        'Statement & Signature'
+      ] %}
+      {% for i in range(1, 8) %}
+        <div class="sidebar-item{% if i == current_section %} active{% elif i < current_section %} completed{% endif %}">
+          <strong>Section {{ i }}</strong>
+          <p>{{ section_names[i-1] }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="form-card">
+        <form method="POST" action="{{ url_for('section_four') }}">
+          <h3 style="text-align:center;">Employment & Education History</h3>
+          <p style="text-align:center; font-size: 0.9rem; color: #888;">
+            Show your commitment to stability and personal growth through work and education.
+          </p>
+
+          <div class="form-grid">
+            <!-- Column 1 -->
+            <div class="form-column">
+              <label for="current_employment">Current Employment Status:</label>
+              <select id="current_employment" name="current_employment" required>
+                <option value="">Select status...</option>
+                <option value="employed_full_time">Employed Full-Time</option>
+                <option value="employed_part_time">Employed Part-Time</option>
+                <option value="self_employed">Self-Employed</option>
+                <option value="unemployed_seeking">Unemployed - Seeking Work</option>
+                <option value="unemployed_not_seeking">Unemployed - Not Seeking</option>
+                <option value="retired">Retired</option>
+                <option value="disabled">Disabled</option>
+                <option value="student">Student</option>
+              </select><br><br>
+
+              <label for="employer_name">Current/Most Recent Employer:</label>
+              <input type="text" id="employer_name" name="employer_name" placeholder="Company/organization name"><br><br>
+
+              <label for="job_title">Job Title/Position:</label>
+              <input type="text" id="job_title" name="job_title" placeholder="Your job title or role"><br><br>
+
+              <label for="employment_start">Employment Start Date:</label>
+              <input type="date" id="employment_start" name="employment_start"><br><br>
+
+              <label for="employment_income">Approximate Annual Income:</label>
+              <select id="employment_income" name="employment_income">
+                <option value="">Select range...</option>
+                <option value="under_20k">Under $20,000</option>
+                <option value="20k_40k">$20,000 - $40,000</option>
+                <option value="40k_60k">$40,000 - $60,000</option>
+                <option value="60k_80k">$60,000 - $80,000</option>
+                <option value="80k_100k">$80,000 - $100,000</option>
+                <option value="over_100k">$100,000 or above</option>
+                <option value="prefer_not_say">Prefer not to say</option>
+              </select><br><br>
+
+              <label>Employment History Since Conviction:</label>
+              <div id="employment-history-container">
+                <!-- Employment history entries will be added here -->
+              </div>
+              <div id="add-employment-wrapper" style="text-align: center; margin: 10px 0;">
+                <button type="button" onclick="addEmploymentHistory()" style="background-color: #28a745; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">Add Employment History</button>
+              </div><br><br>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="form-column">
+              <label for="education_level">Highest Level of Education Completed:</label>
+              <select id="education_level" name="education_level">
+                <option value="">Select level...</option>
+                <option value="less_than_high_school">Less than High School</option>
+                <option value="high_school_ged">High School Diploma/GED</option>
+                <option value="some_college">Some College</option>
+                <option value="associates">Associate's Degree</option>
+                <option value="bachelors">Bachelor's Degree</option>
+                <option value="masters">Master's Degree</option>
+                <option value="doctorate">Doctorate/PhD</option>
+                <option value="trade_school">Trade School Certificate</option>
+              </select><br><br>
+
+              <label for="education_since_conviction">Education Completed Since Conviction:</label>
+              <textarea id="education_since_conviction" name="education_since_conviction" rows="3" placeholder="Describe any degrees, certificates, or courses completed since your conviction..."></textarea><br><br>
+
+              <label for="vocational_training">Vocational or Technical Training:</label>
+              <textarea id="vocational_training" name="vocational_training" rows="3" placeholder="List any trade skills, technical training, or apprenticeships..."></textarea><br><br>
+
+              <label for="certifications">Professional Certifications or Licenses:</label>
+              <textarea id="certifications" name="certifications" rows="3" placeholder="List any professional certifications, licenses, or credentials..."></textarea><br><br>
+
+              <label for="career_goals">Career Goals and Aspirations:</label>
+              <textarea id="career_goals" name="career_goals" rows="3" placeholder="Describe your career goals and how you plan to achieve them..."></textarea>
+              <div id="career_goals_warning" style="display: none; color: #856404; background-color: #fff3cd; border: 1px solid #ffeaa7; padding: 8px; border-radius: 4px; margin-top: 5px; font-size: 0.9rem;">
+                ⚠️ It would be beneficial to add something here for a better outcome of the application.
+              </div><br><br>
+
+              <label for="financial_stability">Financial Stability and Responsibility:</label>
+              <textarea id="financial_stability" name="financial_stability" rows="3" placeholder="Describe how you manage finances, support family, pay bills, etc..."></textarea><br><br>
+            </div>
+          </div>
+
+          <div style="text-align:center; margin-top: 20px;">
+            <button type="submit" class="start-btn">Continue to Section Five</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Employment History Template -->
+  <template id="employment-template">
+    <div class="employment-card" style="border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 5px; background-color: #f9f9f9;">
+      <h4>Employment History <span class="employment-number"></span></h4>
+      
+      <label>Job Title/Position:</label>
+      <input type="text" name="employment_job_title[]" placeholder="Your job title or role" required style="width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ccc; border-radius: 4px; font-family: 'Segoe UI', sans-serif;">
+      
+      <label>Company/Employer:</label>
+      <input type="text" name="employment_company[]" placeholder="Company or organization name" required style="width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ccc; border-radius: 4px; font-family: 'Segoe UI', sans-serif;">
+      
+      <label>Employment Dates:</label>
+      <div style="display: flex; gap: 10px;">
+        <input type="date" name="employment_start_date[]" placeholder="Start Date" required style="flex: 1; padding: 8px; margin: 5px 0; border: 1px solid #ccc; border-radius: 4px; font-family: 'Segoe UI', sans-serif;">
+        <input type="date" name="employment_end_date[]" placeholder="End Date (leave blank if current)" style="flex: 1; padding: 8px; margin: 5px 0; border: 1px solid #ccc; border-radius: 4px; font-family: 'Segoe UI', sans-serif;">
+      </div>
+      
+      <label>Job Responsibilities:</label>
+      <textarea name="employment_responsibilities[]" rows="2" placeholder="Describe your main responsibilities and achievements..." style="width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ccc; border-radius: 4px; font-family: 'Segoe UI', sans-serif;"></textarea>
+      
+      <button type="button" onclick="deleteEmploymentHistory(this)" style="background-color: #dc3545; color: white; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px;">Delete Employment History</button>
+    </div>
+  </template>
+
+  <script>
+    let employmentCount = 0;
+    const maxEmployments = 5;
+
+    function addEmploymentHistory() {
+      if (employmentCount >= maxEmployments) {
+        alert("Maximum of 5 employment history entries allowed.");
+        return;
+      }
+
+      employmentCount++;
+      const template = document.getElementById("employment-template");
+      const clone = template.content.cloneNode(true);
+      
+      // Update employment number
+      clone.querySelector(".employment-number").innerText = employmentCount;
+      
+      // Add to container
+      document.getElementById("employment-history-container").appendChild(clone);
+      
+      // Hide add button if at max
+      if (employmentCount >= maxEmployments) {
+        document.getElementById("add-employment-wrapper").style.display = "none";
+      }
+    }
+
+    function deleteEmploymentHistory(button) {
+      const employmentCard = button.closest(".employment-card");
+      employmentCard.remove();
+      employmentCount--;
+      
+      // Renumber remaining employment entries
+      const remainingCards = document.querySelectorAll(".employment-card");
+      remainingCards.forEach((card, index) => {
+        card.querySelector(".employment-number").innerText = index + 1;
+      });
+      
+      // Show add button if under max
+      if (employmentCount < maxEmployments) {
+        document.getElementById("add-employment-wrapper").style.display = "block";
+      }
+    }
+
+    // Career goals warning
+    function checkCareerGoals() {
+      const careerGoalsField = document.getElementById('career_goals');
+      const warningDiv = document.getElementById('career_goals_warning');
+      
+      if (careerGoalsField.value.trim() === '') {
+        warningDiv.style.display = 'block';
+      } else {
+        warningDiv.style.display = 'none';
+      }
+    }
+
+    // Setup event listeners on page load
+    window.onload = function() {
+      // Add first employment history entry
+      addEmploymentHistory();
+      
+      // Setup career goals warning
+      const careerGoalsField = document.getElementById('career_goals');
+      careerGoalsField.addEventListener('blur', checkCareerGoals);
+      careerGoalsField.addEventListener('input', function() {
+        if (this.value.trim() !== '') {
+          document.getElementById('career_goals_warning').style.display = 'none';
+        }
+      });
+    };
+  </script>
+
+</body>
+</html>
