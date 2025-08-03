@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pardon Application – Page 6</title>
+  <style>
+    body {
+      margin: 0;
+      background: #eee;
+      font-family: Arial, sans-serif;
+    }
+    .form-page {
+      position: relative;
+      width: 850px;
+      margin: 20px auto;
+    }
+    .form-page img {
+      width: 100%;
+      display: block;
+    }
+    .field {
+      position: absolute;
+      background: transparent;
+      border: 1px dashed #999;
+      font-size: 14px;
+      padding: 2px;
+    }
+    textarea.field {
+      resize: none;
+    }
+  </style>
+</head>
+<body>
+  <form method="POST" action="/page6">
+    <div class="form-page">
+      <img src="{{ url_for('static', filename='forms/PardonApp_Aug2021_page6.png') }}" alt="Pardon Application Page 6">
+
+      <!-- Question 11: Other reasons for pardon -->
+      <textarea class="field" name="other_reasons"
+                style="top: 100px; left: 30px; width: 780px; height: 140px;"></textarea>
+
+      <!-- Question 12: Employment History -->
+      {% for i in range(1, 6) %}
+        <input class="field" name="employer{{ i }}" placeholder="Employer"
+               style="top: {{ 275 + (i - 1) * 30 }}px; left: 30px; width: 110px;" />
+        <input class="field" name="position{{ i }}" placeholder="Position held"
+               style="top: {{ 275 + (i - 1) * 30 }}px; left: 145px; width: 100px;" />
+        <input class="field" name="employer_contact{{ i }}" placeholder="Address & Phone"
+               style="top: {{ 275 + (i - 1) * 30 }}px; left: 250px; width: 180px;" />
+        <input class="field" name="supervisor{{ i }}" placeholder="Supervisor"
+               style="top: {{ 275 + (i - 1) * 30 }}px; left: 435px; width: 150px;" />
+        <input class="field" name="employment_dates{{ i }}" placeholder="Dates"
+               style="top: {{ 275 + (i - 1) * 30 }}px; left: 590px; width: 140px;" />
+      {% endfor %}
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+      <button type="submit">Next Page</button>
+    </div>
+  </form>
+</body>
+</html>

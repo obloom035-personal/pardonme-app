@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pardon Application – Page 4</title>
+  <style>
+    body {
+      margin: 0;
+      background: #eee;
+      font-family: Arial, sans-serif;
+    }
+    .form-page {
+      position: relative;
+      width: 850px;
+      margin: 20px auto;
+    }
+    .form-page img {
+      width: 100%;
+      display: block;
+    }
+    .field {
+      position: absolute;
+      background: transparent;
+      border: 1px dashed #999;
+      font-size: 14px;
+      padding: 2px;
+    }
+    textarea.field {
+      resize: none;
+      height: 100px;
+    }
+    .checkbox-label {
+      position: absolute;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <form method="POST" action="/page4">
+    <div class="form-page">
+      <img src="{{ url_for('static', filename='forms/PardonApp_Aug2021_page4.png') }}" alt="Pardon Application Page 4">
+
+      <!-- Question 5: Restitution -->
+      <label class="checkbox-label" style="top: 40px; left: 310px;">
+        <input type="checkbox" name="restitution_yes" /> Yes
+      </label>
+      <label class="checkbox-label" style="top: 40px; left: 370px;">
+        <input type="checkbox" name="restitution_no" /> No
+      </label>
+
+      <label class="checkbox-label" style="top: 70px; left: 310px;">
+        <input type="checkbox" name="paid_in_full_yes" /> Yes
+      </label>
+      <label class="checkbox-label" style="top: 70px; left: 370px;">
+        <input type="checkbox" name="paid_in_full_no" /> No
+      </label>
+
+      <!-- Question 6: Prior Pardon Application -->
+      <label class="checkbox-label" style="top: 120px; left: 270px;">
+        <input type="checkbox" name="prior_pardon_yes" /> Yes
+      </label>
+      <label class="checkbox-label" style="top: 120px; left: 330px;">
+        <input type="checkbox" name="prior_pardon_no" /> No
+      </label>
+
+      <input class="field" name="pardon_request_date" placeholder="MM/YYYY"
+             style="top: 150px; left: 480px; width: 120px;" />
+
+      <textarea class="field" name="pardon_denial_explanation"
+                style="top: 180px; left: 30px; width: 780px; height: 100px;"></textarea>
+
+      <!-- Question 7: Other law enforcement contact -->
+      <label class="checkbox-label" style="top: 300px; left: 270px;">
+        <input type="checkbox" name="other_contact_yes" /> Yes
+      </label>
+      <label class="checkbox-label" style="top: 300px; left: 330px;">
+        <input type="checkbox" name="other_contact_no" /> No
+      </label>
+
+      <textarea class="field" name="other_contact_explanation"
+                style="top: 330px; left: 30px; width: 780px; height: 100px;"></textarea>
+
+      <!-- Question 8: Restraining Order -->
+      <label class="checkbox-label" style="top: 450px; left: 480px;">
+        <input type="checkbox" name="restraining_order_yes" /> Yes
+      </label>
+      <label class="checkbox-label" style="top: 450px; left: 540px;">
+        <input type="checkbox" name="restraining_order_no" /> No
+      </label>
+
+      <textarea class="field" name="restraining_order_explanation"
+                style="top: 480px; left: 30px; width: 780px; height: 60px;"></textarea>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+      <button type="submit">Next Page</button>
+    </div>
+  </form>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PardonMe, Inc.</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <!-- Logo -->
+  <div class="logo-container">
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="PardonMe Logo" width="400">
+  </div>
+
+  <!-- Title -->
+  <h1 class="page-title">PardonMe, Inc. – AI-Powered Application Assistant</h1>
+
+  <!-- Centered Content: Typing + Final Content -->
+  <div class="centered-content">
+    <div class="typing-container">
+      <pre class="typing-text" id="typingText"></pre>
+    </div>
+
+    <div class="bottom-content hidden" id="bottomContent">
+      <p class="subtext">Helping Wisconsinites reclaim their future, one pardon at a time.</p>
+      <a href="/section_one" class="start-btn">Start Application</a>
+    </div>
+  </div>
+
+  <!-- Animation Script -->
+	<script>
+	  window.onload = () => {
+		const logo = document.querySelector('.logo-container');
+		const typingText = document.getElementById('typingText');
+		const bottomContent = document.getElementById('bottomContent');
+
+		const message = `PardonMe, Inc. is a nonprofit organization dedicated to helping Wisconsinites with felony records reclaim their future.
+		
+	Our mission is to make the pardon application process clear, accessible, and achievable for everyone — no lawyer required.
+	
+	With the help of AI, this assistant will guide you through each step of the process, answer questions in plain language, 
+	and ensure your application is complete and ready for review.`;
+
+		// Step 1: Move the logo
+		setTimeout(() => {
+		  logo.classList.add('moved');
+		}, 1600);
+
+		// Step 2: Start typing after logo settles
+		setTimeout(() => {
+		  let i = 0;
+		  const interval = setInterval(() => {
+			typingText.textContent += message.charAt(i);
+			i++;
+			if (i === message.length) {
+			  clearInterval(interval);
+
+			  // Step 3: Transform into styled text block
+			  typingText.classList.add('typing-complete');
+
+			  // Step 4: Reveal bottom content shortly after
+			  setTimeout(() => {
+				bottomContent.classList.remove('hidden');
+				bottomContent.classList.add('fade-in');
+			  }, 300);
+			}
+		  }, 25);
+		}, 3000);
+	  };
+	</script>
+</body>
+</html>

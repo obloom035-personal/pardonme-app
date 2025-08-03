@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Section Five – PardonMe Application</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles_section_five.css') }}">
+</head>
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="logo-title">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img">
+    </div>
+    <div class="title-center">
+      <h1 class="main-title">PardonMe, Inc.</h1>
+      <h2 class="section-title">Section 5 – Community Involvement</h2>
+      <p class="section-description">Show us how you've contributed to your community.</p>
+      <div class="progress-wrapper">
+        <span>Progress:</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress }}%;"></div>
+        </div>
+        <span>{{ progress }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Layout -->
+  <div class="page-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h3 class="sidebar-title">📝 To Do List</h3>
+      {% set section_names = [
+        'Personal Information',
+        'Offense Details',
+        'Sentence & Incarceration',
+        'Employment & Education',
+        'Community Involvement',
+        'Character References',
+        'Statement & Signature'
+      ] %}
+      {% for i in range(1, 8) %}
+        <div class="sidebar-item{% if i == current_section %} active{% elif i < current_section %} completed{% endif %}">
+          <strong>Section {{ i }}</strong>
+          <p>{{ section_names[i-1] }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="form-card">
+        <form method="POST" action="{{ url_for('section_five') }}">
+          <h3 style="text-align:center;">Community Involvement & Personal Growth</h3>
+          <p style="text-align:center; font-size: 0.9rem; color: #888;">
+            Demonstrate your positive contributions to society and personal development.
+          </p>
+
+          <div class="form-grid">
+            <!-- Column 1 -->
+            <div class="form-column">
+              <label for="volunteer_work">Volunteer Work and Organizations:</label>
+              <textarea id="volunteer_work" name="volunteer_work" rows="4" placeholder="Describe volunteer work, organizations you've helped, roles, and time commitment..."></textarea><br><br>
+
+              <label for="community_service">Community Service Activities:</label>
+              <textarea id="community_service" name="community_service" rows="3" placeholder="List community service projects, cleanup efforts, fundraising, etc..."></textarea><br><br>
+
+              <label for="religious_involvement">Religious or Spiritual Involvement:</label>
+              <textarea id="religious_involvement" name="religious_involvement" rows="3" placeholder="Describe church attendance, religious activities, spiritual growth..."></textarea><br><br>
+
+              <label for="support_groups">Support Groups or Recovery Programs:</label>
+              <textarea id="support_groups" name="support_groups" rows="3" placeholder="AA, NA, anger management, or other support group participation..."></textarea><br><br>
+
+              <label for="counseling_participation">Counseling or Therapy Participation:</label>
+              <textarea id="counseling_participation" name="counseling_participation" rows="3" placeholder="Individual or group counseling, therapy sessions, mental health support..."></textarea><br><br>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="form-column">
+              <label for="mentoring_roles">Mentoring or Leadership Roles:</label>
+              <textarea id="mentoring_roles" name="mentoring_roles" rows="3" placeholder="Mentoring youth, coaching, teaching, or other leadership positions..."></textarea><br><br>
+
+              <label for="community_leadership">Community Leadership Activities:</label>
+              <textarea id="community_leadership" name="community_leadership" rows="3" placeholder="Board positions, committee work, organizing community events..."></textarea><br><br>
+
+              <label for="charitable_activities">Charitable Activities and Donations:</label>
+              <textarea id="charitable_activities" name="charitable_activities" rows="3" placeholder="Charitable giving, fundraising efforts, helping those in need..."></textarea><br><br>
+
+              <label for="civic_participation">Civic Participation:</label>
+              <textarea id="civic_participation" name="civic_participation" rows="3" placeholder="Voting, attending town halls, community meetings, civic engagement..."></textarea><br><br>
+
+              <label for="personal_growth">Personal Growth and Self-Improvement:</label>
+              <textarea id="personal_growth" name="personal_growth" rows="4" placeholder="Describe how you've grown as a person, lessons learned, positive changes made..." required></textarea><br><br>
+            </div>
+          </div>
+
+          <div style="text-align:center; margin-top: 20px;">
+            <button type="submit" class="start-btn">Continue to Section Six</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+/* Import base styles from section_one.css */
+@import url('styles_section_one.css');
+
+/* Section 4 specific overrides and additions */
+.section-title {
+  color: #ffffff;
+}
+
+.form-grid textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-column select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: 'Segoe UI', sans-serif;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.form-column select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}
+
+/* Employment status specific styling */
+#current_employment {
+  font-weight: 500;
+}
+
+#employment_income {
+  color: #495057;
+}
+
+/* Progress bar styling for section 4 */
+.progress-fill {
+  background: linear-gradient(90deg, #ffc107, #fd7e14);
+}
